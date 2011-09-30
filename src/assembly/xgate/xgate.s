@@ -142,8 +142,6 @@ BRA xgsParameterLoopCheck
 	LDW R5, R5, #ZERO_OFFSET
 	SUB R6, R4, R5 ;diff TCNT values to get elapsed time
 
-;LDD R6, #5001
-
     ;take our delayTime and add our runTime to get "runtimeDelay"
 	LDD R3, xGSSystemVars
 	LDW R3, R3, #XGS_VARIABLE_PARAMETER_BASE_ADDRESS_OFFSET
@@ -684,14 +682,10 @@ xgatePORTPFlip: ;Flip bit 7 at PORTP
 ; *****************************************************************************
 
 parametersBase:
-		.byte 0;todo here for alignment
 	parameterChannelID: ;an index to our array of events
-		.byte 0
-	;	.word 0
-		.byte 0;todo here for alignment
+		.word 0
 	parameterDelayH: ; How long from now to trigger
-		.byte 0 ;high byte
-	;	.word 0	;High word countdown
+		.word 0 ;high word
 	parameterDelay: ; How long from now to trigger
 		.word 0 ;Low word countdown
 	parameterRuntimeH: ;How long to run once triggered
@@ -701,14 +695,10 @@ parametersBase:
 	parameterInputStamp:
 		.word 0
 	;second parameter
-		.byte 0;todo here for alignment
 	parameterChannelID1: ;an index to our array of events
-		.byte 0
-	;	.word 0
-		.byte 0;todo here for alignment
+		.word 0
 	parameterDelayH1: ; How long from now to trigger
-		.byte 0 ;high byte
-	;	.word 0	;High word countdown
+		.word 0 ;high byte
 	parameterDelay1: ; How long from now to trigger
 		.word 0 ;Low word countdown
 	parameterRuntimeH1: ;How long to run once triggered
@@ -718,14 +708,10 @@ parametersBase:
 	parameterInputStamp1:
 		.word 0
 	;third parameter
-		.byte 0 ;todo here for alignment
 	parameterChannelID2: ;an index to our array of events
-		.byte 0
-	;	.word 0
-		.byte 0 ;todo here for alignment
+		.word 0
 	parameterDelayH2: ; How long from now to trigger
-		.byte 0 ;high byte
-	;	.word 0	;High word countdown
+		.word 0 ;high byte
 	parameterDelay2: ; How long from now to trigger
 		.word 0 ;Low word countdown
 	parameterRuntimeH2: ;How long to run once triggered
@@ -735,14 +721,10 @@ parametersBase:
 	parameterInputStamp2:
 		.word 0
 	;fourth parameter
-		.byte 0;todo here for alignment
 	parameterChannelID3: ;an index to our array of events
-		.byte 0
-	;	.word 0
-		.byte 0;todo here for alignment
+		.word 0
 	parameterDelayH3: ; How long from now to trigger
-		.byte 0;high byte
-	;	.word 0	;High word countdown
+		.word 0;high byte
 	parameterDelay3: ; How long from now to trigger
 		.word 0 ;Low word countdown
 	parameterRuntimeH3: ;How long to run once triggered
@@ -752,14 +734,10 @@ parametersBase:
 	parameterInputStamp3:
 		.word 0
 	;fifth parameter
-		.byte 0;todo here for alignment
 	parameterChannelID4: ;an index to our array of events
-		.byte 0
-	;	.word 0
-		.byte 0;todo here for alignment
+		.word 0
 	parameterDelayH4: ; How long from now to trigger
-		.byte 0;high byte
-	;	.word 0	;High word countdown
+		.word 0;high byte
 	parameterDelay4: ; How long from now to trigger
 		.word 0 ;Low word countdown
 	parameterRuntimeH4: ;How long to run once triggered
@@ -769,14 +747,10 @@ parametersBase:
 	parameterInputStamp4:
 		.word 0
 	;sixth parameter
-		.byte 0;todo here for alignment
 	parameterChannelID5: ;an index to our array of events
-		.byte 0
-	;	.word 0
-		.byte 0;todo here for alignment
+		.word 0
 	parameterDelayH5: ; How long from now to trigger
-		.byte 0;high byte
-	;	.word 0	;High word countdown
+		.word 0;high byte
 	parameterDelay5: ; How long from now to trigger
 		.word 0 ;Low word countdown
 	parameterRuntimeH5: ;How long to run once triggered
