@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -24,42 +24,25 @@
  */
 
 
-/**	@file IATTransferTable.c
+/**	@file SimsVolvo-RPM.h
+ *
  * @ingroup dataInitialisers
  *
- * @brief Inlet Air Temperature Transfer Table
+ * @brief A default set of RPMs for a B21A engine.
  *
- * This file exists solely to contain the Inlet Air Temperature thermistor
- * transfer function lookup table.
+ * This file only contains the data to be hash included into all mainTable RPM sections
  *
  * @author Fred Cooke
  */
 
 
-#include "../inc/freeEMS.h"
+/* 27 RPM values starting at 200 and ending at 9100, only the first 24 are used by default */
+  500,  1400,  2000,  3200,
+ 4400,  5600,  6800,  8000,
+ 9200, 10400, 11600, 13000,
+13001, 15200, 16000,  16001,
 
-
-/** @brief Inlet Air Temperature Transfer Table
- *
- * Using this table it is possible to accurately and quickly convert
- * a raw ADC reading to a scaled temperature value in degrees Kelvin.
- *
- * @author FreeTherm
- */
-const volatile unsigned short IATTransferTable[1024] LOOKUPD = {
-#ifdef TRUCK
-#include "../data/thermistors/Bosch.h"
-#elif PRESTO
-#include "../data/thermistors/Bosch.h"
-#elif SEANKLT1
-#include "../data/thermistors/Bosch.h"
-#elif SEANKR1
-#include "../data/thermistors/Bosch.h"
-#elif JOSHBROWN
-#include "../data/thermistors/Bosch.h"
-#elif SNOTROCKET
-#include "../data/thermistors/BoschM12H-2k7Bias.h"
-#else // Default to correctly biased Jap sensor.
-#include "../data/thermistors/Denso-2k7Bias.h"
-#endif
-};
+// spare:
+20000,  20001,  20002,  20003,
+20004,  20005,  20006,  20007,
+20008,  20009,  20010

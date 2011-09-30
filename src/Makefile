@@ -2,7 +2,7 @@
 #
 #	Makefile
 #
-#	Copyright 2008, 2009, 2010, 2011 Fred Cooke
+#	Copyright 2008-2011 Fred Cooke
 #
 #	This Makefile is part of the FreeEMS project.
 #
@@ -80,6 +80,7 @@ DISTRIBUTIONDIR = ../../$(LABEL)
 DOXYDOCDIR = ../docs/doxygen-html
 MAINDIR = freeems-vanilla
 INCDIR = inc
+DEPDIR = dependencies
 DECDIR = decoders
 DATADIR = initialisers
 BUGDIR = debug
@@ -119,54 +120,18 @@ XGAS = $(XGPREFIX)as
 ################################################################################
 
 
-# Indirect dependencies - any header change means a full recompile. This can be
-# improved upon and made more specific. GCC actually has a function to output a
-# dependency set for a C source file, maybe we should use that?
-MAINH = main.h
-INITH = init.h xgateVectors.h
-UTILH = utils.h BenchTest.h
+# Indirect dependencies that can affect everything and cause a full rebuild
 MFILE = Makefile
-ISRH = interrupts.h
-CINCS = injectorISR.c
-FLASHH = flashWrite.h flashGlobals.h flashBurn.h
 ASMH = 9S12XDP512asm.s
-LOOKUPH = tableLookup.h
-ISRSH = commsISRs.h
-COMMSH = commsCore.h blockDetailsLookup.h pagedLocationBuffers.h decodePacketAndRespond.h packetTypes.h locationIDs.h
 LINKER = memory.x regions.x hc9s12xdp512elfb.x
-GLOBALH1 = freeEMS.h 9S12XDP512.h memory.h globalConstants.h structs.h decoderInterface.h
-GLOBALH2 = globalDefines.h errorDefines.h TunableConfigs.h FixedConfigs.h
-FUELH = fuelAndIgnitionCalcs.h derivedVarsGenerator.h coreVarsGenerator.h
-RPMH = Simple.h LT1-360-8.h MissingTeeth.h MitsiCAS-4and1.h
-RPMC = Generic4Cylinder-HallOrOptical.c
-DATACONF = defaultUteConfig.h
-DATATABLESAXIS = FredsTruck-Load.h FredsTruck-RPM.h mainTable-Load.h mainTable-RPM.h
-DATATABLESIGN = FE-DOHC.h flat15degrees.h flat0degrees.h FredsTruckIgnitionTiming.h
-DATATABLESLAMBDA = flatStoichiometric.h FredsTruckLambda.h originalCurve.h
-DATATABLESVE = flat80Percent.h FredsTruckVE.h
-DATATHERMISTORS = Bosch.h Denso.h GM.h
+
 
 # Let's keep this to a bare minimum! If you write ASM code
 # please provide an matching alternate C implementation too.
 HANDASMS = flashBurn.s
 #RPMHANDASMS = 
 
-# .c files from inc/ should be included here as deps for the parts they are relied on by!!
-ALLHEADERS1 = $(GLOBALH1) $(COMMSH) $(ISRSH) $(UTILH) $(RPMH) $(FLASHH)
-ALLHEADERS2 = $(GLOBALH2) $(FUELH) $(MAINH) $(INITH) $(ISRH) $(LOOKUPH)
-DATAH1 = $(patsubst %.h,data/configuration/%.h,$(DATACONF))
-DATAH2 = $(patsubst %.h,data/tables/axis/%.h,$(DATATABLESAXIS))
-DATAH3 = $(patsubst %.h,data/tables/ign/%.h,$(DATATABLESIGN))
-DATAH4 = $(patsubst %.h,data/tables/lambda/%.h,$(DATATABLESLAMBDA))
-DATAH5 = $(patsubst %.h,data/tables/ve/%.h,$(DATATABLESVE))
-DATAH6 = $(patsubst %.h,data/thermistors/%.h,$(DATATHERMISTORS))
-ALLH1 = $(patsubst %.h,$(INCDIR)/%.h,$(ALLHEADERS1))
-ALLH2 = $(patsubst %.h,$(INCDIR)/%.h,$(ALLHEADERS2))
-ALLH3 = $(patsubst %.c,$(INCDIR)/%.c,$(CINCS))
-ALLH4 = $(LINKER) $(MFILE) $(INCDIR)/$(ASMH)
-ALLH5 = $(DATAH1) $(DATAH2) $(DATAH3) $(DATAH4) $(DATAH5) $(DATAH6) 
-RPMINC = $(patsubst %.c,decoders/%.c,$(RPMC))
-ALLH = $(ALLH1) $(ALLH2) $(ALLH3) $(ALLH4) $(ALLH5) $(RPMINC)
+ALLH = $(LINKER) $(MFILE) $(INCDIR)/$(ASMH)
 
 # Warning : do not include .c files from inc/ as they are
 # included into the other C files and automatically compiled.
@@ -194,7 +159,7 @@ SOURCE = freeEMS.c staticInit.c main.c $(UTILCLASSES) $(MATHCLASSES) $(COMCLASSE
 CLASSES = $(SOURCE) $(DATA)
 
 # Engine position/RPM here
-RPMCLASSESRAW = BenchTest.c MitsiCAS-4and1.c Simple.c GM-LT1-CAS-360and8.c MissingTeeth-36-1-Crank-Only.c Listener.c HyundaiStellar4g63-Distributor-4of54.c MitsiAndMazda-Distributor-4of69.c EvenTeeth-Both-12and1.c
+RPMCLASSESRAW = BenchTest.c MitsiCAS-4and1.c Simple.c GM-LT1-CAS-360and8.c MissingTeeth-36-1-Crank-Only.c Listener.c HyundaiStellar4g63-Distributor-4of54.c MitsiAndMazda-Distributor-4of69.c EvenTeeth-Both-12and1.c EvenTeeth-Both-8and1.c
 # Future decoders: MiataNB.c Subaru-36-2-2-2.c 
 RPMCLASSES = $(patsubst %.c,$(DECDIR)/%.c,$(RPMCLASSESRAW))
 # future rpm = NissanRB2X.c NissanSR20.c MiataNA.c etc... Insert your file above and get coding!
@@ -204,6 +169,8 @@ XGASMSRCS = xgate.s
 
 
 # Convert extensions
+DEPENDENCIES = $(patsubst %.c,$(DEPDIR)/%.d,$(CLASSES))
+DDEPENDENCIES = $(patsubst %.c,$(DEPDIR)/%.dd,$(CLASSES))
 PREPROCESSED = $(patsubst %.c,$(PPCDIR)/%.pp.c,$(CLASSES))
 ASSEMBLIES = $(patsubst %.c,$(ASMDIR)/%.s,$(CLASSES))
 OBJECTS = $(patsubst %.c,$(OBJDIR)/%.o,$(CLASSES)) $(patsubst %.s,$(OBJDIR)/%.o,$(HANDASMS))
@@ -211,10 +178,15 @@ DUMPS = $(patsubst %.c,$(BUGDIR)/%.dmp,$(CLASSES)) $(patsubst %.s,$(BUGDIR)/%.dm
 XGOBJECTS = $(patsubst %.s,$(XGOBJDIR)/%.o,$(XGASMSRCS))
 
 # Convert RPM extensions
+DEPENDENCIESRPM = $(patsubst %.c,$(DEPDIR)/%.d,$(RPMCLASSES))
+DDEPENDENCIESRPM = $(patsubst %.c,$(DEPDIR)/%.dd,$(RPMCLASSES))
 PREPROCESSEDRPM = $(patsubst %.c,$(PPCDIR)/%.pp.c,$(RPMCLASSES))
 ASSEMBLIESRPM = $(patsubst %.c,$(ASMDIR)/%.s,$(RPMCLASSES))
 OBJECTSRPM = $(patsubst %.c,$(OBJDIR)/%.o,$(RPMCLASSES)) #$(patsubst $(DECDIR???)%.s,$(OBJDIR)/%.o,$(RPMHANDASMS))
 DUMPSRPM = $(patsubst %.c,$(BUGDIR)/%.dmp,$(RPMCLASSES)) #$(patsubst $(DECDIR???)%.s,$(BUGDIR)/%.dmp,$(RPMHANDASMS))
+
+# Bring in all of the generated deps. Note, if these fail on the first pass of parsing, Make will generate them and reparse.
+-include $(DEPENDENCIES) $(DEPENDENCIESRPM) $(DDEPENDENCIES) $(DDEPENDENCIESRPM)
 
 # Convert to output files for source
 ALLELFSC = $(patsubst $(DECDIR)/%.c,$(OUTDIR)/$(LABEL)-%.elf,$(RPMCLASSES))
@@ -721,6 +693,21 @@ size: assemble # TODO this should be run for each s19 target with only the one r
 ################################################################################
 
 
+dependenciesmsg:
+	@echo $(Q)################################################################################$(Q)
+	@echo $(Q)#                        Generating the dependencies...                        #$(Q)
+	@echo $(Q)################################################################################$(Q)
+
+dependencies: dependenciesmsg $(DEPENDENCIES) $(DEPENDENCIESRPM) $(DDEPENDENCIES) $(DDEPENDENCIESRPM)
+
+# Generate dependency files for recompilation on change semantics
+$(DEPENDENCIES) $(DEPENDENCIESRPM): $(DEPDIR)/%.d: %.c $(ALLH)
+	$(GCC) $(CLIFLAGS) -MM -MF $@ -MT $(PPCDIR)/$*.pp.c $<;
+# Generate dependency files for the dependency files...
+$(DDEPENDENCIES) $(DDEPENDENCIESRPM): $(DEPDIR)/%.dd: %.c $(ALLH)
+	$(GCC) $(CLIFLAGS) -MM -MF $@ -MT $(DEPDIR)/$*.d $<
+
+
 preprocessmsg:
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#                        Running the C Pre Processor...                        #$(Q)
@@ -729,7 +716,7 @@ preprocessmsg:
 preprocess: $(PPCDIR) preprocessmsg $(PREPROCESSED) $(PREPROCESSEDRPM)
 
 # Generate preprocessed source files to examine
-$(PREPROCESSED) $(PREPROCESSEDRPM): $(PPCDIR)/%.pp.c: %.c $(ALLH)
+$(PREPROCESSED) $(PREPROCESSEDRPM): $(PPCDIR)/%.pp.c: %.c $(ALLH) 
 	$(GCC) $(GCCOPTS) -E $< > $@
 
 
@@ -982,6 +969,14 @@ cleanasm:
 	@echo $(Q)################################################################################$(Q)
 	$(RM) $(ASSEMBLIES) $(ASSEMBLIESRPM)
 
+cleandep:
+	@echo $(Q)################################################################################$(Q)
+	@echo $(Q)#                  Removing pre-processed C output directory...                #$(Q)
+	@echo $(Q)################################################################################$(Q)
+	$(RM) $(DEPDIR)$(PATHSEP)*.d $(DEPDIR)$(PATHSEP)*.dd
+	$(RM) $(DEPDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)*.d $(DEPDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)*.dd
+	$(RM) $(DEPDIR)$(PATHSEP)$(DATADIR)$(PATHSEP)*.d $(DEPDIR)$(PATHSEP)$(DATADIR)$(PATHSEP)*.dd
+
 cleanppc:
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#                  Removing pre-processed C output directory...                #$(Q)
@@ -1051,7 +1046,7 @@ cleandoxy:
 .PHONY: md5sumsmsg sha1sumsmsg s19zipsmsg
 
 # Clean targets
-.PHONY: clean cleanasm cleanppc cleanobj cleanout cleans19 cleandebug cleanrelease cleandoxy
+.PHONY: clean cleandep cleanasm cleanppc cleanobj cleanout cleans19 cleandebug cleanrelease cleandoxy
 
 # Lonely documentation target :-(
 .PHONY: gendoxy

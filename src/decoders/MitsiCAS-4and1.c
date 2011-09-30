@@ -366,7 +366,7 @@ void PrimaryRPMISR(){
 	/* Save all relevant available data here */
 	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	edgeTimeStamp = TC0;				/* Save the edge time stamp */
-	unsigned char PTITCurrentState = ~PTIT;	// TODO invert tests and other behaviour in this code base and remove this not.		/* Save the values on port T regardless of the state of DDRT */
+	unsigned char PTITCurrentState = PTIT;	// TODO invert tests and other behaviour in this code base and remove this not.		/* Save the values on port T regardless of the state of DDRT */
 
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.primaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
@@ -402,14 +402,8 @@ void PrimaryRPMISR(){
 		// Reset the clock for reading timeout
 		Clocks.timeoutADCreadingClock = 0;
 
-		if(PTITCurrentState & 0x02){
-			correctEvent = 7;
-			unknownEdges = 0;
-		}else{
-			unknownEdges++;
-			if(unknownEdges == 3){
-				correctEvent = 4;
-			}
+		if(!(PTITCurrentState & 0x02)){
+			correctEvent = 8;
 		}
 	}else{
 		//temp
@@ -425,7 +419,13 @@ void PrimaryRPMISR(){
 		Clocks.timeoutADCreadingClock = 0;
 
 		if(PTITCurrentState & 0x02){
-			correctEvent = 8;
+			unknownEdges++;
+			if(unknownEdges == 3){
+				correctEvent = 4;
+			}
+		}else{
+			correctEvent = 7;
+			unknownEdges = 0;
 		}
 	}
 
@@ -482,7 +482,9 @@ void PrimaryRPMISR(){
 		}
 	}
 
-	SCHEDULE_ECT_OUTPUTS();
+	if(decoderFlags & CAM_SYNC){
+		SCHEDULE_ECT_OUTPUTS();
+	}
 
 	if(decoderFlags & LAST_TIMESTAMP_VALID){
 		lastTicksPerDegree = thisTicksPerDegree;
@@ -505,7 +507,7 @@ void SecondaryRPMISR(){
 	/* Save all relevant available data here */
 	unsigned short codeStartTimeStamp = TCNT;		/* Save the current timer count */
 	edgeTimeStamp = TC1;				/* Save the timestamp */
-	unsigned char PTITCurrentState = ~PTIT;	// TODO invert tests and other behaviour in this code base and remove this not.			/* Save the values on port T regardless of the state of DDRT */
+	unsigned char PTITCurrentState = PTIT;	// TODO invert tests and other behaviour in this code base and remove this not.			/* Save the values on port T regardless of the state of DDRT */
 
 	/* Calculate the latency in ticks */
 	ISRLatencyVars.secondaryInputLatency = codeStartTimeStamp - edgeTimeStamp;
@@ -543,7 +545,7 @@ void SecondaryRPMISR(){
 		// Reset the clock for reading timeout
 		Clocks.timeoutADCreadingClock = 0;
 
-		correctEvent = 6;
+		correctEvent = 9;
 	}else{
 		//temp
 		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
@@ -557,7 +559,7 @@ void SecondaryRPMISR(){
 		// Reset the clock for reading timeout
 		Clocks.timeoutADCreadingClock = 0;
 
-		correctEvent = 9;
+		correctEvent = 6;
 	}
 
 	unsigned char lastEvent = 0;
@@ -591,34 +593,20 @@ void SecondaryRPMISR(){
 
 		if(decoderFlags & LAST_PERIOD_VALID){
 			unsigned short ratioBetweenThisAndLast = (unsigned short)(((unsigned long)lastTicksPerDegree * 1000) / thisTicksPerDegree);
-			if((ratioBetweenThisAndLast > 1500) || (ratioBetweenThisAndLast < 667)){ // TODO hard coded tolerance, needs tweaking to be reliable, BEFORE I drive mine in boost, needs making configurable/generic too...
+			if(ratioBetweenThisAndLast > fixedConfigs2.decoderSettings.decelerationInputEventTimeTolerance){
 				resetToNonRunningState(2);
+				return;
+			}else if(ratioBetweenThisAndLast < fixedConfigs2.decoderSettings.accelerationInputEventTimeTolerance){
+				resetToNonRunningState(3);
+				return;
 			}
 		}/*else*/ if(decoderFlags & LAST_TIMESTAMP_VALID){
 			*ticksPerDegreeRecord = thisTicksPerDegree;
 		}
 	}
 
-	// TODO behave differently depending upon sync level? Genericise this loop/logic? YES, move this to macro/function and call from all decoders.
 	if(decoderFlags & CAM_SYNC){
-		unsigned char outputEventNumber;
-		for(outputEventNumber=0;outputEventNumber<MAX_NUMBER_OF_OUTPUT_EVENTS;outputEventNumber++){
-			if(outputEventInputEventNumbers[outputEventNumber] == currentEvent){
-				skipEventFlags &= ~(1UL << outputEventNumber);
-				schedulePortTPin(outputEventNumber, timeStamp);
-			}else if(skipEventFlags & (1UL << outputEventNumber)){
-				unsigned char eventBeforeCurrent = 0;
-				if(currentEvent == 0){
-					eventBeforeCurrent = numberOfRealEvents - 1;
-				}else{
-					eventBeforeCurrent = currentEvent - 1;
-				}
-
-				if(outputEventInputEventNumbers[outputEventNumber] == eventBeforeCurrent){
-					schedulePortTPin(outputEventNumber, timeStamp);
-				}
-			}
-		}
+		SCHEDULE_ECT_OUTPUTS();
 	}
 
 	if(decoderFlags & LAST_TIMESTAMP_VALID){

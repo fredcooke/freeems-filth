@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -24,42 +24,26 @@
  */
 
 
-/**	@file IATTransferTable.c
+/**	@file SimsVolvo-Load.h
+ *
  * @ingroup dataInitialisers
  *
- * @brief Inlet Air Temperature Transfer Table
+ * @brief A 16 long set of loads for my truck before mtx supports full tables
  *
- * This file exists solely to contain the Inlet Air Temperature thermistor
- * transfer function lookup table.
+ * This file only contains the data to be hash included into all mainTable Load sections
  *
  * @author Fred Cooke
  */
 
 
-#include "../inc/freeEMS.h"
+/* 16 load values starting at 15kPa and ending at 225kPa, with a boost cut, only the first 16 are used at the moment */
+// 15,     30.     45.     60.     75.     90.    105,    120,    135,    150,    165,    180,    195,    210,   225,     225.01
 
+ 1500,	 3000,	 4500,	 6000,
+ 7500,	 9000,	10500,	12000,
+13500,	15000,	16500,	18000,
+19500,	21000,	22500,	22501,
 
-/** @brief Inlet Air Temperature Transfer Table
- *
- * Using this table it is possible to accurately and quickly convert
- * a raw ADC reading to a scaled temperature value in degrees Kelvin.
- *
- * @author FreeTherm
- */
-const volatile unsigned short IATTransferTable[1024] LOOKUPD = {
-#ifdef TRUCK
-#include "../data/thermistors/Bosch.h"
-#elif PRESTO
-#include "../data/thermistors/Bosch.h"
-#elif SEANKLT1
-#include "../data/thermistors/Bosch.h"
-#elif SEANKR1
-#include "../data/thermistors/Bosch.h"
-#elif JOSHBROWN
-#include "../data/thermistors/Bosch.h"
-#elif SNOTROCKET
-#include "../data/thermistors/BoschM12H-2k7Bias.h"
-#else // Default to correctly biased Jap sensor.
-#include "../data/thermistors/Denso-2k7Bias.h"
-#endif
-};
+// spare:
+27200,	28800,	30400,	32000,
+33600

@@ -8,6 +8,12 @@
 # 2) So that you can learn from it and setup your remotes as required.
 #
 # Further help is available here: http://forum.diyefi.org/viewtopic.php?f=41&t=547
+#
+# Note: downstreams of this repo should add rebase = true to their master branch config
+#
+# More information is available here: http://forum.diyefi.org/viewtopic.php?f=41&t=1103
+#
+# Please talk to the lead developer of any repo which you plan to work on before doing so!
 
 [core]
 	repositoryformatversion = 0
@@ -26,9 +32,9 @@
 	url = git@github.com:FreeEMS/freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/freeems/*
 	push = refs/heads/master:refs/heads/master
-[remote "alternate"]
+[remote "gitorious"]
 	url = git@gitorious.org:freeems-vanilla/freeems-vanilla.git
-	fetch = +refs/heads/*:refs/remotes/alternate/*
+	fetch = +refs/heads/*:refs/remotes/gitorious/*
 	push = refs/heads/master:refs/heads/master
 [remote "sourceforge"]
 	url = ssh://fredcooke@freeems.git.sourceforge.net/gitroot/freeems/freeems-vanilla
@@ -61,24 +67,15 @@
 [remote "johnhowe"]
 	url = git://github.com/johnhowe/freeems-vanilla.git
 	fetch = +refs/heads/*:refs/remotes/johnhowe/*
+[remote "simis"]
+	url = git://github.com/simeonveldstra/freeems-vanilla.git
+	fetch = +refs/heads/*:refs/remotes/simis/*
 
 # Local inspection branches
 [branch "master"]
 	remote = origin
 	merge = refs/heads/master
-[branch "daves"]
-	remote = mtxman
-	merge = refs/heads/master
 [branch "seank"]
 	remote = seansrepo
-	merge = refs/heads/master
-[branch "philsmaster"]
-	remote = philj
-	merge = refs/heads/master
-[branch "jharvey"]
-	remote = jaredh
-	merge = refs/heads/master
-[branch "ollis"]
-	remote = olli
 	merge = refs/heads/master
 
