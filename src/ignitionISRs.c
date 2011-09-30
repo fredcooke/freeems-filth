@@ -61,7 +61,7 @@
 
 /* Further consideration to spark duration and dwell starting possibly needs to be done. */
 
-/* further reading : ftp://ftp-sop.inria.fr/esterel/pub/papers/FDL99-camready.pdf section 4.1 has a nice diagram */
+/* further reading : ftp://ftp-sop.inria.fr/esterel/pub/papers/FDL99-camready.pdf section 4.1 has a nice diagram */ //broken link
 
 
 /**	@brief Ignition dwell control
