@@ -52,6 +52,7 @@
 #include "inc/GM-LT1-CAS-360and8.h"
 #include "../inc/decoderInterface.h"
 #include "../inc/utils.h"
+#include "../inc/xgateVectors.h"
 
 const unsigned short eventAngles[] = {(  0 * oneDegree), ( 86 * oneDegree), (130 * oneDegree), (176 * oneDegree),
                                       (180 * oneDegree), (266 * oneDegree), (280 * oneDegree), (356 * oneDegree),
@@ -255,6 +256,18 @@ void PrimaryRPMISR(void){
 				coreStatusA |= CALC_FUEL_IGN;
 				/* Reset the clock for reading timeout */
 				Clocks.timeoutADCreadingClock = 0;
+
+				unsigned char savedRPage = RPAGE;
+				RPAGE = RPAGE_TUNE_TWO;
+//				while(1){}; //check to see if our semaphore is free
+//				*((unsigned short*)(parameterInputStamp - RPAGE_TUNE_TWO_WINDOW_DIFFERENCE)) = codeStartTimeStamp;
+//				*((unsigned short*)(parameterChannelID - RPAGE_TUNE_TWO_WINDOW_DIFFERENCE)) = currentEvent / 2;
+//				*((unsigned short*)(parameterDelay - RPAGE_TUNE_TWO_WINDOW_DIFFERENCE)) = 0;
+//				*((unsigned short*)(parameterDelay - RPAGE_TUNE_TWO_WINDOW_DIFFERENCE) + 1) = 200;
+//				*((unsigned short*)(parameterRuntime - RPAGE_TUNE_TWO_WINDOW_DIFFERENCE)) = 0;
+//				*((unsigned short*)(parameterRuntime - RPAGE_TUNE_TWO_WINDOW_DIFFERENCE) + 1) = masterPulseWidth * 2; //remember *2 for engine running
+//				XGSWT = 0x0101;
+				RPAGE = savedRPage;
 			}
 		}
 		SCHEDULE_ECT_OUTPUTS();

@@ -108,7 +108,11 @@ const xgateIntVector xgateIntVectorTable[] PPAGE_E0X = {
 		{(unsigned short)XGATE_ERROR_HANDLER, 0x3A},  // Channel 3A - Periodic Interrupt Timer 3
 		{(unsigned short)XGATE_ERROR_HANDLER, 0x3B},  // Channel 3B - Periodic Interrupt Timer 2
 		{(unsigned short)xgateMetronome, 0x3C},  // Channel 3C - Periodic Interrupt Timer 1
+<<<<<<< HEAD
 		{(unsigned short)xgatePITBangLoop, 0x3D},  // Channel 3D - Periodic Interrupt Timer 0
+=======
+		{(unsigned short)xgatePITTurnOn, 0x3D},  // Channel 3D - Periodic Interrupt Timer 0
+>>>>>>> c39da6f9d1f25b09058da52e46415f2f424df30a
 		{XGATE_ERROR_HANDLER, 0x3E},  // Reserved
 		{XGATE_ERROR_HANDLER, 0x3F},  // Channel 3F - Autonomous Periodical interrupt API
 		{XGATE_ERROR_HANDLER, 0x40},  // Channel 40 - Low Voltage interrupt LVI

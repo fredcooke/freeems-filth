@@ -43,7 +43,6 @@
 #include "inc/decoderInterface.h"
 #include "inc/xgateVectors.h"
 
-
 /** @brief Real Time Interrupt Handler
  *
  * Handles time keeping, including all internal clocks, and generic periodic
@@ -51,6 +50,23 @@
  *
  * @author Fred Cooke
  */
+
+#ifdef XGATE //TODO move to "XGS unit test include files"
+//static unsigned char waitCycles = 44;
+static unsigned char speed = 100;
+static unsigned short test = 1;
+static unsigned char testCH = 0;
+//static unsigned char testDelayHigh = 0;
+//static unsigned short testDelayLow = 5000;
+//static unsigned short testRuntimeHigh = 0;
+static unsigned long delay = 10000;
+static unsigned short testRuntimeLow = 2500; //0x0FFE - 40;
+
+static unsigned long delay2 = 50;
+static unsigned long delay3 = 10;
+// total rutime should equal 9e62
+#endif
+
 void RTIISR(){
 	/* Clear the RTI flag */
 	CRGFLG = 0x80;
@@ -83,14 +99,133 @@ void RTIISR(){
 			PORTA |= BIT7;
 		}
 
+
+#ifdef XGATE
+<<<<<<< HEAD
+//#include "xgateTests.c"
+=======
+
+
+/* TODO test
+ * <Cheetah> sample TCNT into a var with the same name as the decoders edgeTimeStamp, then do a sleep scaled down from some clock source or a floating ADC or something and then call your XG stuff with that value and verify that its always correct, regardless of where the mid point between sched and edge is
+<Cheetah> ie
+<Cheetah> sched everything 2ms out from the edge
+<Cheetah> and sleep 0-1ms randomly
+<Cheetah> and hit a pin when you sample TCNT to mark the "edge"
+<Cheetah> and hit one when you do the sched
+<Cheetah> and then fire them
+<Cheetah> THAT is a real test
+<Cheetah> do that
+<seank-efi> will do !
+<seank-efi> thx!
+<Cheetah> np
+<Cheetah> use a diff pin for the edge and the sched pulses
+<Cheetah> and
+<Cheetah> run 5 of yours and one ECT all at the same delay
+<Cheetah> and then do 3 of eahc with 3 pairs of delays
+ */
+		 //TODO Globalize
+		struct XGOutputEvent *XGOutputEvents = (struct XGOutputEvent*)(parametersBase - RPAGE_TUNE_TWO_WINDOW_DIFFERENCE);
+		unsigned short *xgsInStamp = (unsigned short*)(xGSInputEdgeStamp - RPAGE_TUNE_TWO_WINDOW_DIFFERENCE);
+		unsigned char *xgsEventToSch = (unsigned char*)(xgsNumOfEventsToSchedule - RPAGE_TUNE_TWO_WINDOW_DIFFERENCE);
+
+//		if(1){
+//		if(Clocks.millisToTenths % 5 == 0){
+//		if(1){
+			if(Clocks.millisToTenths % 5 == 0){
+//				goto skip;
+//			}
+			if(test == 1){
+				//PORTB |= (1 << testCH);
+
+			unsigned char savedRPage = RPAGE;
+			RPAGE = RPAGE_TUNE_TWO;
+
+//			unsigned short j, k;
+//			for(j=0;j<ATD0DR7;j++){
+//				for(k=0;k<5714;k++){
+//				}
+//			}
+
+			if(testCH == 0){
+			*xgsInStamp = TCNT;
+			PORTB |= 0x3F;
+
+			unsigned short j, k;
+							for(j=0;j<(delay3);j++){
+								for(k=0;k<6;k++){
+								}
+							}
+
+			PORTB &= 0xC0;
+
+			*xgsEventToSch = 2;
+
+			XGOutputEvents[0].channelID = testCH;
+			XGOutputEvents[0].delay = delay;
+			XGOutputEvents[0].runtime = testRuntimeLow;
+
+			XGOutputEvents[1].channelID = testCH + 1;
+			XGOutputEvents[1].delay = delay2;
+			XGOutputEvents[1].runtime = 5000;
+
+			XGSCHEDULE();
+			//delay -= 5000;
+			//delay2 *= 2;
+			delay3 += 5;
+
+			}else if(testCH == 1 ){
+			//XGOutputEvents[1].channelID = testCH + 1;
+			//GOutputEvents[1].delay = 200;
+			//XGOutputEvents[1].runtime = 5000;
+
+			}else if(testCH == 2){
+
+
+
+
+			}else if(testCH == 3){
+
+			}else if(testCH == 4){
+
+			}else if(testCH == 5){
+
+			}else if(testCH == 6){
+//				XGOutputEvents[0].channelID = testCH;
+//				XGOutputEvents[0].delayHigh = 0;
+//				XGOutputEvents[0].delay = 0;
+//				XGOutputEvents[0].runtime = ATD0DR7 * 100;
+
+			}else{
+//				XGOutputEvents[0].channelID = testCH;
+//				XGOutputEvents[0].delayHigh = 0;
+//				XGOutputEvents[0].delay = 5000;
+//				XGOutputEvents[0].runtime = 5000;
+			}
+
+
+
+testCH++;
+			speed -= 10;
+			if(speed == 0){
+				speed = 100;
+			}
+			if(testCH > 7){
+				testCH = 0;
+			}
+			RPAGE = savedRPage;
+			}
+		}
+
+>>>>>>> c39da6f9d1f25b09058da52e46415f2f424df30a
+#endif
+
+
+
 		/* Every 100 millis is one tenth */
 		if(Clocks.millisToTenths % 100 == 0){
 			/* Increment the tenths counter */
 			Clocks.realTimeClockTenths++;
-
-#ifdef XGATE
-//#include "xgateTests.c"
-#endif
 
 			/* Increment the tenths roll over variable */
 			Clocks.tenthsToSeconds++;
