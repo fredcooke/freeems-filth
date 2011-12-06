@@ -155,5 +155,30 @@ void schedulePortTPin(unsigned char outputEventNumber, LongTime timeStamp){
 	}else{ // not enabled, schedule as normal
 		SCHEDULE_ONE_ECT_OUTPUT();
 		Counters.pinScheduledFromCold++;
+if(outputEventPinNumbers[outputEventNumber] == 0){
+			unsigned char savedRPage = RPAGE;
+			RPAGE = RPAGE_TUNE_TWO;
+			*xgsInStamp = inputStartTime;
+			*xgsEventsToSch = 1;
+			XGOutputEvents[0].channelID = outputEventNumber;
+			XGOutputEvents[0].runtime = injectorMainPulseWidthsMath[outputEventNumber];
+			if(outputEventExtendNumberOfRepeats[outputEventNumber] > 0){
+				XGOutputEvents[0].delay = (((outputEventExtendNumberOfRepeats[outputEventNumber])
+										* outputEventExtendRepeatPeriod[outputEventNumber])
+										+ outputEventExtendFinalPeriod[outputEventNumber]);
+										//+ postReferenceEventDelay;
+										//+ postReferenceEventDelay;
+			}else{
+				XGOutputEvents[0].delay = (((outputEventExtendNumberOfRepeats[outputEventNumber])
+														* outputEventExtendRepeatPeriod[outputEventNumber])
+														+ outputEventExtendFinalPeriod[outputEventNumber])
+														+ outputEventExtendRepeatPeriod[outputEventNumber]
+														+ postReferenceEventDelay;
+			}
+
+			XGSCHEDULE();
+			RPAGE = savedRPage;
+		}
+	}
 	}
 }
