@@ -188,7 +188,7 @@ void initIO(){
 	PORTB = ZEROS; /* Init the rest of the spark outputs as off */
 	PORTE = 0x1F; /* 0b_0001_1111 : when not in use 0b_1001_1111 PE7 should be high PE5 and PE6 should be low, the rest high */
 	PORTK = ZEROS;
-	PORTS = ZEROS;
+	PORTS = 0x02; // Set TX0 pin to high between transmissions!
 	PORTT = ZEROS; /* All pins in off state at boot up (only matters for 2 - 7) */
 	PORTM = ZEROS;
 	PORTP = ZEROS; // TODO hook these up to the adc channels such that you can vary the brightness of an led with a pot.
@@ -203,7 +203,7 @@ void initIO(){
 	DDRB = ONES; /* GPIO (8) */
 	DDRE = 0xFC; /* 0b_1111_1100 : Clock and mode pins PE0,PE1 are input only pins, the rest are GPIO */
 	DDRK = ONES; /* Only 0,1,2,3,4,5,7, NOT 6 (7) */
-	DDRS = ONES; /* SCI0, SCI1, SPI0 (8) */
+	DDRS = 0xFE; /* RX0 as input: SCI0 (RX,TX), SCI1 (RX,TX), SPI0 (MISO,MOSI,SCK,SS) (8) */
 	DDRT = 0xFC; /* 0b_1111_1100 set ECT pins 0,1 to IC and 2:7 to OC (8) */
 	DDRM = ONES; /* CAN 0 - 3 (8) */
 	DDRP = ONES; /* PWM pins (8) */
@@ -647,9 +647,11 @@ void initSCIStuff(){
 	 * 0 = WAKE (idle line wakeup)
 	 * 0 = ILT (idle line type count start pos)
 	 * 1 = PE (parity on)
-	 * 1 = PT (odd parity) (minicom defaults to no parity)
+	 * 1 = PT (odd parity)
 	 *
-	 * 00010011 = 0x13
+	 * 0x13 = ODD (default)
+	 * 0x12 = EVEN
+	 * 0x00 = NONE
 	 */
 	SCI0CR1 = 0x13;
 
@@ -658,14 +660,12 @@ void initSCIStuff(){
 	 * 0 = TCIE (tx complete isr disabled)
 	 * 1 = RIE (rx full isr enabled)
 	 * 0 = ILIE (idle line isr disabled)
-	 * 1 = TE (transmit enabled)
+	 * 0 = TE (transmit disabled)
 	 * 1 = RE (receive enabled)
 	 * 0 = RWU (rx wake up normal)
 	 * 0 = SBK (send break off)
-	 *
-	 * 00101100 = 0x2C
 	 */
-	SCI0CR2 = 0x2C;
+	SCI0CR2 = 0x24;
 }
 
 /* TODO Load and calculate all configuration data required to run */

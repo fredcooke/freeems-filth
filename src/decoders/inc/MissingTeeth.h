@@ -61,7 +61,7 @@ typedef union {
 } match;
 
 
-#define DECODER_MAX_CODE_TIME 100 // To be optimised (shortened)!
+#define DECODER_MAX_CODE_TIME 250 // From Spudmn's measurements in NZ. 171us runtime was max = 214 ticks.
 
 #include "../../inc/freeEMS.h"
 #include "../../inc/utils.h"
@@ -199,200 +199,200 @@ typedef union {
 
 
 // For crank speed wheels we need a second set of events offset 360 degrees from the first set. With a cam sync, they are real, without, only virtual.
-#define   E0_2 (360 +   E0)
-#define   E1_2 (360 +   E1)
-#define   E2_2 (360 +   E2)
-#define   E3_2 (360 +   E3)
-#define   E4_2 (360 +   E4)
-#define   E5_2 (360 +   E5)
-#define   E6_2 (360 +   E6)
-#define   E7_2 (360 +   E7)
-#define   E8_2 (360 +   E8)
-#define   E9_2 (360 +   E9)
-#define  E10_2 (360 +  E10)
-#define  E11_2 (360 +  E11)
-#define  E12_2 (360 +  E12)
-#define  E13_2 (360 +  E13)
-#define  E14_2 (360 +  E14)
-#define  E15_2 (360 +  E15)
-#define  E16_2 (360 +  E16)
-#define  E17_2 (360 +  E17)
-#define  E18_2 (360 +  E18)
-#define  E19_2 (360 +  E19)
-#define  E20_2 (360 +  E20)
-#define  E21_2 (360 +  E21)
-#define  E22_2 (360 +  E22)
-#define  E23_2 (360 +  E23)
-#define  E24_2 (360 +  E24)
-#define  E25_2 (360 +  E25)
-#define  E26_2 (360 +  E26)
-#define  E27_2 (360 +  E27)
-#define  E28_2 (360 +  E28)
-#define  E29_2 (360 +  E29)
-#define  E30_2 (360 +  E30)
-#define  E31_2 (360 +  E31)
-#define  E32_2 (360 +  E32)
-#define  E33_2 (360 +  E33)
-#define  E34_2 (360 +  E34)
-#define  E35_2 (360 +  E35)
-#define  E36_2 (360 +  E36)
-#define  E37_2 (360 +  E37)
-#define  E38_2 (360 +  E38)
-#define  E39_2 (360 +  E39)
-#define  E40_2 (360 +  E40)
-#define  E41_2 (360 +  E41)
-#define  E42_2 (360 +  E42)
-#define  E43_2 (360 +  E43)
-#define  E44_2 (360 +  E44)
-#define  E45_2 (360 +  E45)
-#define  E46_2 (360 +  E46)
-#define  E47_2 (360 +  E47)
-#define  E48_2 (360 +  E48)
-#define  E49_2 (360 +  E49)
-#define  E50_2 (360 +  E50)
-#define  E51_2 (360 +  E51)
-#define  E52_2 (360 +  E52)
-#define  E53_2 (360 +  E53)
-#define  E54_2 (360 +  E54)
-#define  E55_2 (360 +  E55)
-#define  E56_2 (360 +  E56)
-#define  E57_2 (360 +  E57)
-#define  E58_2 (360 +  E58)
-#define  E59_2 (360 +  E59)
-#define  E60_2 (360 +  E60)
-#define  E61_2 (360 +  E61)
-#define  E62_2 (360 +  E62)
-#define  E63_2 (360 +  E63)
+#define   E0_2 ((oneDegree * 360.0) +   E0)
+#define   E1_2 ((oneDegree * 360.0) +   E1)
+#define   E2_2 ((oneDegree * 360.0) +   E2)
+#define   E3_2 ((oneDegree * 360.0) +   E3)
+#define   E4_2 ((oneDegree * 360.0) +   E4)
+#define   E5_2 ((oneDegree * 360.0) +   E5)
+#define   E6_2 ((oneDegree * 360.0) +   E6)
+#define   E7_2 ((oneDegree * 360.0) +   E7)
+#define   E8_2 ((oneDegree * 360.0) +   E8)
+#define   E9_2 ((oneDegree * 360.0) +   E9)
+#define  E10_2 ((oneDegree * 360.0) +  E10)
+#define  E11_2 ((oneDegree * 360.0) +  E11)
+#define  E12_2 ((oneDegree * 360.0) +  E12)
+#define  E13_2 ((oneDegree * 360.0) +  E13)
+#define  E14_2 ((oneDegree * 360.0) +  E14)
+#define  E15_2 ((oneDegree * 360.0) +  E15)
+#define  E16_2 ((oneDegree * 360.0) +  E16)
+#define  E17_2 ((oneDegree * 360.0) +  E17)
+#define  E18_2 ((oneDegree * 360.0) +  E18)
+#define  E19_2 ((oneDegree * 360.0) +  E19)
+#define  E20_2 ((oneDegree * 360.0) +  E20)
+#define  E21_2 ((oneDegree * 360.0) +  E21)
+#define  E22_2 ((oneDegree * 360.0) +  E22)
+#define  E23_2 ((oneDegree * 360.0) +  E23)
+#define  E24_2 ((oneDegree * 360.0) +  E24)
+#define  E25_2 ((oneDegree * 360.0) +  E25)
+#define  E26_2 ((oneDegree * 360.0) +  E26)
+#define  E27_2 ((oneDegree * 360.0) +  E27)
+#define  E28_2 ((oneDegree * 360.0) +  E28)
+#define  E29_2 ((oneDegree * 360.0) +  E29)
+#define  E30_2 ((oneDegree * 360.0) +  E30)
+#define  E31_2 ((oneDegree * 360.0) +  E31)
+#define  E32_2 ((oneDegree * 360.0) +  E32)
+#define  E33_2 ((oneDegree * 360.0) +  E33)
+#define  E34_2 ((oneDegree * 360.0) +  E34)
+#define  E35_2 ((oneDegree * 360.0) +  E35)
+#define  E36_2 ((oneDegree * 360.0) +  E36)
+#define  E37_2 ((oneDegree * 360.0) +  E37)
+#define  E38_2 ((oneDegree * 360.0) +  E38)
+#define  E39_2 ((oneDegree * 360.0) +  E39)
+#define  E40_2 ((oneDegree * 360.0) +  E40)
+#define  E41_2 ((oneDegree * 360.0) +  E41)
+#define  E42_2 ((oneDegree * 360.0) +  E42)
+#define  E43_2 ((oneDegree * 360.0) +  E43)
+#define  E44_2 ((oneDegree * 360.0) +  E44)
+#define  E45_2 ((oneDegree * 360.0) +  E45)
+#define  E46_2 ((oneDegree * 360.0) +  E46)
+#define  E47_2 ((oneDegree * 360.0) +  E47)
+#define  E48_2 ((oneDegree * 360.0) +  E48)
+#define  E49_2 ((oneDegree * 360.0) +  E49)
+#define  E50_2 ((oneDegree * 360.0) +  E50)
+#define  E51_2 ((oneDegree * 360.0) +  E51)
+#define  E52_2 ((oneDegree * 360.0) +  E52)
+#define  E53_2 ((oneDegree * 360.0) +  E53)
+#define  E54_2 ((oneDegree * 360.0) +  E54)
+#define  E55_2 ((oneDegree * 360.0) +  E55)
+#define  E56_2 ((oneDegree * 360.0) +  E56)
+#define  E57_2 ((oneDegree * 360.0) +  E57)
+#define  E58_2 ((oneDegree * 360.0) +  E58)
+#define  E59_2 ((oneDegree * 360.0) +  E59)
+#define  E60_2 ((oneDegree * 360.0) +  E60)
+#define  E61_2 ((oneDegree * 360.0) +  E61)
+#define  E62_2 ((oneDegree * 360.0) +  E62)
+#define  E63_2 ((oneDegree * 360.0) +  E63)
 
 
 const unsigned short eventAngles[] = {
 E0 // Always this event...
 
-#if (NUMBER_OF_REAL_EVENTS > 1)
+#if (NUMBER_OF_WHEEL_EVENTS > 1)
 ,E1
-#if (NUMBER_OF_REAL_EVENTS > 2)
+#if (NUMBER_OF_WHEEL_EVENTS > 2)
 ,E2
-#if (NUMBER_OF_REAL_EVENTS > 3)
+#if (NUMBER_OF_WHEEL_EVENTS > 3)
 ,E3
-#if (NUMBER_OF_REAL_EVENTS > 4)
+#if (NUMBER_OF_WHEEL_EVENTS > 4)
 ,E4
-#if (NUMBER_OF_REAL_EVENTS > 5)
+#if (NUMBER_OF_WHEEL_EVENTS > 5)
 ,E5
-#if (NUMBER_OF_REAL_EVENTS > 6)
+#if (NUMBER_OF_WHEEL_EVENTS > 6)
 ,E6
-#if (NUMBER_OF_REAL_EVENTS > 7)
+#if (NUMBER_OF_WHEEL_EVENTS > 7)
 ,E7
-#if (NUMBER_OF_REAL_EVENTS > 8)
+#if (NUMBER_OF_WHEEL_EVENTS > 8)
 ,E8
-#if (NUMBER_OF_REAL_EVENTS > 9)
+#if (NUMBER_OF_WHEEL_EVENTS > 9)
 ,E9
-#if (NUMBER_OF_REAL_EVENTS > 10)
+#if (NUMBER_OF_WHEEL_EVENTS > 10)
 ,E10
-#if (NUMBER_OF_REAL_EVENTS > 11)
+#if (NUMBER_OF_WHEEL_EVENTS > 11)
 ,E11
-#if (NUMBER_OF_REAL_EVENTS > 12)
+#if (NUMBER_OF_WHEEL_EVENTS > 12)
 ,E12
-#if (NUMBER_OF_REAL_EVENTS > 13)
+#if (NUMBER_OF_WHEEL_EVENTS > 13)
 ,E13
-#if (NUMBER_OF_REAL_EVENTS > 14)
+#if (NUMBER_OF_WHEEL_EVENTS > 14)
 ,E14
-#if (NUMBER_OF_REAL_EVENTS > 15)
+#if (NUMBER_OF_WHEEL_EVENTS > 15)
 ,E15
-#if (NUMBER_OF_REAL_EVENTS > 16)
+#if (NUMBER_OF_WHEEL_EVENTS > 16)
 ,E16
-#if (NUMBER_OF_REAL_EVENTS > 17)
+#if (NUMBER_OF_WHEEL_EVENTS > 17)
 ,E17
-#if (NUMBER_OF_REAL_EVENTS > 18)
+#if (NUMBER_OF_WHEEL_EVENTS > 18)
 ,E18
-#if (NUMBER_OF_REAL_EVENTS > 19)
+#if (NUMBER_OF_WHEEL_EVENTS > 19)
 ,E19
-#if (NUMBER_OF_REAL_EVENTS > 20)
+#if (NUMBER_OF_WHEEL_EVENTS > 20)
 ,E20
-#if (NUMBER_OF_REAL_EVENTS > 21)
+#if (NUMBER_OF_WHEEL_EVENTS > 21)
 ,E21
-#if (NUMBER_OF_REAL_EVENTS > 22)
+#if (NUMBER_OF_WHEEL_EVENTS > 22)
 ,E22
-#if (NUMBER_OF_REAL_EVENTS > 23)
+#if (NUMBER_OF_WHEEL_EVENTS > 23)
 ,E23
-#if (NUMBER_OF_REAL_EVENTS > 24)
+#if (NUMBER_OF_WHEEL_EVENTS > 24)
 ,E24
-#if (NUMBER_OF_REAL_EVENTS > 25)
+#if (NUMBER_OF_WHEEL_EVENTS > 25)
 ,E25
-#if (NUMBER_OF_REAL_EVENTS > 26)
+#if (NUMBER_OF_WHEEL_EVENTS > 26)
 ,E26
-#if (NUMBER_OF_REAL_EVENTS > 27)
+#if (NUMBER_OF_WHEEL_EVENTS > 27)
 ,E27
-#if (NUMBER_OF_REAL_EVENTS > 28)
+#if (NUMBER_OF_WHEEL_EVENTS > 28)
 ,E28
-#if (NUMBER_OF_REAL_EVENTS > 29)
+#if (NUMBER_OF_WHEEL_EVENTS > 29)
 ,E29
-#if (NUMBER_OF_REAL_EVENTS > 30)
+#if (NUMBER_OF_WHEEL_EVENTS > 30)
 ,E30
-#if (NUMBER_OF_REAL_EVENTS > 31)
+#if (NUMBER_OF_WHEEL_EVENTS > 31)
 ,E31
-#if (NUMBER_OF_REAL_EVENTS > 32)
+#if (NUMBER_OF_WHEEL_EVENTS > 32)
 ,E32
-#if (NUMBER_OF_REAL_EVENTS > 33)
+#if (NUMBER_OF_WHEEL_EVENTS > 33)
 ,E33
-#if (NUMBER_OF_REAL_EVENTS > 34)
+#if (NUMBER_OF_WHEEL_EVENTS > 34)
 ,E34
-#if (NUMBER_OF_REAL_EVENTS > 35)
+#if (NUMBER_OF_WHEEL_EVENTS > 35)
 ,E35
-#if (NUMBER_OF_REAL_EVENTS > 36)
+#if (NUMBER_OF_WHEEL_EVENTS > 36)
 ,E36
-#if (NUMBER_OF_REAL_EVENTS > 37)
+#if (NUMBER_OF_WHEEL_EVENTS > 37)
 ,E37
-#if (NUMBER_OF_REAL_EVENTS > 38)
+#if (NUMBER_OF_WHEEL_EVENTS > 38)
 ,E38
-#if (NUMBER_OF_REAL_EVENTS > 39)
+#if (NUMBER_OF_WHEEL_EVENTS > 39)
 ,E39
-#if (NUMBER_OF_REAL_EVENTS > 40)
+#if (NUMBER_OF_WHEEL_EVENTS > 40)
 ,E40
-#if (NUMBER_OF_REAL_EVENTS > 41)
+#if (NUMBER_OF_WHEEL_EVENTS > 41)
 ,E41
-#if (NUMBER_OF_REAL_EVENTS > 42)
+#if (NUMBER_OF_WHEEL_EVENTS > 42)
 ,E42
-#if (NUMBER_OF_REAL_EVENTS > 43)
+#if (NUMBER_OF_WHEEL_EVENTS > 43)
 ,E43
-#if (NUMBER_OF_REAL_EVENTS > 44)
+#if (NUMBER_OF_WHEEL_EVENTS > 44)
 ,E44
-#if (NUMBER_OF_REAL_EVENTS > 45)
+#if (NUMBER_OF_WHEEL_EVENTS > 45)
 ,E45
-#if (NUMBER_OF_REAL_EVENTS > 46)
+#if (NUMBER_OF_WHEEL_EVENTS > 46)
 ,E46
-#if (NUMBER_OF_REAL_EVENTS > 47)
+#if (NUMBER_OF_WHEEL_EVENTS > 47)
 ,E47
-#if (NUMBER_OF_REAL_EVENTS > 48)
+#if (NUMBER_OF_WHEEL_EVENTS > 48)
 ,E48
-#if (NUMBER_OF_REAL_EVENTS > 49)
+#if (NUMBER_OF_WHEEL_EVENTS > 49)
 ,E49
-#if (NUMBER_OF_REAL_EVENTS > 50)
+#if (NUMBER_OF_WHEEL_EVENTS > 50)
 ,E50
-#if (NUMBER_OF_REAL_EVENTS > 51)
+#if (NUMBER_OF_WHEEL_EVENTS > 51)
 ,E51
-#if (NUMBER_OF_REAL_EVENTS > 52)
+#if (NUMBER_OF_WHEEL_EVENTS > 52)
 ,E52
-#if (NUMBER_OF_REAL_EVENTS > 53)
+#if (NUMBER_OF_WHEEL_EVENTS > 53)
 ,E53
-#if (NUMBER_OF_REAL_EVENTS > 54)
+#if (NUMBER_OF_WHEEL_EVENTS > 54)
 ,E54
-#if (NUMBER_OF_REAL_EVENTS > 55)
+#if (NUMBER_OF_WHEEL_EVENTS > 55)
 ,E55
-#if (NUMBER_OF_REAL_EVENTS > 56)
+#if (NUMBER_OF_WHEEL_EVENTS > 56)
 ,E56
-#if (NUMBER_OF_REAL_EVENTS > 57)
+#if (NUMBER_OF_WHEEL_EVENTS > 57)
 ,E57
-#if (NUMBER_OF_REAL_EVENTS > 58)
+#if (NUMBER_OF_WHEEL_EVENTS > 58)
 ,E58
-#if (NUMBER_OF_REAL_EVENTS > 59)
+#if (NUMBER_OF_WHEEL_EVENTS > 59)
 ,E59
-#if (NUMBER_OF_REAL_EVENTS > 60)
+#if (NUMBER_OF_WHEEL_EVENTS > 60)
 ,E60
-#if (NUMBER_OF_REAL_EVENTS > 61)
+#if (NUMBER_OF_WHEEL_EVENTS > 61)
 ,E61
-#if (NUMBER_OF_REAL_EVENTS > 62)
+#if (NUMBER_OF_WHEEL_EVENTS > 62)
 ,E62
-#if (NUMBER_OF_REAL_EVENTS > 63)
+#if (NUMBER_OF_WHEEL_EVENTS > 63)
 ,E63
 #endif
 #endif
@@ -461,136 +461,136 @@ E0 // Always this event...
 
 // If the missing tooth wheel is on the camshaft, it represents a full 720
 // degree cycle and duplicating the events with 360 offset is not necessary.
-#ifdef CRANK_WITH_CAM_SYNC
+#ifndef CAM_ONLY
 ,E0_2
 // The following ifs are not strictly necessary as the array is only read up to
 // where it should be read, and the balance, which would otherwise be random
 // values in flash, are ignored. However it is consistent.
-#if (NUMBER_OF_REAL_EVENTS > 1)
+#if (NUMBER_OF_WHEEL_EVENTS > 1)
 ,E1_2
-#if (NUMBER_OF_REAL_EVENTS > 2)
+#if (NUMBER_OF_WHEEL_EVENTS > 2)
 ,E2_2
-#if (NUMBER_OF_REAL_EVENTS > 3)
+#if (NUMBER_OF_WHEEL_EVENTS > 3)
 ,E3_2
-#if (NUMBER_OF_REAL_EVENTS > 4)
+#if (NUMBER_OF_WHEEL_EVENTS > 4)
 ,E4_2
-#if (NUMBER_OF_REAL_EVENTS > 5)
+#if (NUMBER_OF_WHEEL_EVENTS > 5)
 ,E5_2
-#if (NUMBER_OF_REAL_EVENTS > 6)
+#if (NUMBER_OF_WHEEL_EVENTS > 6)
 ,E6_2
-#if (NUMBER_OF_REAL_EVENTS > 7)
+#if (NUMBER_OF_WHEEL_EVENTS > 7)
 ,E7_2
-#if (NUMBER_OF_REAL_EVENTS > 8)
+#if (NUMBER_OF_WHEEL_EVENTS > 8)
 ,E8_2
-#if (NUMBER_OF_REAL_EVENTS > 9)
+#if (NUMBER_OF_WHEEL_EVENTS > 9)
 ,E9_2
-#if (NUMBER_OF_REAL_EVENTS > 10)
+#if (NUMBER_OF_WHEEL_EVENTS > 10)
 ,E10_2
-#if (NUMBER_OF_REAL_EVENTS > 11)
+#if (NUMBER_OF_WHEEL_EVENTS > 11)
 ,E11_2
-#if (NUMBER_OF_REAL_EVENTS > 12)
+#if (NUMBER_OF_WHEEL_EVENTS > 12)
 ,E12_2
-#if (NUMBER_OF_REAL_EVENTS > 13)
+#if (NUMBER_OF_WHEEL_EVENTS > 13)
 ,E13_2
-#if (NUMBER_OF_REAL_EVENTS > 14)
+#if (NUMBER_OF_WHEEL_EVENTS > 14)
 ,E14_2
-#if (NUMBER_OF_REAL_EVENTS > 15)
+#if (NUMBER_OF_WHEEL_EVENTS > 15)
 ,E15_2
-#if (NUMBER_OF_REAL_EVENTS > 16)
+#if (NUMBER_OF_WHEEL_EVENTS > 16)
 ,E16_2
-#if (NUMBER_OF_REAL_EVENTS > 17)
+#if (NUMBER_OF_WHEEL_EVENTS > 17)
 ,E17_2
-#if (NUMBER_OF_REAL_EVENTS > 18)
+#if (NUMBER_OF_WHEEL_EVENTS > 18)
 ,E18_2
-#if (NUMBER_OF_REAL_EVENTS > 19)
+#if (NUMBER_OF_WHEEL_EVENTS > 19)
 ,E19_2
-#if (NUMBER_OF_REAL_EVENTS > 20)
+#if (NUMBER_OF_WHEEL_EVENTS > 20)
 ,E20_2
-#if (NUMBER_OF_REAL_EVENTS > 21)
+#if (NUMBER_OF_WHEEL_EVENTS > 21)
 ,E21_2
-#if (NUMBER_OF_REAL_EVENTS > 22)
+#if (NUMBER_OF_WHEEL_EVENTS > 22)
 ,E22_2
-#if (NUMBER_OF_REAL_EVENTS > 23)
+#if (NUMBER_OF_WHEEL_EVENTS > 23)
 ,E23_2
-#if (NUMBER_OF_REAL_EVENTS > 24)
+#if (NUMBER_OF_WHEEL_EVENTS > 24)
 ,E24_2
-#if (NUMBER_OF_REAL_EVENTS > 25)
+#if (NUMBER_OF_WHEEL_EVENTS > 25)
 ,E25_2
-#if (NUMBER_OF_REAL_EVENTS > 26)
+#if (NUMBER_OF_WHEEL_EVENTS > 26)
 ,E26_2
-#if (NUMBER_OF_REAL_EVENTS > 27)
+#if (NUMBER_OF_WHEEL_EVENTS > 27)
 ,E27_2
-#if (NUMBER_OF_REAL_EVENTS > 28)
+#if (NUMBER_OF_WHEEL_EVENTS > 28)
 ,E28_2
-#if (NUMBER_OF_REAL_EVENTS > 29)
+#if (NUMBER_OF_WHEEL_EVENTS > 29)
 ,E29_2
-#if (NUMBER_OF_REAL_EVENTS > 30)
+#if (NUMBER_OF_WHEEL_EVENTS > 30)
 ,E30_2
-#if (NUMBER_OF_REAL_EVENTS > 31)
+#if (NUMBER_OF_WHEEL_EVENTS > 31)
 ,E31_2
-#if (NUMBER_OF_REAL_EVENTS > 32)
+#if (NUMBER_OF_WHEEL_EVENTS > 32)
 ,E32_2
-#if (NUMBER_OF_REAL_EVENTS > 33)
+#if (NUMBER_OF_WHEEL_EVENTS > 33)
 ,E33_2
-#if (NUMBER_OF_REAL_EVENTS > 34)
+#if (NUMBER_OF_WHEEL_EVENTS > 34)
 ,E34_2
-#if (NUMBER_OF_REAL_EVENTS > 35)
+#if (NUMBER_OF_WHEEL_EVENTS > 35)
 ,E35_2
-#if (NUMBER_OF_REAL_EVENTS > 36)
+#if (NUMBER_OF_WHEEL_EVENTS > 36)
 ,E36_2
-#if (NUMBER_OF_REAL_EVENTS > 37)
+#if (NUMBER_OF_WHEEL_EVENTS > 37)
 ,E37_2
-#if (NUMBER_OF_REAL_EVENTS > 38)
+#if (NUMBER_OF_WHEEL_EVENTS > 38)
 ,E38_2
-#if (NUMBER_OF_REAL_EVENTS > 39)
+#if (NUMBER_OF_WHEEL_EVENTS > 39)
 ,E39_2
-#if (NUMBER_OF_REAL_EVENTS > 40)
+#if (NUMBER_OF_WHEEL_EVENTS > 40)
 ,E40_2
-#if (NUMBER_OF_REAL_EVENTS > 41)
+#if (NUMBER_OF_WHEEL_EVENTS > 41)
 ,E41_2
-#if (NUMBER_OF_REAL_EVENTS > 42)
+#if (NUMBER_OF_WHEEL_EVENTS > 42)
 ,E42_2
-#if (NUMBER_OF_REAL_EVENTS > 43)
+#if (NUMBER_OF_WHEEL_EVENTS > 43)
 ,E43_2
-#if (NUMBER_OF_REAL_EVENTS > 44)
+#if (NUMBER_OF_WHEEL_EVENTS > 44)
 ,E44_2
-#if (NUMBER_OF_REAL_EVENTS > 45)
+#if (NUMBER_OF_WHEEL_EVENTS > 45)
 ,E45_2
-#if (NUMBER_OF_REAL_EVENTS > 46)
+#if (NUMBER_OF_WHEEL_EVENTS > 46)
 ,E46_2
-#if (NUMBER_OF_REAL_EVENTS > 47)
+#if (NUMBER_OF_WHEEL_EVENTS > 47)
 ,E47_2
-#if (NUMBER_OF_REAL_EVENTS > 48)
+#if (NUMBER_OF_WHEEL_EVENTS > 48)
 ,E48_2
-#if (NUMBER_OF_REAL_EVENTS > 49)
+#if (NUMBER_OF_WHEEL_EVENTS > 49)
 ,E49_2
-#if (NUMBER_OF_REAL_EVENTS > 50)
+#if (NUMBER_OF_WHEEL_EVENTS > 50)
 ,E50_2
-#if (NUMBER_OF_REAL_EVENTS > 51)
+#if (NUMBER_OF_WHEEL_EVENTS > 51)
 ,E51_2
-#if (NUMBER_OF_REAL_EVENTS > 52)
+#if (NUMBER_OF_WHEEL_EVENTS > 52)
 ,E52_2
-#if (NUMBER_OF_REAL_EVENTS > 53)
+#if (NUMBER_OF_WHEEL_EVENTS > 53)
 ,E53_2
-#if (NUMBER_OF_REAL_EVENTS > 54)
+#if (NUMBER_OF_WHEEL_EVENTS > 54)
 ,E54_2
-#if (NUMBER_OF_REAL_EVENTS > 55)
+#if (NUMBER_OF_WHEEL_EVENTS > 55)
 ,E55_2
-#if (NUMBER_OF_REAL_EVENTS > 56)
+#if (NUMBER_OF_WHEEL_EVENTS > 56)
 ,E56_2
-#if (NUMBER_OF_REAL_EVENTS > 57)
+#if (NUMBER_OF_WHEEL_EVENTS > 57)
 ,E57_2
-#if (NUMBER_OF_REAL_EVENTS > 58)
+#if (NUMBER_OF_WHEEL_EVENTS > 58)
 ,E58_2
-#if (NUMBER_OF_REAL_EVENTS > 59)
+#if (NUMBER_OF_WHEEL_EVENTS > 59)
 ,E59_2
-#if (NUMBER_OF_REAL_EVENTS > 60)
+#if (NUMBER_OF_WHEEL_EVENTS > 60)
 ,E60_2
-#if (NUMBER_OF_REAL_EVENTS > 61)
+#if (NUMBER_OF_WHEEL_EVENTS > 61)
 ,E61_2
-#if (NUMBER_OF_REAL_EVENTS > 62)
+#if (NUMBER_OF_WHEEL_EVENTS > 62)
 ,E62_2
-#if (NUMBER_OF_REAL_EVENTS > 63)
+#if (NUMBER_OF_WHEEL_EVENTS > 63)
 ,E63_2
 #endif
 #endif

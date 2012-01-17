@@ -43,7 +43,7 @@
 
 
 #define DECODER_IMPLEMENTATION_C
-#define DECODER_MAX_CODE_TIME    666 // This is optimal!
+#define DECODER_MAX_CODE_TIME     66 // TODO measure reality
 #define NUMBER_OF_REAL_EVENTS      1 // no events really...
 #define NUMBER_OF_VIRTUAL_EVENTS   1 // no events really...
 
@@ -115,13 +115,53 @@ void PrimaryRPMISR(){
 			if(testNumberOfCycles == 0){
 				// Disable the interrupt again, to be enabled by a serial trigger
 				TIE &= NBIT0;
-				shouldFire = 0;
 				coreStatusA &= CLEAR_BENCH_TEST_ON;
 				return;
 			}
 		}
 
 		// TODO make this more sophisticated
+		TC0 += testTicksPerEvent;
+	}else if(testMode == TEST_MODE_DODGY_MISSING_TOOTH){
+		KeyUserDebugs.currentEvent++;
+		if(KeyUserDebugs.currentEvent == testEventsPerCycle){
+			KeyUserDebugs.currentEvent = 0;
+			testNumberOfCycles--;
+			if(testNumberOfCycles == 0){
+				// Disable the interrupt again, to be enabled by a serial trigger
+				TIE &= NBIT0;
+				coreStatusA &= CLEAR_BENCH_TEST_ON;
+				return;
+			}
+		}
+
+		// Grab updated time period
+		testTicksPerEvent = CoreVars->RPM;
+
+		// Cam sync pulse logic and one cycle's missing event, horrible, hard coded, yuck.
+		if(KeyUserDebugs.currentEvent == 0){
+			// Schedule the cam pulse
+			outputEventDelayFinalPeriod[1] = 3*(testTicksPerEvent/4);
+			outputEventPulseWidthsMath[1] = testTicksPerEvent;
+			outputEventInputEventNumbers[1] = KeyUserDebugs.currentEvent;
+			// Unschedule the main pulse
+			outputEventInputEventNumbers[0] = 0xFF;
+		}else{
+			outputEventInputEventNumbers[1] = 0xFF;
+			// If we're on the other cycle, skip the tooth too
+			if(KeyUserDebugs.currentEvent == (testEventsPerCycle/2)){
+				outputEventInputEventNumbers[0] = 0xFF;
+			}else{ // In all other cases schedule on this event!
+				outputEventDelayFinalPeriod[0] = decoderMaxCodeTime;
+				outputEventInputEventNumbers[0] = KeyUserDebugs.currentEvent;
+				if((KeyUserDebugs.currentEvent == ((testEventsPerCycle / 2) - 1)) || (KeyUserDebugs.currentEvent == (testEventsPerCycle - 1))){
+					outputEventPulseWidthsMath[0] = testTicksPerEvent;
+				}else{
+					outputEventPulseWidthsMath[0] = testTicksPerEvent/2;
+				}
+			}
+		}
+
 		TC0 += testTicksPerEvent;
 	}else if(testMode == TEST_MODE_REVOLUTIONS){
 		// sub modes of different patterns, use scheduler for this by setting the ADC array up and probing/triggering/touching/poking/starting/

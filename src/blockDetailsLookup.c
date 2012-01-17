@@ -482,12 +482,6 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 		details->FlashAddress = (void*)&(fixedConfigs1.tachoSettings);
 		details->parent = FixedConfig1LocationID;
 		break;
-	case coreSettingsALocationID:
-		details->size = 2;
-		details->FlashPage = PPAGE;
-		details->FlashAddress = (void*)&(fixedConfigs1.coreSettingsA);
-		details->parent = FixedConfig1LocationID;
-		break;
 	case userTextFieldLocationID:
 		details->size = userTextFieldArrayLength1;
 		details->FlashPage = PPAGE;
@@ -525,30 +519,30 @@ unsigned short lookupBlockDetails(unsigned short locationID, blockDetails* detai
 	case ADCRegistersLocationID:
 		details->size = sizeof(ADCBuffer);
 		details->RAMPage = RPAGE_LINEAR;
-		details->RAMAddress = &ADCBuffers;
+		details->RAMAddress = (void*)ADCBuffers;
 		break;
 	case coreVarsLocationID:
-		details->size = sizeof(CoreVars);
+		details->size = sizeof(CoreVar);
 		details->RAMPage = RPAGE_LINEAR;
-		details->RAMAddress = &CoreVars;
+		details->RAMAddress = (void*)CoreVars;
 		break;
 	case DerivedVarsLocationID:
-		details->size = sizeof(DerivedVars);
+		details->size = sizeof(DerivedVar);
 		details->RAMPage = RPAGE_LINEAR;
-		details->RAMAddress = &DerivedVars;
+		details->RAMAddress = (void*)DerivedVars;
 		break;
 	case CountersLocationID:
-		details->size = sizeof(Counters);
+		details->size = sizeof(Counter);
 		details->RAMPage = RPAGE_LINEAR;
 		details->RAMAddress = &Counters;
 		break;
 	case ClocksLocationID:
-		details->size = sizeof(Clocks);
+		details->size = sizeof(Clock);
 		details->RAMPage = RPAGE_LINEAR;
 		details->RAMAddress = &Clocks;
 		break;
 	case FlaggablesLocationID:
-		details->size = sizeof(Flaggables);
+		details->size = sizeof(Flaggable);
 		details->RAMPage = RPAGE_LINEAR;
 		details->RAMAddress = &Flaggables;
 		break;
