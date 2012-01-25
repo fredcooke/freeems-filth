@@ -136,6 +136,7 @@ EXTERN unsigned short lastTicksPerDegree;
 EXTERN unsigned short lastPrimaryTicksPerDegree;
 EXTERN unsigned short lastSecondaryTicksPerDegree;
 EXTERN unsigned long skipEventFlags;
+EXTERN unsigned long engineCyclePeriod;
 EXTERN unsigned char numberScheduled; /// @todo TODO remove DEBUG
 
 /// @todo Introduce the concept of sync level to schedule for if NOT synced
@@ -152,7 +153,7 @@ EXTERN unsigned char numberScheduled; /// @todo TODO remove DEBUG
 #define LAST_PERIOD_VALID    BIT4 ///< Set when second decoder ISR runs post a reset
 #define LAST_MATCH_VALID     BIT5 ///< Missing teeth style decoders set this when a valid match is found
 #define LAST_TPD_VALID       BIT6 ///< Set once sync is found and we've stored a Ticks Per Degree value
-#define DF_SPARE_7           BIT7
+#define OK_TO_SCHEDULE       BIT7 ///< Sync confirmed OK by configured number of checks
 // WARNING: Entire flag var is cleared with loss of sync!
 
 
@@ -172,6 +173,33 @@ EXTERN const unsigned char eventValidForCrankSync[SIZE_OF_EVENT_ARRAYS]; // For 
 EXTERN const unsigned short totalEventAngleRange;  // 720 for a four stroke, 360 for a two stroke, ? for a rotary. move this to code with a single setting for engine type and generate transformations based on that? All decoders will be 720 for now and only support 4 strokes without hackage.
 EXTERN const unsigned short decoderMaxCodeTime; // The max of how long the primary and secondary ISRs take to run with worst case scheduling loop time!
 
+
+// New configuration items: 
+// unsigned char syncConfirmationsRunning = 0;
+// unsigned char syncConfirmationsStarting = 0;
+// New vars:
+// unsigned char syncConfirmationsRunningCounter;
+// unsigned char syncConfirmationsStartingCounter;
+// Counters must be reset at sync clear, decoders must clear sync appropriately and keep a record between sync points
+// Code:
+// if(!(KeyUserDebugs.decoderFlags & SYNC_LEVEL){ // Required or caught-on event would be reset constantly
+//     KeyUserDebugs.decoderFlags |= SYNC_LEVEL;
+//     KeyUserDebugs.syncCaughtOnThisEvent = KeyUserDebugs.currentEvent;
+// }
+//
+// if(KeyUserDebugs.syncLostWithThisID){ // Reason for last loss of sync not timeout
+//     if(syncConfirmationsRunningCounter) {
+//         syncConfirmationsRunningCounter--;
+//     }else{
+//         KeyUserDebugs.decoderFlags |= OK_TO_SCHEDULE;
+//     }
+// }else{
+//     if(syncConfirmationsStartingCounter) {
+//         syncConfirmationsStartingCounter--;
+//     }else{
+//         KeyUserDebugs.decoderFlags |= OK_TO_SCHEDULE;
+//     }
+// }
 
 #define SET_SYNC_LEVEL_TO(SYNC_LEVEL)                             \
 KeyUserDebugs.decoderFlags |= SYNC_LEVEL;                         \
@@ -201,7 +229,7 @@ selfSetTimer &= injectorMainOffMasks[pin];                                      
 #ifdef DECODER_IMPLEMENTATION_C // See above for information on how to set these values up.
 
 /// @todo TODO behave differently depending upon sync level?
-#define SCHEDULE_ECT_OUTPUTS() \
+#define SCHEDULE_ECT_OUTPUTS() \  // requires an if block and a new flag something like "ok to schedule outputs" that exists at this level and can't be fucked up in a decoder.
 numberScheduled = 0;                                                                        \
 unsigned char outputEventNumber;                                                            \
 for(outputEventNumber=0;outputEventNumber<fixedConfigs1.schedulingSettings.numberOfConfiguredOutputEvents;outputEventNumber++){ \
@@ -224,30 +252,6 @@ for(outputEventNumber=0;outputEventNumber<fixedConfigs1.schedulingSettings.numbe
 	}                                                                                       \
 }                                                                                           // End of macro block!
 
-
-// A value of zero = do nothing
-#define COARSE_BB_IGNORE 0
-#define COARSE_BB_GO_ON  1
-#define COARSE_BB_GO_OFF 2
-#define COARSE_BB_TOGGLE 3
-#define COARSE_BB_MASK   0x03
-
-#define OUTPUT_COARSE_BBS() \
-if(fixedConfigs1.coarseBitBangSettings.outputActions[KeyUserDebugs.currentEvent]){                                                                \
-	int offset;                                                                                                                                   \
-	for(offset=0;offset<fixedConfigs1.coarseBitBangSettings.numberConfigured;offset++){                                                           \
-		unsigned char behaviour = (fixedConfigs1.coarseBitBangSettings.outputActions[KeyUserDebugs.currentEvent] >> (offset*2)) & COARSE_BB_MASK; \
-		if(behaviour){                                                                                                                            \
-			if(behaviour == COARSE_BB_GO_ON){                                                                                                     \
-				*(fixedConfigs1.coarseBitBangSettings.ports[offset]) |= fixedConfigs1.coarseBitBangSettings.masks[offset];                        \
-			}else if(behaviour == COARSE_BB_GO_OFF){                                                                                              \
-				*(fixedConfigs1.coarseBitBangSettings.ports[offset]) &= (unsigned char)~(fixedConfigs1.coarseBitBangSettings.masks[offset]);      \
-			}else if(behaviour == COARSE_BB_TOGGLE){                                                                                              \
-				*(fixedConfigs1.coarseBitBangSettings.ports[offset]) ^= fixedConfigs1.coarseBitBangSettings.masks[offset];                        \
-			}                                                                                                                                     \
-		}                                                                                                                                         \
-	}                                                                                                                                             \
-}                                                                                                                                                 // End of macro block!
 
 
 // These give a warning in eclipse because they aren't defined in this file, they are defined per decoder and enforced here.

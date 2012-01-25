@@ -53,13 +53,28 @@ void resetToNonRunningState(unsigned char uniqueLossID){
 		KeyUserDebugs.syncResetCalls++;
 	}
 
+//	// Reset the safe re-sync counters.
+//	if(config.syncConfirmationsRunning == 0xFF){ // Prevent overflow to zero
+//		syncConfirmationsRunningCounter = 0xFF;
+//	}else{ // Ensure at least 1 cycle is confirmed
+//		syncConfirmationsRunningCounter = config.syncConfirmationsRunning + 1;
+//	}
+//	syncConfirmationsStartingCounter = config.syncConfirmationsStarting;
+
 	/* Reset RPM to zero */
 	ticksPerDegree0 = 0;
 	ticksPerDegree1 = 0;
 
+	/* Ensure tacho reads lowest possible value */
+	engineCyclePeriod = ticksPerCycleAtOneRPM;
+
 	// Keep track of lost sync in counters
 	if(KeyUserDebugs.decoderFlags & (CAM_SYNC | CRANK_SYNC | COMBUSTION_SYNC)){
-		FLAG_AND_INC_FLAGGABLE(FLAG_DECODER_SYNC_LOSSES_OFFSET);
+		if(KeyUserDebugs.decoderFlags & OK_TO_SCHEDULE){
+			FLAG_AND_INC_FLAGGABLE(FLAG_DECODER_SYNC_LOSSES_OFFSET);
+		}else{
+			FLAG_AND_INC_FLAGGABLE(FLAG_DECODER_SYNCS_NOT_CONFIRMED_OFFSET);
+		}	
 	}else{
 		FLAG_AND_INC_FLAGGABLE(FLAG_DECODER_SYNC_STATE_CLEARS_OFFSET);
 	}
