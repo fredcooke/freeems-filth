@@ -41,5 +41,50 @@
 #define TOTAL_TEETH   6
 #define MISSING_TEETH  2
 
-#include "inc/MissingTeeth.h"
+
+typedef struct {
+	unsigned lastPair: 4;
+	unsigned thisPair: 4;
+} twoPairs;
+
+typedef union {
+	twoPairs pairs;
+	unsigned char pattern;
+} match;
+
+
+#define DECODER_MAX_CODE_TIME 250 // From Spudmn's measurements in NZ. 171us runtime was max = 214 ticks.
+
+#include "../inc/freeEMS.h"
+#include "../inc/utils.h"
+#include "../inc/interrupts.h"
+
+
+// Make current tolerance scheme work properly for different missing levels OOTB
+#define TOLERANCE_LEVEL (MISSING_TEETH*1024)
+
+
+#define NUMBER_OF_WHEEL_EVENTS (TOTAL_TEETH - MISSING_TEETH)
+
+
+#define NUMBER_OF_REAL_EVENTS NUMBER_OF_WHEEL_EVENTS
+#define NUMBER_OF_VIRTUAL_EVENTS NUMBER_OF_REAL_EVENTS
+#define ANGLE_BETWEEN_EVENTS ((oneDegree * 720.0) / TOTAL_TEETH)
+#define angleOfSingleIteration (720 * oneDegree)
+
+
+#include "../inc/decoderInterface.h"
+
+const unsigned short eventAngles[] = {
+0,
+120 * oneDegree,
+240 * oneDegree,
+360 * oneDegree
+};
+
+
+/// @todo TODO build this with similar hash if logic: need to reconsider how to use this or whether to even have it. A "corresponding event" table might be good instead, kinda like the mapping above, but from real to real, only when the angles are exactly 360 out.
+const unsigned char eventValidForCrankSync[] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}; // this is only correct while doing pure crank sync, wrong once doing more, i think, TBC...
+
+
 #include "code/MissingTeeth-Either-XminusY.c"
