@@ -77,10 +77,15 @@ typedef union {
 
 const unsigned short eventAngles[] = {
 0,
-120 * oneDegree,
-240 * oneDegree,
-360 * oneDegree
+(120.18 * oneDegree),
+(239.00 * oneDegree),
+(360.18 * oneDegree)
 };
+// Above, the first angle corresponds to 720 minus the last angle worth of angular width since the previous event
+// Each of the others corresponds to the difference between itself and the previous too
+// So the standard angular widths of the decoder are really 360, 120, 120, 120, not 0, 120, 240, 360, which are the positions
+// This commit changes that to the following: 359.82, 120.18, 118.82, 121.18
+// Which results in the following angles in the array: 0.00, 120.18, 239.00, 360.18
 
 
 /// @todo TODO build this with similar hash if logic: need to reconsider how to use this or whether to even have it. A "corresponding event" table might be good instead, kinda like the mapping above, but from real to real, only when the angles are exactly 360 out.
