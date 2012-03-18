@@ -68,6 +68,8 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #include "../data/tables/axis/FredsTruck-RPM.h"
 #elif SNOTROCKET
 #include "../data/tables/axis/SimsVolvo-RPM.h"
+#elif DEUCECOUPE
+#include "../data/tables/axis/Deuces3100-RPM.h"
 #else
 #include "../data/tables/axis/FredsTruck-RPM.h"
 #endif
@@ -85,6 +87,8 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #include "../data/tables/axis/FredsTruck-Load.h"
 #elif SNOTROCKET
 #include "../data/tables/axis/SimsVolvo-Load.h"
+#elif DEUCECOUPE
+#include "../data/tables/axis/Deuces3100-Load.h"
 #else
 #include "../data/tables/axis/FredsTruck-Load.h"
 #endif
@@ -105,6 +109,8 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #include "../data/tables/ign/HotelHyundaiIgnitionTiming.h"
 #elif SNOTROCKET
 #include "../data/tables/ign/SimsVolvoIgnitionTiming.h"
+#elif DEUCECOUPE
+#include "../data/tables/ign/flat0degrees.h"
 #else
 #include "../data/tables/ign/flat10degrees.h"
 #endif

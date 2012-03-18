@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008, 2009 Fred Cooke
+ * Copyright 2011 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -28,43 +28,20 @@
  *
  * @ingroup dataInitialisers
  *
- * @brief Inlet Air Temperature Transfer Table
+ * @brief A 16 long set of loads for my hyundai before mtx supports full tables
  *
- * This file exists solely to contain the Inlet Air Temperature thermistor
- * transfer function lookup table.
+ * This file only contains the data to be hash included into all mainTable Load sections
  *
  * @author Fred Cooke
  */
 
 
-#include "../inc/freeEMS.h"
+// 16 load values starting at 20kPa and ending at 110kPa, only the first 16 are used at the moment
+ 2000,	 2600,	 3200,	 3800,
+ 4400,	 5000,	 5600,	 6200,
+ 6800,	 7400,	 8000,	 8600,
+ 9200,	 9800,	10400,	11000,
 
-
-/** @brief Inlet Air Temperature Transfer Table
- *
- * Using this table it is possible to accurately and quickly convert
- * a raw ADC reading to a scaled temperature value in degrees Kelvin.
- *
- * @author FreeTherm
- */
-const volatile unsigned short IATTransferTable[1024] LOOKUPD = {
-#ifdef TRUCK
-#include "../data/thermistors/Bosch.h"
-#elif PRESTO
-#include "../data/thermistors/Bosch.h"
-#elif SEANKLT1
-#include "../data/thermistors/Bosch.h"
-#elif SEANKR1
-#include "../data/thermistors/Bosch.h"
-#elif JOSHBROWN
-#include "../data/thermistors/Bosch.h"
-#elif SNOTROCKET
-#include "../data/thermistors/GM-2k4Bias.h"
-#elif SLATER
-#include "../data/thermistors/GM-2k6Bias.h"
-#elif DEUCECOUPE
-#include "../data/thermistors/GM-2k4Bias.h"
-#else // Default to correctly biased Jap sensor.
-#include "../data/thermistors/Denso-2k7Bias.h"
-#endif
-};
+// spare:
+27200,	28800,	30400,	32000,
+33600
