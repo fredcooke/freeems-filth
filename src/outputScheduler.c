@@ -64,12 +64,12 @@ void scheduleOutputs(){
 //	}
 
 	// Temp for the might Deuce Coupe!
-	if(CoreVars->RPM > 3000){
+	if(CoreVars->RPM > 1600){ // 800 RPM on the way up and...
 		*injectorMainControlRegisters[1] |= injectorMainEnableMasks[1];
-		// PORTT |= BIT3; // This code might be dangerous
-	}else if(CoreVars->RPM < 2800){
+		// PORTT |= BIT3; // This code might be dangerous or not
+	}else if(CoreVars->RPM < 1400){ // 700 RPM on the way down!
 		*injectorMainControlRegisters[1] &= injectorMainGoLowMasks[1];
-		// PORTT &= NBIT3; // This code might be dangerous
+		// PORTT &= NBIT3; // This code might be dangerous or not
 	}
 
 	/// @todo TODO Schedule injection with real timing, requires some tweaks to work right.
