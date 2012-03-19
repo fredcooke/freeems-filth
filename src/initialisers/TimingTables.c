@@ -110,7 +110,8 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #elif SNOTROCKET
 #include "../data/tables/ign/SimsVolvoIgnitionTiming.h"
 #elif DEUCECOUPE
-#include "../data/tables/ign/flat0degrees.h"
+#include "../data/tables/ign/TestDIS.h"
+//#include "../data/tables/ign/HotelHyundaiIgnitionTiming.h" << Copy this to a new file and tweak to your tastes.
 #else
 #include "../data/tables/ign/flat10degrees.h"
 #endif

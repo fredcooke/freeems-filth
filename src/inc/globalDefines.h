@@ -177,6 +177,7 @@
 // Cylinder volumes, value = (cc / 2000) * 65536
 #define cylinderSize727cc           23828       /* 727cc per cylinder for Sean's 355ci LT1 */
 #define cylinderSize575cc           18842       /* 575cc per cylinder for B230FT */
+#define cylinderSize522cc           17127       /* 522cc per cylinder for GM L82 3.1 V6 */
 #define cylinderSize500cc           16384       /* 500cc per cylinder for my FE-DOHC */
 #define cylinderSize450cc           14746       /* 450cc per cylinder for my F8-DOHC */
 #define cylinderSize400cc           13107       /* 400cc per cylinder for the Toyota 4age */
@@ -189,6 +190,7 @@
 #define injector525cc                8960       /* 42lb/hr with higher pressure, 50lb/hr, 10.5 conversion from RC, Sean's LT1 */
 #define injector320cc                5461       /* 320cc per minute for bosch injectors in citroen turbo engine*/
 #define injector230cc                3925       /* 230cc per minute for Yamaha R1 injectors http://www.witchhunter.com/flowdatapix/bcdh210.jpg */
+#define injector235cc                4011       /* 235cc per minute for GM L82 3.1 V6 */
 #define injector213cc                3635       /* 213cc per minute for SilverTop 4age injectors */
 
 #define densityOfOctane             22496       /* 703 grams per litre */

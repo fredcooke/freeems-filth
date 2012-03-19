@@ -38,10 +38,17 @@
 
 // 16 RPM values starting at 100 and ending at 6100, only the first 16 are used at the moment
   200,  1000,  1400,  2600,
- 3400,  4200,  5000,  5800,
- 6600,  7400,  8200,  9000,
- 9800, 10600, 11600, 11601,
+ 3400,  4200,  5000,  5001, // switch to 20btdc at 2500
+ 6600,  7000,  7001,  9400, // switch to  0btdc at 3500
+10600, 11800, 13000, 13001,
 
+// Use these post testing:
+//// 16 RPM values starting at 100 and ending at 6100, only the first 16 are used at the moment
+//  200,  1000,  1400,  2600,
+// 3400,  4200,  5000,  5800,
+// 6600,  7400,  8200,  9400,
+//10600, 11800, 13000, 13001,
+//
 // spare:
 20000,  20001,  20002,  20003,
 20004,  20005,  20006,  20007,

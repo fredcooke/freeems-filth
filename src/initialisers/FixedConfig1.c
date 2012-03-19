@@ -71,8 +71,8 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		perCylinderVolume:  cylinderSize324cc,
 		injectorFlow:       injector320cc,
 #elif DEUCECOUPE
-		perCylinderVolume:  cylinderSize500cc,
-		injectorFlow:       injector213cc,
+		perCylinderVolume:  cylinderSize522cc,
+		injectorFlow:       injector235cc,
 #else
 		perCylinderVolume:  cylinderSize500cc,
 		injectorFlow:       injector550cc,
@@ -174,17 +174,17 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		numberOfConfiguredOutputEvents:          6, // THESE ARE NOT IGN, THEY ARE FUEL
 		numberOfInjectionsPerEngineCycle:        1  // Sequential, baby, yeah!
 
+#elif DEUCECOUPE // DeuceEFI's GM 3100 V6, firing order 1-6-5-4-3-2, wasted spark DIS ignition http://forum.diyefi.org/viewtopic.php?f=3&t=1278
+		anglesOfTDC: {(0 * oneDegree), (120 * oneDegree), (240 * oneDegree), (360 * oneDegree), (480 * oneDegree), (600 * oneDegree), (0 * oneDegree), (120 * oneDegree), (240 * oneDegree), (360 * oneDegree), (480 * oneDegree), (600 * oneDegree)},
+		outputEventPinNumbers:       {0,0,0,0,0,0,2,3,4,2,3,4}, // DIS E-dizzy and semi-sequential, for now.
+		schedulingConfigurationBits: {0,0,0,0,0,0,1,1,1,1,1,1}, // Six E-dizzy style DIS ignition outputs and six injection events, two per cycle, semi sequential
+		decoderEngineOffset:   (60.00 * oneDegree), // Nothing for now, so as to be able to figure out what is going on.
+		numberOfConfiguredOutputEvents:         12, // See three lines above
+		numberOfInjectionsPerEngineCycle:        2  // Semi-sequential, for now.
+
 // Looking forward to there being links to threads here soon! In no particular order:
 //#elif LEV8N
 //#elif SEANKR1
-#elif DEUCECOUPE // DeuceEFI's GM 3100 V6, firing order 1-6-5-4-3-2, wasted spark DIS ignition http://forum.diyefi.org/viewtopic.php?f=3&t=1278
-                anglesOfTDC: {(0 * oneDegree), (120 * oneDegree), (240 * oneDegree), (360 * oneDegree), (480 * oneDegree), (600 * oneDegree)},
-                outputEventPinNumbers:       {2,3,4,2,3,4}, // Semi-sequential, for now.
-                schedulingConfigurationBits: {1,1,1,1,1,1}, // Six injection events, two per cycle, semi sequential
-                decoderEngineOffset:    (0.00 * oneDegree), // Nothing for now, so as to be able to figure out what is going on.
-                numberOfConfiguredOutputEvents:          6, // See three lines above
-                numberOfInjectionsPerEngineCycle:        2  // Semi-sequential, for now.
-
 //#elif TTV8SUPRA
 //#elif SECRETSQUIRREL // Shhhhhh! :-p
 //#elif HOTCAT
