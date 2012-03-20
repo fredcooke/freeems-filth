@@ -178,7 +178,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		anglesOfTDC: {(0 * oneDegree), (120 * oneDegree), (240 * oneDegree), (360 * oneDegree), (480 * oneDegree), (600 * oneDegree), (0 * oneDegree), (120 * oneDegree), (240 * oneDegree), (360 * oneDegree), (480 * oneDegree), (600 * oneDegree)},
 		outputEventPinNumbers:       {0,0,0,0,0,0,2,3,4,2,3,4}, // DIS E-dizzy and semi-sequential, for now.
 		schedulingConfigurationBits: {0,0,0,0,0,0,1,1,1,1,1,1}, // Six E-dizzy style DIS ignition outputs and six injection events, two per cycle, semi sequential
-		decoderEngineOffset:   (60.00 * oneDegree), // Nothing for now, so as to be able to figure out what is going on.
+		decoderEngineOffset:    (0.00 * oneDegree), // Nothing for now, so as to be able to figure out what is going on.
 		numberOfConfiguredOutputEvents:         12, // See three lines above
 		numberOfInjectionsPerEngineCycle:        2  // Semi-sequential, for now.
 

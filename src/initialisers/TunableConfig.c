@@ -67,7 +67,7 @@ const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 #elif SNOTROCKET
 		dwellDesiredVersusVoltageTable: {ARRAY_OF_16_VOLTAGES, LS1COILS_16_DWELLS},
 #elif DEUCECOUPE
-		dwellDesiredVersusVoltageTable: {ARRAY_OF_16_VOLTAGES, GMV6_DIS_16_DWELLS}, // Andy try this GMV0_DIS_16_DWELLS to make sure it works or fails.
+		dwellDesiredVersusVoltageTable: {ARRAY_OF_16_VOLTAGES, GMV0_DIS_16_DWELLS},
 #else
 		dwellDesiredVersusVoltageTable: {ARRAY_OF_16_VOLTAGES, ARRAY_OF_16_DWELLS},
 #endif
