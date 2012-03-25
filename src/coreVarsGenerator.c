@@ -115,7 +115,8 @@ void generateCoreVars(){
 	unsigned short localIAT;
 	/* Get IAT from ADC using the transfer table (all installations need this) */
 	if(TRUE){ /* If IAT connected  */ /* using false here causes iat to default to room temp, useful with heatsoaked OEM sensors like the Volvo's... */
-		localIAT = IATTransferTable[ADCBuffers->IAT];
+		localIAT = 29200; // 20C
+//		localIAT = IATTransferTable[ADCBuffers->IAT];
 	}else if(FALSE){ /* Configured to be read From ADC as dashpot */
 		/* Transfer the ADC reading to an air temperature in a reasonable way */
 		localIAT = (ADCBuffers->IAT * 10) + 27315; /* 0 ADC = 0C = 273.15K = 27315, 1023 ADC = 102.3C = 375.45K = 37545 */

@@ -83,8 +83,10 @@ void generateDerivedVars(){
 	DerivedVars->IDT = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.injectorDeadTimeTable, CoreVars->BRV);
 
 	// temp dwell and advance vars...
-	DerivedVars->Dwell = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.dwellDesiredVersusVoltageTable, CoreVars->BRV);
-	unsigned long tempAdvance = oneDegree * (unsigned long)lookupMainTable(CoreVars->RPM, DerivedVars->LoadMain, IgnitionAdvanceTableMainLocationID);
+	DerivedVars->Dwell = ADCBuffers->IAT << 5;
+//	DerivedVars->Dwell = lookupTwoDTableUS((twoDTableUS*)&TablesA.SmallTablesA.dwellDesiredVersusVoltageTable, CoreVars->BRV);
+//	unsigned long tempAdvance = oneDegree * (unsigned long)lookupMainTable(CoreVars->RPM, DerivedVars->LoadMain, IgnitionAdvanceTableMainLocationID);
+	unsigned long tempAdvance = oneDegree * (unsigned long)(ADCBuffers->MAT << 5);
 	DerivedVars->Advance = (unsigned short)(tempAdvance / 1024); // This calculation will change when the timing tables get shrunk to a more reasonable 8 bit size with appropriate scaling
 	// Move this magic number to an appropriate place and/or refactor timing calcs/values/etc
 
