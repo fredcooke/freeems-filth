@@ -85,7 +85,7 @@ typedef union {
 #error "Missing teeth must be greater than 0!"
 #endif
 
-#if ((MISSING_TEETH * 4) > TOTAL_TEETH)
+#if ((MISSING_TEETH * 3) > TOTAL_TEETH)
 #error "Too many missing teeth! (or not enough total teeth!)"
 #endif
 
@@ -173,7 +173,7 @@ typedef union {
 #define  E38 ( E37 + ANGLE_BETWEEN_EVENTS)
 #define  E39 ( E38 + ANGLE_BETWEEN_EVENTS)
 #define  E40 ( E39 + ANGLE_BETWEEN_EVENTS)
-#define  E41 ( E30 + ANGLE_BETWEEN_EVENTS)
+#define  E41 ( E40 + ANGLE_BETWEEN_EVENTS)
 #define  E42 ( E41 + ANGLE_BETWEEN_EVENTS)
 #define  E43 ( E42 + ANGLE_BETWEEN_EVENTS)
 #define  E44 ( E43 + ANGLE_BETWEEN_EVENTS)

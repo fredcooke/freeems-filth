@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -112,11 +112,40 @@ typedef struct {
 } serialSetting;
 
 
-/// Settings related to tacho output
+/// Settings for coarse bit bang outputs
 typedef struct {
-	unsigned char tachoTickFactor;   ///< Unused at this time.
-	unsigned short tachoTotalFactor; ///< Unused at this time.
-} tachoSetting;
+	unsigned char outputActions[256]; ///< Nothing, On, Off, Toggle for each input event.
+	unsigned char* ports[4];         ///< The addresses of the port control registers.
+	unsigned char  masks[4];         ///< The masks to apply to the ports above.
+	unsigned char numberConfigured;  ///< How many to loop through, max of 4
+} coarseBitBangSetting;
+
+
+/// Settings for ignition and injection output scheduling
+typedef struct {
+	unsigned short anglesOfTDC[MAX_NUMBER_OF_OUTPUT_EVENTS];                ///< The effective TDC angle of the event in question.
+	unsigned char outputEventPinNumbers[MAX_NUMBER_OF_OUTPUT_EVENTS];       ///< Which of the 6 pins should be associated with this event
+	unsigned char schedulingConfigurationBits[MAX_NUMBER_OF_OUTPUT_EVENTS]; ///< 0 = ignition, 1 = injection
+	unsigned short decoderEngineOffset;
+	/**<
+	 * Add decoderEngineOffset to code degrees to find 0/TDC for cyl/output 1
+	 * or subtract from real degrees to get code degrees. Make this number
+	 * larger to advance the base timing, make it smaller to retard it. IE, if
+	 * you have 10btdc in your table, flat, and a timing light shows 5btdc on
+	 * the engine, then increase this number by 5 degrees. More here:
+	 *
+	 * http://forum.diyefi.org/viewtopic.php?f=54&t=1523
+	 */
+	unsigned char numberOfConfiguredOutputEvents;   ///< Should match the used section of the three arrays above
+	unsigned char numberOfInjectionsPerEngineCycle; ///< How much to divide the fuel pulse width by to get the per injection fuel pulse width
+} schedulingSetting;
+
+
+#define simisTachoArray {1,0,0,2,0,0,1,0,0,2,0,0,1,0,0,2,0,0,1,0,0,2,0,0} // 24 events for a 24+1 CAS setup with 4 cylinder tacho
+#define slaterTachoArray {1,0,0,2,0,0,1,0,0,2,0} // 11 events for 12-1 crank setup with 4 cylinder tacho
+#define standardTachoArray {1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2}
+#define standardTachoPorts {(unsigned char*)&PORTE,(unsigned char*)&PORTK,(unsigned char*)&PORTK,(unsigned char*)&PORTK}
+#define standardTachoMasks {0x80,0x01,0x02,0x04}
 
 
 /// Settings related to sensor reading
@@ -125,7 +154,7 @@ typedef struct {
 } sensorSetting;
 
 
-#define userTextFieldArrayLength1 (flashSectorSize - (sizeof(engineSetting) + sizeof(serialSetting) + sizeof(tachoSetting)))
+#define userTextFieldArrayLength1 (flashSectorSize - (sizeof(engineSetting) + sizeof(serialSetting) + sizeof(coarseBitBangSetting) + sizeof(schedulingSetting)))
 /**
  * One of two structs of fixed configuration data such as physical parameters etc.
  *
@@ -137,7 +166,8 @@ typedef struct {
 typedef struct {
 	engineSetting engineSettings; ///< @see engineSetting
 	serialSetting serialSettings; ///< @see serialSetting
-	tachoSetting tachoSettings;   ///< @see tachoSetting
+	coarseBitBangSetting coarseBitBangSettings;   ///< @see coarseBitBangSetting
+	schedulingSetting schedulingSettings;         ///< @see schedulingSetting
 	unsigned char userTextField[userTextFieldArrayLength1]; ///< For on-board meta-data such as which vehicle the unit is from, put your personal tuning notes here!
 } fixedConfig1;
 

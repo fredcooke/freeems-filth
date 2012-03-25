@@ -2,7 +2,7 @@
 #
 #	Makefile
 #
-#	Copyright 2008-2011 Fred Cooke
+#	Copyright 2008-2012 Fred Cooke
 #
 #	This Makefile is part of the FreeEMS project.
 #
@@ -55,11 +55,11 @@
 
 
 # Constants
-FIRMWARE_VERSION = $(shell git describe --dirty=-DEV)
-OUTPREFIX = FreeEMS
-LABEL = $(OUTPREFIX)-$(FIRMWARE_VERSION)
-BUILD_DATE = "$(shell date)"
-OS = $(shell uname)
+FIRMWARE_VERSION := $(shell git describe --dirty=-DEV)
+OUTPREFIX := FreeEMS
+LABEL := $(OUTPREFIX)-$(FIRMWARE_VERSION)
+BUILD_DATE := "$(shell date)"
+OS := $(shell uname)
 
 # Windows differences
 ifdef ComSpec
@@ -79,7 +79,7 @@ endif
 
 # Mac differences
 ifeq ($(OS), Darwin)
-MD5SUM = md5
+MD5SUM = md5 -r
 else
 # If using this on windows, we're in cygwin, same as Linux
 MD5SUM = md5sum
@@ -160,7 +160,7 @@ DATA = $(patsubst %.c,$(DATADIR)/%.c,$(DATARAW))
 
 # Source code files
 UTILCLASSES = tableLookup.c init.c utils.c globalConstants.c StaticBenchTest.c
-MATHCLASSES = coreVarsGenerator.c derivedVarsGenerator.c fuelAndIgnitionCalcs.c decoderInterface.c
+MATHCLASSES = coreVarsGenerator.c derivedVarsGenerator.c fuelAndIgnitionCalcs.c outputScheduler.c decoderInterface.c
 COMCLASSES = flashWrite.c commsCore.c blockDetailsLookup.c
 ISRCLASSES = interrupts.c injectionISRs.c commsISRs.c realtimeISRs.c miscISRs.c xgateVectors.c xgateGlobals.c
 # Combined source code files
@@ -174,7 +174,7 @@ CLASSES = $(SOURCE) $(DATA)
 RPMSPECIAL = Listener.c BenchTest.c
 # TODO: Automate file naming for the following 4 lines
 RPMEVENTEETH = EvenTeeth-Both-12and1.c EvenTeeth-Both-8and1.c
-RPMMISSINGTEETH = MissingTeeth-TestFile.c MissingTeeth-Cam-24minus1.c MissingTeeth-Crank-8minus1.c MissingTeeth-Crank-12minus1.c MissingTeeth-Crank-36minus1.c MissingTeeth-Crank-60minus2.c
+RPMMISSINGTEETH = MissingTeeth-TestFile.c MissingTeeth-Cam-24minus1.c MissingTeeth-Crank-8minus1.c MissingTeeth-Crank-12minus1.c MissingTeeth-Crank-36minus1.c MissingTeeth-Crank-60minus2.c MissingTeeth-Cam-6minus2.c MissingTeeth-Crank-30minus2.c
 RPMHALLOROPTICAL = HallOrOptical-Distributor-4of64.c HallOrOptical-Distributor-4of69.c
 RPMVRDISTRIBUTOR = 
 # Specific purpose per engine stuff here
@@ -192,7 +192,8 @@ DEPENDENCIES = $(patsubst %.c,$(DEPDIR)/%.d,$(CLASSES))
 DDEPENDENCIES = $(patsubst %.c,$(DEPDIR)/%.dd,$(CLASSES))
 PREPROCESSED = $(patsubst %.c,$(PPCDIR)/%.pp.c,$(CLASSES))
 ASSEMBLIES = $(patsubst %.c,$(ASMDIR)/%.s,$(CLASSES))
-OBJECTS = $(patsubst %.c,$(OBJDIR)/%.o,$(CLASSES)) $(patsubst %.s,$(OBJDIR)/%.o,$(HANDASMS))
+OBJECTS = $(patsubst %.c,$(OBJDIR)/%.o,$(CLASSES))
+HANDOBJECTS = $(patsubst %.s,$(OBJDIR)/%.o,$(HANDASMS))
 DUMPS = $(patsubst %.c,$(BUGDIR)/%.dmp,$(CLASSES)) $(patsubst %.s,$(BUGDIR)/%.dmp,$(HANDASMS))
 XGOBJECTS = $(patsubst %.s,$(XGOBJDIR)/%.o,$(XGASMSRCS))
 
@@ -254,7 +255,7 @@ GCDDUMMY = $(patsubst $(S19DIR)/%,$(OUTDIR)/%.txt.dummy,$(GCDS19S))
 
 # http://www.gnu.org/software/m68hc11/m68hc11_gcc.html shows code size with different options used
 # include debug info, optimise , 16 bit ints, hcs12 platform
-GCCOPTS1 = -g -Wall -Werror -Winline -O -m68hcs12 -mshort -ffunction-sections -idirafter custom -idirafter default
+GCCOPTS1 = -Wall -Werror -Winline -O -m68hcs12 -mshort -ffunction-sections -idirafter custom -idirafter default
 GCCOPTS2 = -fomit-frame-pointer -msoft-reg-count=8 -mauto-incdec -fsigned-char
 GCCOPTS = $(GCCOPTS1) $(GCCOPTS2) $(CLIFLAGS) -D FIRMWARE_VERSION=\"$(FIRMWARE_VERSION)\" -D FIRMWARE_BUILD_DATE=\"$(BUILD_DATE)\" -D OPERATING_SYSTEM=\"$(OS)\"
 # -ffunction-sections option splits out the functions such that the garbage collection can get
@@ -379,6 +380,7 @@ COPYOPTS = --output-target=srec \
 
 
 
+.DEFAULT_GOAL := help
 help:
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#                        Dependency And Target Summary                         #$(Q)
@@ -472,6 +474,14 @@ help:
 	@echo $(Q)#   wait for other unrelated things to build first nor do you have to wait     #$(Q)
 	@echo $(Q)#   for other files to continue building after yours is successful. Before     #$(Q)
 	@echo $(Q)#   using individual output files for targets, please run 'make dirs'.         #$(Q)
+	@echo $(Q)#                                                                              #$(Q)
+	@echo $(Q)#   Common goals:                                                              #$(Q)
+	@echo $(Q)#                                                                              #$(Q)
+	@echo $(Q)#   You most likely just want to run "make s19" or "make clean", do that!      #$(Q)
+	@echo $(Q)#                                                                              #$(Q)
+	@echo $(Q)#   To build with a specific compiled in configuration do this instead:        #$(Q)
+	@echo $(Q)#                                                                              #$(Q)
+	@echo $(Q)#   CLIFLAGS="-D YOURBUILDNAME=1" make clean s19                               #$(Q)
 	@echo $(Q)#                                                                              #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
@@ -573,11 +583,11 @@ linkmsg:
 link: assemble $(OUTDIR) linkmsg $(ALLELFS)
 
 # link the object files into an elf executable
-$(ALLELFS): $(OUTDIR)/$(LABEL)-%.elf: $(OBJDIR)/$(DECDIR)/%.o $(OBJECTS) $(XGOBJECTS)
+$(ALLELFS): $(OUTDIR)/$(LABEL)-%.elf: $(OBJDIR)/$(DECDIR)/%.o $(OBJECTS) $(HANDOBJECTS) $(XGOBJECTS)
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#               Linking $@ ...$(Q)
 	@echo $(Q)################################################################################$(Q)
-	$(GCC) $(GCCOPTS) -Wl,$(LINKOPTS) -o $@ $(OBJECTS) $(XGOBJECTS) $<
+	$(GCC) $(GCCOPTS) -Wl,$(LINKOPTS) -o $@ $(OBJECTS) $(HANDOBJECTS) $(XGOBJECTS) $<
 
 
 gclinkmsg:
@@ -588,11 +598,11 @@ gclinkmsg:
 gclink: assemble $(OUTDIR) linkmsg $(GCDELFS)
 
 # link the object files into an elf executable with gc enabled
-$(GCDELFS): $(OUTDIR)/$(LABEL)-%.gc.elf: $(OBJDIR)/$(DECDIR)/%.o $(OBJECTS) $(XGOBJECTS)
+$(GCDELFS): $(OUTDIR)/$(LABEL)-%.gc.elf: $(OBJDIR)/$(DECDIR)/%.o $(OBJECTS) $(HANDOBJECTS) $(XGOBJECTS)
 	@echo $(Q)################################################################################$(Q)
 	@echo $(Q)#               Linking $@ ...$(Q)
 	@echo $(Q)################################################################################$(Q)
-	$(GCC) $(GCCOPTS) -Wl,$(LINKOPTSGC) -o $@ $(OBJECTS) $(XGOBJECTS) $<
+	$(GCC) $(GCCOPTS) -Wl,$(LINKOPTSGC) -o $@ $(OBJECTS) $(HANDOBJECTS) $(XGOBJECTS) $<
 # The links with garbage collection are to ensure that there are no warnings
 # TODO find out how to stop .tramp from being collected (or inserted)!
 # This will be the only way once Sean's stuff is done and distributed, I can't wait to cut all this bullshit out!
@@ -733,7 +743,7 @@ compile: preprocess compilemsg $(ASSEMBLIES) $(ASSEMBLIESRPM)
 
 # Generate assembly files to examine
 $(ASSEMBLIES) $(ASSEMBLIESRPM): $(ASMDIR)/%.s: $(PPCDIR)/%.pp.c
-	$(GCC) $(GCCOPTS) -x cpp-output -S -o $@ $<
+	$(GCC) -g $(GCCOPTS) -x cpp-output -S -o $@ $<
 
 
 assemblemsg:
@@ -741,11 +751,14 @@ assemblemsg:
 	@echo $(Q)#                          Assembling Object Files...                          #$(Q)
 	@echo $(Q)################################################################################$(Q)
 
-assemble: compile $(OBJDIR) $(XGOBJDIR) assemblemsg $(OBJECTS) $(OBJECTSRPM) $(XGOBJECTS)
+assemble: compile $(OBJDIR) $(XGOBJDIR) assemblemsg $(OBJECTS) $(HANDOBJECTS) $(OBJECTSRPM) $(XGOBJECTS)
 
 # Generate object files to link
 $(OBJECTS) $(OBJECTSRPM): $(OBJDIR)/%.o: $(ASMDIR)/%.s
 	$(GCC) $(GCCOPTS) -c -o $@ $<
+
+$(HANDOBJECTS): $(OBJDIR)/%.o: $(ASMDIR)/%.s
+	$(GCC) -g $(GCCOPTS) -c -o $@ $<
 
 $(XGOBJECTS): $(XGOBJDIR)/%.o: $(XGASMDIR)/%.s
 	$(XGAS) -o $@ $<

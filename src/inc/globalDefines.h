@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -74,6 +74,7 @@
 /* Halves and Maxes */
 #define LONGHALF  0x80000000UL /* 2147483648 */ // Ned IS awesome! ;-)
 #define LONGMAX   0xFFFFFFFFUL /* 4294967295 */
+#define SHORT4TH  0x4000       /* 16384 */
 #define SHORTHALF 0x8000       /* 32768 */
 #define SHORTMAX  0xFFFF       /* 65535 */
 
@@ -146,6 +147,8 @@
 #define flashSectorSize        1024
 #define flashSectorSizeInWords  512 /* 512 words to a 1k flash sector */
 
+#define MAX_NUMBER_OF_OUTPUT_EVENTS 24
+#define oneDegree 50U // Scaler for all scheduler and decoder angles, not tables etc. Suffix is necessary otherwise 8 bit is assumed. TODO Mount Messenger road to New Plymouth! Recommended Kim@bach with NAZZZ and Steve!
 
 #define IGNITION_TIMING_FACTOR 1024UL // Warning, to be changed to 8 bit, use this:
 #define IT(IGNITION_TIMING_BTDC) (IGNITION_TIMING_BTDC * IGNITION_TIMING_FACTOR)
@@ -178,12 +181,14 @@
 #define cylinderSize500cc           16384       /* 500cc per cylinder for my FE-DOHC */
 #define cylinderSize450cc           14746       /* 450cc per cylinder for my F8-DOHC */
 #define cylinderSize400cc           13107       /* 400cc per cylinder for the Toyota 4age */
+#define cylinderSize324cc           10616       /* 324cc per cylinder for the Citroen G13 */
 #define cylinderSize250cc            8176       /* 250cc per cylinder for Sean's 998cc R1 */
 
 // Injector flows, value = (cc/min / 60) * 1024
 #define injector1600cc              27307       /* 1600cc per minute for some random Bosch injectors :-p */
 #define injector550cc                9387       /* 550cc per minute for my RX7 injectors */
 #define injector525cc                8960       /* 42lb/hr with higher pressure, 50lb/hr, 10.5 conversion from RC, Sean's LT1 */
+#define injector320cc                5461       /* 320cc per minute for bosch injectors in citroen turbo engine*/
 #define injector230cc                3925       /* 230cc per minute for Yamaha R1 injectors http://www.witchhunter.com/flowdatapix/bcdh210.jpg */
 #define injector213cc                3635       /* 213cc per minute for SilverTop 4age injectors */
 
@@ -271,10 +276,6 @@
 
 #define offIdleMAP                3000       /* 30kPa just above where MAP would be with closed throttle at idle */
 #define nearlyWOTMAP              9500       /* 95kPa just below where MAP would be at WOT */
-
-#define ticksPerCycleAtOneRPM    150000000   /* how many 0.8us ticks there are in between engine cycles at 1 RPM */
-#define tachoTickFactor4at50     6           /* Provides for a 4 cylinder down to 50 RPM  */
-#define tachoTotalFactor4at50   48           /* http://www.google.com/search?hl=en&safe=off&q=((150000000+%2F+6)+%2F++8+)+%2F+50&btnG=Search */
 
 //#define lookedUpVEDivisor   512
 //#define VEpercentageDivisor 100

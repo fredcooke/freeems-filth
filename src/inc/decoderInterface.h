@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2010, 2011 Fred Cooke
+ * Copyright 2010-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -76,7 +76,6 @@
 #define degreeTicksPerMinute 4166667 // rounded up by 1/3
 #define ticks_per_degree_multiplier (10 * oneDegree)
 /// @todo TODO make this ^ scaling better x10 yields 64rpm minimum functional engine speed.
-#define oneDegree 50U // Scaler for all scheduler and decoder angles, not tables etc. Suffix is necessary otherwise 8 bit is assumed. TODO Mount Messenger road to New Plymouth! Recommended Kim@bach with NAZZZ and Steve!
 
 
 // ADC
@@ -139,7 +138,6 @@ EXTERN unsigned short lastTicksPerDegree;
 EXTERN unsigned short lastPrimaryTicksPerDegree;
 EXTERN unsigned short lastSecondaryTicksPerDegree;
 EXTERN unsigned long skipEventFlags;
-EXTERN unsigned long engineCyclePeriod;
 EXTERN unsigned char numberScheduled; /// @todo TODO remove DEBUG
 
 /// @todo Introduce the concept of sync level to schedule for if NOT synced
@@ -204,11 +202,11 @@ selfSetTimer &= injectorMainOffMasks[pin];                                      
 
 #ifdef DECODER_IMPLEMENTATION_C // See above for information on how to set these values up.
 
-/// @todo TODO behave differently depending upon sync level? Genericise this loop/logic? YES, move this to macro/function and call from all decoders.
+/// @todo TODO behave differently depending upon sync level?
 #define SCHEDULE_ECT_OUTPUTS() \
 numberScheduled = 0;                                                                        \
 unsigned char outputEventNumber;                                                            \
-for(outputEventNumber=0;outputEventNumber<MAX_NUMBER_OF_OUTPUT_EVENTS;outputEventNumber++){ \
+for(outputEventNumber=0;outputEventNumber<fixedConfigs1.schedulingSettings.numberOfConfiguredOutputEvents;outputEventNumber++){ \
 	if(outputEventInputEventNumbers[outputEventNumber] == KeyUserDebugs.currentEvent){      \
 		skipEventFlags &= ~(1UL << outputEventNumber);                                      \
 		schedulePortTPin(outputEventNumber, timeStamp);                                     \
@@ -228,6 +226,30 @@ for(outputEventNumber=0;outputEventNumber<MAX_NUMBER_OF_OUTPUT_EVENTS;outputEven
 	}                                                                                       \
 }                                                                                           // End of macro block!
 
+
+// A value of zero = do nothing
+#define COARSE_BB_IGNORE 0
+#define COARSE_BB_GO_ON  1
+#define COARSE_BB_GO_OFF 2
+#define COARSE_BB_TOGGLE 3
+#define COARSE_BB_MASK   0x03
+
+#define OUTPUT_COARSE_BBS() \
+if(fixedConfigs1.coarseBitBangSettings.outputActions[KeyUserDebugs.currentEvent]){                                                                \
+	int offset;                                                                                                                                   \
+	for(offset=0;offset<fixedConfigs1.coarseBitBangSettings.numberConfigured;offset++){                                                           \
+		unsigned char behaviour = (fixedConfigs1.coarseBitBangSettings.outputActions[KeyUserDebugs.currentEvent] >> (offset*2)) & COARSE_BB_MASK; \
+		if(behaviour){                                                                                                                            \
+			if(behaviour == COARSE_BB_GO_ON){                                                                                                     \
+				*(fixedConfigs1.coarseBitBangSettings.ports[offset]) |= fixedConfigs1.coarseBitBangSettings.masks[offset];                        \
+			}else if(behaviour == COARSE_BB_GO_OFF){                                                                                              \
+				*(fixedConfigs1.coarseBitBangSettings.ports[offset]) &= (unsigned char)~(fixedConfigs1.coarseBitBangSettings.masks[offset]);      \
+			}else if(behaviour == COARSE_BB_TOGGLE){                                                                                              \
+				*(fixedConfigs1.coarseBitBangSettings.ports[offset]) ^= fixedConfigs1.coarseBitBangSettings.masks[offset];                        \
+			}                                                                                                                                     \
+		}                                                                                                                                         \
+	}                                                                                                                                             \
+}                                                                                                                                                 // End of macro block!
 
 
 // These give a warning in eclipse because they aren't defined in this file, they are defined per decoder and enforced here.
@@ -262,11 +284,7 @@ const unsigned char decoderName[] = BASE_FILE_NAME;
 //// Config items: These must exist in flash only config, not here...
 //EXTERN const unsigned char ADCSampleEvents[12];
 //EXTERN const unsigned char numberOfOutputEvents;
-//
-//// Live vars for subprocess intercommunication
-#define MAX_NUMBER_OF_OUTPUT_EVENTS 24
 
-EXTERN unsigned char outputEventPinNumbers[MAX_NUMBER_OF_OUTPUT_EVENTS];            // 0xFF (disabled) by default, populated to actual pin numbers by the scheduler
 EXTERN unsigned char outputEventInputEventNumbers[MAX_NUMBER_OF_OUTPUT_EVENTS];     // 0xFF (disabled) by default, populated to actual input event numbers by the scheduler
 
 EXTERN unsigned short outputEventPulseWidthsMath[MAX_NUMBER_OF_OUTPUT_EVENTS];

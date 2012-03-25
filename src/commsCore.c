@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2011 Fred Cooke
+ * Copyright 2008-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -382,32 +382,31 @@ void decodePacketAndRespond(){
 		{
 			if(RXCalculatedPayloadLength != 0){
 				errorID = payloadLengthTypeMismatch;
-				break;
+			}else{ // Perform soft system reset
+				_start();
 			}
-			/* Perform soft system reset */
-			_start();
+			break;
 		}
 		case requestHardSystemReset:
 		{
 			if(RXCalculatedPayloadLength != 0){
 				errorID = payloadLengthTypeMismatch;
-				break;
+			}else{
+				/* This is how the serial monitor does it. */
+				COPCTL = 0x01; /* Arm with shortest time */
+				ARMCOP = 0xFF; /* Write bad value, should cause immediate reset */
+				/* Using _start() only resets the app ignoring the monitor switch. It does not work */
+				/* properly because the location of _start is not the master reset vector location. */
 			}
-
-			/* This is how the serial monitor does it. */
-			COPCTL = 0x01; /* Arm with shortest time */
-			ARMCOP = 0xFF; /* Write bad value, should cause immediate reset */
-			/* Using _start() only resets the app ignoring the monitor switch. It does not work */
-			/* properly because the location of _start is not the master reset vector location. */
+			break;
 		}
 		case requestReInitOfSystem:
 		{
 			if(RXCalculatedPayloadLength != 0){
 				errorID = payloadLengthTypeMismatch;
-				break;
+			}else{
+				init();
 			}
-
-			init();
 			break;
 		}
 	// FreeEMS Vanilla Firmware Specific cases
@@ -1235,7 +1234,6 @@ void decodePacketAndRespond(){
 				for(channel = 0;channel < 6;channel++){
 					if(testPulseWidths[channel] > injectorSwitchOnCodeTime){ // See next block for warning.
 						// use as-is
-						outputEventPinNumbers[channel] = channel;
 						outputEventDelayFinalPeriod[channel] = decoderMaxCodeTime;
 						outputEventPulseWidthsMath[channel] = testPulseWidths[channel];
 						outputEventInputEventNumbers[channel] = testEventNumbers[channel];
@@ -1246,15 +1244,14 @@ void decodePacketAndRespond(){
 						break;
 					}else if(testPulseWidths[channel] == 3){
 						testMode++; // Dirty hack to avoid dealing with Dave for the time being.
+						testNumberOfMissing = channel;
 					}else if(testPulseWidths[channel] == 2){
 						// use the dwell from the core maths and input vars.
-						outputEventPinNumbers[channel] = channel;
 						outputEventDelayFinalPeriod[channel] = decoderMaxCodeTime;
 						outputEventPulseWidthsMath[channel] = DerivedVars->Dwell;
 						outputEventInputEventNumbers[channel] = testEventNumbers[channel];
 					}else if(testPulseWidths[channel] == 1){
 						// use the reference pulse width from the core maths and input vars.
-						outputEventPinNumbers[channel] = channel;
 						outputEventDelayFinalPeriod[channel] = decoderMaxCodeTime;
 						outputEventPulseWidthsMath[channel] = DerivedVars->RefPW;
 						outputEventInputEventNumbers[channel] = testEventNumbers[channel];
@@ -1285,9 +1282,7 @@ void decodePacketAndRespond(){
 						// Store the time per event in RPM such that it can be updated dynamically
 						CoreVars->RPM = testTicksPerEvent;
 
-						// Setup the channels to use
-						outputEventPinNumbers[0] = 0; // 0 is our main signal
-						outputEventPinNumbers[1] = 1; // 1 is out cam sync signal
+						// The channels to use rely on the defaults from initialisers! Custom builds can break BenchTest mode!
 
 						// Un-schedule anything that got scheduled
 						outputEventInputEventNumbers[2] = 0xFF;
@@ -1379,6 +1374,7 @@ void decodePacketAndRespond(){
 			}else{
 				errorID = unrecognisedPayloadID;
 			}
+			break;
 		}
 	}
 
