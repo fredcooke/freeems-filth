@@ -23,7 +23,9 @@
  * Thank you for choosing FreeEMS to run your engine!
  */
 
-/** @file xgateVectors.h
+/** @file
+ *
+ * @ingroup xgateFiles
  * @ingroup xgateHeaders
  *
  * @brief C header for assembly xgate functions
@@ -56,9 +58,11 @@
 #define	PRIORITY_LEVEL_TWO	0x02
 #define SCHEDULER_BUSY 0x01
 
+
 #define ROUTE_INTERRUPT(channel_id, cpu_assignment, priority) \
         INT_CFADDR = (channel_id * 2) & 0xF0;                 \
         INT_CFDATA_ARR[((channel_id * 2) & 0x0F) >> 1] = (cpu_assignment | priority);
+
 
 typedef struct {
 	unsigned short programCounterValue; /* This data is forced into the XGATE PC register */
@@ -68,11 +72,7 @@ typedef struct {
 // This statement imports the symbol from the xgate ASM for use in the vector table
 extern void xgateSchedule(); // extern not EXTERN because it is defined outside of C
 extern void xgatePITTurnOff();
-<<<<<<< HEAD
 extern void xgatePITBangLoop();
-=======
-extern void xgatePITTurnOn();
->>>>>>> c39da6f9d1f25b09058da52e46415f2f424df30a
 extern void xgateMetronome();
 extern void startXGATECode();
 extern void endXGATECode();
@@ -104,17 +104,6 @@ extern void parameterDelayH5();
 extern void parameterDelay5();
 extern void parameterRuntime5();
 
-<<<<<<< HEAD
-=======
-struct XGOutputEvent{
-	unsigned short channelID;
-	unsigned long delay;
-	unsigned short runtimeHigh;
-	unsigned short runtime;
-	unsigned short inputTS;
-};
-
->>>>>>> c39da6f9d1f25b09058da52e46415f2f424df30a
 //extern void parameterInputStamp();
 extern void xGSInputEdgeStamp();
 extern void xGSFlags();
@@ -126,10 +115,7 @@ EXTERN const xgateIntVector xgateIntVectorTable[121];
 
 // Xgate control value
 #define XGATE_ERROR_HANDLER 0x0000 /* TODO Create the XGATE error handling thread in asm. */
-<<<<<<< HEAD
-=======
-#define XGSCHEDULE()	XGSWT = 0x0101;
->>>>>>> c39da6f9d1f25b09058da52e46415f2f424df30a
+
 
 #else
         /* let us know if we are being untidy with headers */

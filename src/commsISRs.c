@@ -55,41 +55,6 @@
  * http://gcc.gnu.org/onlinedocs/gcc-3.3.6/Inline.html#Inline	*/
 
 
-/** @brief Send And Increment
- *
- * Increment the pointer, decrement the length, and send it!
- *
- * @author Fred Cooke
- *
- * @note This is an extern inline function and as such is always inlined.
- *
- * @param rawValue is the raw byte to be sent down the serial line.
- */
-extern inline void sendAndIncrement(unsigned char rawValue){
-	SCI0DRL = rawValue;
-	TXPacketLengthToSendSCI0--;
-	TXBufferCurrentPositionSCI0++;
-}
-
-
-/** @brief Receive And Increment
- *
- * Store the value and add it to the checksum, then increment the pointer and length.
- *
- * @author Fred Cooke
- *
- * @note This is an extern inline function and as such is always inlined.
- *
- * @param value is the byte of data to store in the buffer and add to the checksum.
- */
-extern inline void receiveAndIncrement(const unsigned char value){
-	*RXBufferCurrentPosition = value;
-	RXCalculatedChecksum += value; // Remove, do afterwards in non ISR time!
-	RXBufferCurrentPosition++;
-	RXPacketLengthReceived++; // Remove, do afterwards by subtracting the start point of the buffer!
-}
-
-
 /** @brief Reset Receive State
  *
  * Reset communications reception to the state provided.
@@ -104,9 +69,7 @@ void resetReceiveState(unsigned char sourceIDState){
 	/* Set the receive buffer pointer to the beginning */
 	RXBufferCurrentPosition = (unsigned char*)&RXBuffer;
 
-	/* Zero the flags, buffer length and checksum */
-	RXPacketLengthReceived = 0;
-	RXCalculatedChecksum = 0;
+	/* Zero the flags */
 	RXStateFlags = 0;
 
 	/* Set the source ID state (clear all or all but one flag(s)) */
@@ -151,52 +114,46 @@ void resetReceiveState(unsigned char sourceIDState){
  * @todo TODO Fix the dual start/stop issue by finding out why bytes get dropped at the ends. IE, read docs thoroughly.
  */
 void SCI0ISR(){
+	// OK before flag reading because cleared when SCI0DRL accessed (R or W)
+	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT4, PORTB);
+
 	/* Read the flags register */
 	unsigned char flags = SCI0SR1;
 	/* Note: Combined with reading or writing the data register this also clears the flags. */
 
-	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT4, PORTB);
-
 	/* If the RX interrupt is enabled check RX related flags */
-	if(SCI0CR2 & SCICR2_RX_ISR_ENABLE){
+	if(SCI0CR2 & SCICR2_RX_ISR_ENABLE && flags & SCISR1_RX_REGISTER_FULL){
 		/* Grab the received byte from the register */
 		unsigned char rawByte = SCI0DRL;
 
-		/* If there is noise on the receive line record it */
-		if(flags & SCISR1_RX_NOISE){
-			FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_NOISE_ERRORS_OFFSET);
-			KeyUserDebugs.serialHardwareErrors++;
-			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-			return;
-		}
+		if(flags & (SCISR1_RX_NOISE | SCISR1_RX_FRAMING | SCISR1_RX_PARITY | SCISR1_RX_OVERRUN)){
+			/* If there is noise on the receive line record it */
+			if(flags & SCISR1_RX_NOISE){
+				FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_NOISE_ERRORS_OFFSET);
+				KeyUserDebugs.serialHardwareErrors++;
+			}
 
-		/* If an overrun occurs record it */
-		if(flags & SCISR1_RX_OVERRUN){
-			FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_OVERRUN_ERRORS_OFFSET);
-			KeyUserDebugs.serialOverrunErrors++;
-			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-			return;
-		}
+			/* If a framing error occurs record it */
+			if(flags & SCISR1_RX_FRAMING){
+				FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_FRAMING_ERRORS_OFFSET);
+				KeyUserDebugs.serialHardwareErrors++;
+			}
 
-		/* If a framing error occurs record it */
-		if(flags & SCISR1_RX_FRAMING){
-			FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_FRAMING_ERRORS_OFFSET);
-			KeyUserDebugs.serialHardwareErrors++;
-			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-			return;
-		}
+			/* If a parity error occurs record it */
+			if(flags & SCISR1_RX_PARITY){
+				FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_PARITY_ERRORS_OFFSET);
+				KeyUserDebugs.serialHardwareErrors++;
+			}
 
-		/* If a parity error occurs record it */
-		if(flags & SCISR1_RX_PARITY){
-			FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_PARITY_ERRORS_OFFSET);
-			KeyUserDebugs.serialHardwareErrors++;
-			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-			return;
-		}
+			/* If an overrun occurs record it */
+			if(flags & SCISR1_RX_OVERRUN){
+				FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_OVERRUN_ERRORS_OFFSET);
+				KeyUserDebugs.serialOverrunErrors++;
+			}
 
-		/* If there is data waiting to be received */
-		if(flags & SCISR1_RX_REGISTER_FULL){
-			/* Look for a start bresetReceiveStateyte to indicate a new packet */
+			resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
+		}else{ // Process the received data
+			/* Look for a start byte to indicate a new packet */
 			if(rawByte == START_BYTE){
 				/* If another interface is using it (Note, clear flag, not normal) */
 				if(RXBufferContentSourceID & COM_CLEAR_SCI0_INTERFACE_ID){
@@ -212,7 +169,7 @@ void SCI0ISR(){
 					/* Reset to us using it unless someone else was */
 					resetReceiveState(COM_SET_SCI0_INTERFACE_ID);
 				}
-			}else if(RXPacketLengthReceived >= RX_BUFFER_SIZE){
+			}else if((unsigned short)RXBufferCurrentPosition >= ((unsigned short)&RXBuffer + RX_BUFFER_SIZE)){
 				/* Buffer was full, record and reset */
 				FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_PACKETS_OVER_LENGTH_OFFSET);
 				KeyUserDebugs.serialAndCommsCodeErrors++;
@@ -223,14 +180,11 @@ void SCI0ISR(){
 					RXStateFlags &= RX_SCI_NOT_ESCAPED_NEXT;
 
 					if(rawByte == ESCAPED_ESCAPE_BYTE){
-						/* Store and checksum escape byte */
-						receiveAndIncrement(ESCAPE_BYTE);
+						*RXBufferCurrentPosition++ = ESCAPE_BYTE;
 					}else if(rawByte == ESCAPED_START_BYTE){
-						/* Store and checksum start byte */
-						receiveAndIncrement(START_BYTE);
+						*RXBufferCurrentPosition++ = START_BYTE;
 					}else if(rawByte == ESCAPED_STOP_BYTE){
-						/* Store and checksum stop byte */
-						receiveAndIncrement(STOP_BYTE);
+						*RXBufferCurrentPosition++ = STOP_BYTE;
 					}else{
 						/* Otherwise reset and record as data is bad */
 						resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
@@ -238,33 +192,14 @@ void SCI0ISR(){
 						KeyUserDebugs.serialAndCommsCodeErrors++;
 					}
 				}else if(rawByte == ESCAPE_BYTE){
-					/* Set flag to indicate that the next byte should be un-escaped. */
+					/* Drop the escape and set the flag to indicate that the next byte should be un-escaped. */
 					RXStateFlags |= RX_SCI_ESCAPED_NEXT;
 				}else if(rawByte == STOP_BYTE){
 					/* Turn off reception */
 					SCI0CR2 &= SCICR2_RX_ISR_DISABLE;
-
-					/* Bring the checksum back to where it should be */
-					unsigned char RXReceivedChecksum = (unsigned char)*(RXBufferCurrentPosition - 1);
-					RXCalculatedChecksum -= RXReceivedChecksum;
-
-					/* Check that the checksum matches and that the packet is big enough for header,ID,checksum */
-					if(RXPacketLengthReceived < 4){
-						resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-						FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_PACKETS_UNDER_LENGTH_OFFSET);
-						KeyUserDebugs.serialAndCommsCodeErrors++;
-					}else if(RXCalculatedChecksum == RXReceivedChecksum){
-						/* If it's OK set process flag */
-						RXStateFlags |= RX_READY_TO_PROCESS;
-					}else{
-						/* Otherwise reset the state and record it */
-						resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
-						FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_CHECKSUM_MISMATCHES_OFFSET);
-						KeyUserDebugs.serialAndCommsCodeErrors++;
-					}
+					RXStateFlags |= RX_READY_TO_PROCESS;
 				}else{
-					/* If it isn't special process it! */
-					receiveAndIncrement(rawByte);
+					*RXBufferCurrentPosition++ = rawByte;
 				}
 			} /* ELSE: Do nothing : drop the byte */
 		}
@@ -275,7 +210,7 @@ void SCI0ISR(){
 		/* Get the byte to be sent from the buffer */
 		unsigned char rawValue = *TXBufferCurrentPositionSCI0;
 
-		if(TXPacketLengthToSendSCI0 > 0){
+		if(TXBufferCurrentPositionSCI0 <= TXBufferCurrentPositionHandler){
 			if(TXByteEscaped == 0){
 				/* If the raw value needs to be escaped */
 				if(rawValue == ESCAPE_BYTE){
@@ -288,10 +223,12 @@ void SCI0ISR(){
 					SCI0DRL = ESCAPE_BYTE;
 					TXByteEscaped = ESCAPED_STOP_BYTE;
 				}else{ /* Otherwise just send it */
-					sendAndIncrement(rawValue);
+					SCI0DRL = rawValue;
+					TXBufferCurrentPositionSCI0++;
 				}
 			}else{
-				sendAndIncrement(TXByteEscaped);
+				SCI0DRL = TXByteEscaped;
+				TXBufferCurrentPositionSCI0++;
 				TXByteEscaped = 0;
 			}
 		}else{ /* Length is zero */

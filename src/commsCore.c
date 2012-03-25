@@ -161,21 +161,13 @@ void finaliseAndSend(unsigned short errorID){
 		TXBufferCurrentPositionHandler += 2;
 	}
 
-	/* Get the length from the pointer */
-	unsigned short TXPacketLengthToSend = (unsigned short)TXBufferCurrentPositionHandler - (unsigned short)&TXBuffer;
-
 	/* Tag the checksum on the end */
-	*TXBufferCurrentPositionHandler = checksum((unsigned char*)&TXBuffer, TXPacketLengthToSend);
-	TXPacketLengthToSend++;
+	*TXBufferCurrentPositionHandler = checksum((unsigned char*)&TXBuffer, ((unsigned short)TXBufferCurrentPositionHandler - (unsigned short)&TXBuffer));
 
 	/* Send it out on all the channels required. */
 
 	/* SCI0 - Main serial interface */
 	if(TXBufferInUseFlags & COM_SET_SCI0_INTERFACE_ID){
-		/* Copy numbers to interface specific vars */
-		TXPacketLengthToSendSCI0 = TXPacketLengthToSend;
-		TXPacketLengthToSendCAN0 = TXPacketLengthToSend;
-
 		/* Initiate transmission */
 		SCI0DRL = START_BYTE;
 
@@ -231,17 +223,38 @@ void finaliseAndSend(unsigned short errorID){
  */
 void decodePacketAndRespond(){
 	/* Extract and build up the header fields */
-	RXBufferCurrentPosition = (unsigned char*)&RXBuffer;
 	TXBufferCurrentPositionHandler = (unsigned char*)&TXBuffer;
 
 	/* Initialised here such that override is possible */
 	TXBufferCurrentPositionSCI0 = (unsigned char*)&TXBuffer;
 	TXBufferCurrentPositionCAN0 = (unsigned char*)&TXBuffer;
 
+	// How big was the packet that we got back
+	unsigned short RXPacketLengthReceived = (unsigned short)RXBufferCurrentPosition - (unsigned short)&RXBuffer;
+
+	/* Check that the packet is big enough for header,ID,checksum */
+	if(RXPacketLengthReceived < 4){
+		resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
+		FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_PACKETS_UNDER_LENGTH_OFFSET);
+		KeyUserDebugs.serialAndCommsCodeErrors++;
+		return;
+	}
+
+	/* Pull out the received checksum and calculate the real one, then check */
+	unsigned char RXReceivedChecksum = (unsigned char)*(RXBufferCurrentPosition - 1);
+	unsigned char RXCalculatedChecksum = checksum((unsigned char*)&RXBuffer, RXPacketLengthReceived - 1);
+	if(RXCalculatedChecksum != RXReceivedChecksum){
+		resetReceiveState(CLEAR_ALL_SOURCE_ID_FLAGS);
+		FLAG_AND_INC_FLAGGABLE(FLAG_SERIAL_CHECKSUM_MISMATCHES_OFFSET);
+		KeyUserDebugs.serialAndCommsCodeErrors++;
+		return;
+	}
+
 	/* Start this off as full packet length and build down to the actual length */
 	RXCalculatedPayloadLength = RXPacketLengthReceived;
 
 	/* Grab the RX header flags out of the RX buffer */
+	RXBufferCurrentPosition = (unsigned char*)&RXBuffer;
 	RXHeaderFlags = *RXBufferCurrentPosition;
 	RXBufferCurrentPosition++;
 	RXCalculatedPayloadLength--;
@@ -476,7 +489,7 @@ void decodePacketAndRespond(){
 			lookupBlockDetails(locationID, &details);
 
 			// Don't let anyone write to running variables unless we are running BenchTest firmware!
-			if((details.flags & block_is_read_only) && !(compare((char*)&decoderName, BENCH_TEST_NAME, sizeof(BENCH_TEST_NAME)))){
+			if((details.flags & block_is_read_only) && compare((char*)&decoderName, BENCH_TEST_NAME, sizeof(BENCH_TEST_NAME))){
 				errorID = attemptToWriteToReadOnlyBlock;
 				break;
 			}
@@ -1226,11 +1239,13 @@ void decodePacketAndRespond(){
 						outputEventDelayFinalPeriod[channel] = decoderMaxCodeTime;
 						outputEventPulseWidthsMath[channel] = testPulseWidths[channel];
 						outputEventInputEventNumbers[channel] = testEventNumbers[channel];
-					}else if(testPulseWidths[channel] > 2){
+					}else if(testPulseWidths[channel] > 3){
 						// less than the code time, and not special, error!
 						errorID = tooShortOfAPulseWidthToTest;
 						// Warning, PWs close to this could be slightly longer than requested, that will change in later revisions.
 						break;
+					}else if(testPulseWidths[channel] == 3){
+						testMode++; // Dirty hack to avoid dealing with Dave for the time being.
 					}else if(testPulseWidths[channel] == 2){
 						// use the dwell from the core maths and input vars.
 						outputEventPinNumbers[channel] = channel;
@@ -1258,6 +1273,31 @@ void decodePacketAndRespond(){
 				if(errorID == 0){
 					// Let the first iteration roll it over to zero.
 					KeyUserDebugs.currentEvent = 0xFF; // Needs to be here in case of multiple runs, init is not sufficient
+
+					if(testMode == TEST_MODE_DODGY_MISSING_TOOTH){
+						if(testEventsPerCycle <= 127){
+							testEventsPerCycle *= 2;
+						}else{
+							errorID = tooManyEventsPerCycleMissingTth;
+							break;
+						}
+
+						// Store the time per event in RPM such that it can be updated dynamically
+						CoreVars->RPM = testTicksPerEvent;
+
+						// Setup the channels to use
+						outputEventPinNumbers[0] = 0; // 0 is our main signal
+						outputEventPinNumbers[1] = 1; // 1 is out cam sync signal
+
+						// Un-schedule anything that got scheduled
+						outputEventInputEventNumbers[2] = 0xFF;
+						outputEventInputEventNumbers[3] = 0xFF;
+						outputEventInputEventNumbers[4] = 0xFF;
+						outputEventInputEventNumbers[5] = 0xFF;
+					}else if(testMode > TEST_MODE_DODGY_MISSING_TOOTH){
+						errorID = unimplementedTestMode;
+						break;
+					}
 
 					// Trigger decoder interrupt to fire thus starting the loop!
 					TIE = 0x01; // The ISR does the rest!

@@ -51,7 +51,6 @@
 #include "inc/init.h"
 #include "inc/decoderInterface.h"
 #include "inc/xgateVectors.h"
-#include "inc/xgateGlobals.h"
 #include <string.h>
 
 
@@ -80,6 +79,11 @@ void init(){
 	initInterrupts();       /* still last, reset timers, enable interrupts here TODO move this to inside config in an organised way. Set up the rest of the individual interrupts */
 	ATOMIC_END();           /* Re-enable any configured interrupts */
 }
+
+
+#ifdef XGATE
+#include "xgateInit.c"
+#endif
 
 
 /* used to chop out all the init stuff at compile time for hardware testing. */
@@ -184,7 +188,7 @@ void initIO(){
 	PORTB = ZEROS; /* Init the rest of the spark outputs as off */
 	PORTE = 0x1F; /* 0b_0001_1111 : when not in use 0b_1001_1111 PE7 should be high PE5 and PE6 should be low, the rest high */
 	PORTK = ZEROS;
-	PORTS = ZEROS;
+	PORTS = 0x02; // Set TX0 pin to high between transmissions!
 	PORTT = ZEROS; /* All pins in off state at boot up (only matters for 2 - 7) */
 	PORTM = ZEROS;
 	PORTP = ZEROS; // TODO hook these up to the adc channels such that you can vary the brightness of an led with a pot.
@@ -199,7 +203,7 @@ void initIO(){
 	DDRB = ONES; /* GPIO (8) */
 	DDRE = 0xFC; /* 0b_1111_1100 : Clock and mode pins PE0,PE1 are input only pins, the rest are GPIO */
 	DDRK = ONES; /* Only 0,1,2,3,4,5,7, NOT 6 (7) */
-	DDRS = ONES; /* SCI0, SCI1, SPI0 (8) */
+	DDRS = 0xFE; /* RX0 as input: SCI0 (RX,TX), SCI1 (RX,TX), SPI0 (MISO,MOSI,SCK,SS) (8) */
 	DDRT = 0xFC; /* 0b_1111_1100 set ECT pins 0,1 to IC and 2:7 to OC (8) */
 	DDRM = ONES; /* CAN 0 - 3 (8) */
 	DDRP = ONES; /* PWM pins (8) */
@@ -539,121 +543,6 @@ void initFlash(){
 	FSTAT = FSTAT | (PVIOL | ACCERR);	/* Clear any errors             	*/
 }
 
-/** @brief Xgate module setup
- *
- * Configure XGATE setup registers and prepare XGATE code to be run by copying
- * it from flash hcs12mem can write to to flash XGATE can read from.
- *
- * @author Sean Keys and Fred Cooke
- *
- * @note A thanks goes out to Edward Karpicz for helping me get xgate configured
- * properly.
- *
- * @warning If executing from RAM you must copy the code from Flash to RAM before
- * starting Xgate
- *
- */
-void initXgate(){
-	/* route interrupt to xgate, vector address = channel_id * 2 */
-<<<<<<< HEAD
-	ROUTE_INTERRUPT(0x39, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE) /*enable xgate int on software0 interrupt */
-	//ROUTE_INTERRUPT(0x3A, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /*enable xgate int on PIT3 */
-	//ROUTE_INTERRUPT(0x3B, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /*enable xgate int on PIT2 */
-	ROUTE_INTERRUPT(0x3C, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE) /*enable xgate int on PIT1 */
-	ROUTE_INTERRUPT(0x3D, XGATE_INTERRUPT, PRIORITY_LEVEL_TWO) /*enable xgate int on PIT0 */
-	/* XGATE sees flash starting at paged address 0xE0+0x8800 to + 30Kb*/
-	unsigned char savedRPAGE = RPAGE;
-	unsigned char savedPPAGE = PPAGE;
-	// XGATE threads execute from RAM
-	RPAGE = RPAGE_TUNE_TWO;
-	PPAGE = 0xE1;
-	// we can't use the symbols for the memcpy part because the symbols need to contain xgate relevant values
-	memcpy(START_OF_RAM_WINDOW, START_OF_FLASH_WINDOW,
-			XGATE_RAM_ALLOCATION_SIZE);
-	//TODO set RAM protection
-	RPAGE = savedRPAGE;
-	PPAGE = savedPPAGE;
-	// Set the XGVBR register to its start address in flash (page 0xE0 after 2K register space)
-	XGVBR = (unsigned short) 0x0800; // EO region is divided to ensure vectors end up here visible to xgate
-	// Enable XGate and XGate interrupts
-	XGMCTL = (unsigned short) 0x8181;
-	/* Enable PIT TODO move back to proper section once unit tested */
-	//	PITMTLD0 = 0x1F; /* 32 prescaler gives 0.8uS resolution and max period of 52.4288ms measured */
-	/* Measurements from logic analizer PITMTLD0
-	 * 0x01 = 3.28ms@16-bits
-	 */
-	/* A prescalar of 4 yeilds .1ms resolution and max times of 6.5535ms@16-bit, 429,483.622ms@32-bit */PITMTLD0 =
-	0x1F; /* 32 prescaler (1 / ((40 MHz) / PRESCALAR)) */
-	PITMTLD1 = 0x1F; /* 32 prescaler  (1 / ((40 MHz) / PRESCALAR)) */
-	//PITMTLD0 = 0x03; /* 4 prescaler (1 / ((40 MHz) / PRESCALAR)) */
-	//PITMTLD1 = 0x03; /* 4 prescaler  (1 / ((40 MHz) / PRESCALAR)) */
-	PITMUX = 0xC0; /* set chan 0-1 to use PITMTLD0 base and chan 2-3 to use PITMTLD1 */
-	PITLD0 = 0x0000; // set timers running //TEST ONLY
-	PITLD1 = 0xFFFF; // set timers running //TEST ONLY
-	//PITLD2 = 0xFFFF; /* This is our metronome so this number is static */
-	//PITLD3 = 0x01; // set timers running //TEST ONLY
-	PITCFLMT = 0x80; // enable module
-	PITCE = 0x02; // countdown enable on our metronome
-	PITINTE = 0x03; // enable interrupt on 0, 1
-	PITFLT = ONES; // clear flags
-	/* Initialize our global xgate pointers */
-	XGOutputEvents = (XGOutputEvent*) (parametersBase
-			- RPAGE_TUNE_TWO_WINDOW_DIFFERENCE);
-	xgsInStamp = (unsigned short*) (xGSInputEdgeStamp
-			- RPAGE_TUNE_TWO_WINDOW_DIFFERENCE);
-	xgsEventsToSch = (unsigned short*) (xgsNumOfEventsToSchedule
-			- RPAGE_TUNE_TWO_WINDOW_DIFFERENCE);
-=======
-		ROUTE_INTERRUPT(0x39, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /*enable xgate int on software0 interrupt */
-		ROUTE_INTERRUPT(0x3A, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /*enable xgate int on PIT3 */
-		ROUTE_INTERRUPT(0x3B, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /*enable xgate int on PIT2 */
-		ROUTE_INTERRUPT(0x3C, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /*enable xgate int on PIT1 */
-		ROUTE_INTERRUPT(0x3D, XGATE_INTERRUPT, PRIORITY_LEVEL_ONE ) /*enable xgate int on PIT0 */
-
-		/* XGATE sees flash starting at paged address 0xE0+0x8800 to + 30Kb*/
-		unsigned char savedRPAGE = RPAGE;
-		unsigned char savedPPAGE = PPAGE;
-		// XGATE threads execute from RAM
-		RPAGE = RPAGE_TUNE_TWO;
-		PPAGE = 0xE1;
-		// we can't use the symbols for the memcpy part because the symbols need to contain xgate relevant values
-		memcpy(START_OF_RAM_WINDOW, START_OF_FLASH_WINDOW, XGATE_RAM_ALLOCATION_SIZE);
-		//TODO set RAM protection
-		RPAGE = savedRPAGE;
-		PPAGE = savedPPAGE;
-		// Set the XGVBR register to its start address in flash (page 0xE0 after 2K register space)
-		XGVBR = (unsigned short )0x0800; // EO region is divided to ensure vectors end up here visible to xgate
-
-		// Enable XGate and XGate interrupts
-		XGMCTL= (unsigned short)0x8181;
-
-		/* Enable PIT TODO move back to proper section once unit tested */
-	//	PITMTLD0 = 0x1F; /* 32 prescaler gives 0.8uS resolution and max period of 52.4288ms measured */
-		/* Measurements from logic analizer PITMTLD0
-		 * 0x01 = 3.28ms@16-bits
-		 */
-
-		/* A prescalar of 4 yeilds .1ms resolution and max times of 6.5535ms@16-bit, 429,483.622ms@32-bit */
-		/* TODO figure out why they behave odd if they carry different values */
-
-		PITMTLD0 = 0x1F; /* 32 prescaler (1 / ((40 MHz) / PRESCALAR)) */
-		PITMTLD1 = 0x1F; /* 32 prescaler  (1 / ((40 MHz) / PRESCALAR)) */
-
-		//PITMTLD0 = 0x03; /* 4 prescaler (1 / ((40 MHz) / PRESCALAR)) */
-		//PITMTLD1 = 0x03; /* 4 prescaler  (1 / ((40 MHz) / PRESCALAR)) */
-
-		PITMUX = 0xC0; /* set chan 0-1 to use PITMTLD0 base and chan 2-3 to use PITMTLD1 */
-		PITLD0 = 0x0000; // set timers running //TEST ONLY
-		PITLD1 = 0xFFFF; // set timers running //TEST ONLY
-		//PITLD2 = 0xFFFF; /* This is our metronome so this number is static */
-		//PITLD3 = 0x01; // set timers running //TEST ONLY
-
-		PITCFLMT = 0x80; // enable module
-		PITCE = 0x02; // countdown enable on our metronome
-		PITINTE = 0x03; // enable interrupt on 0, 1
-		PITFLT = ONES; // clear flags
->>>>>>> c39da6f9d1f25b09058da52e46415f2f424df30a
-}
 
 /* Set up the timer module and its various interrupts */
 void initECTTimer(){
@@ -758,9 +647,11 @@ void initSCIStuff(){
 	 * 0 = WAKE (idle line wakeup)
 	 * 0 = ILT (idle line type count start pos)
 	 * 1 = PE (parity on)
-	 * 1 = PT (odd parity) (minicom defaults to no parity)
+	 * 1 = PT (odd parity)
 	 *
-	 * 00010011 = 0x13
+	 * 0x13 = ODD (default)
+	 * 0x12 = EVEN
+	 * 0x00 = NONE
 	 */
 	SCI0CR1 = 0x13;
 
@@ -769,14 +660,12 @@ void initSCIStuff(){
 	 * 0 = TCIE (tx complete isr disabled)
 	 * 1 = RIE (rx full isr enabled)
 	 * 0 = ILIE (idle line isr disabled)
-	 * 1 = TE (transmit enabled)
+	 * 0 = TE (transmit disabled)
 	 * 1 = RE (receive enabled)
 	 * 0 = RWU (rx wake up normal)
 	 * 0 = SBK (send break off)
-	 *
-	 * 00101100 = 0x2C
 	 */
-	SCI0CR2 = 0x2C;
+	SCI0CR2 = 0x24;
 }
 
 /* TODO Load and calculate all configuration data required to run */
