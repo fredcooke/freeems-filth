@@ -75,6 +75,31 @@ EXTERN const volatile unsigned short MAFTransferTable[1024]; /* 2k */
 EXTERN const volatile unsigned char TestTransferTable[2048]; /* 2k */
 
 
+//EXTERN const volatile unsigned char fillerE1[16384];
+EXTERN const volatile unsigned char fillerE2[16384];
+EXTERN const volatile unsigned char fillerE3[16384];
+EXTERN const volatile unsigned char fillerE4[16384];
+EXTERN const volatile unsigned char fillerE5[16384];
+EXTERN const volatile unsigned char fillerE6[16384];
+EXTERN const volatile unsigned char fillerE7[16384];
+EXTERN const volatile unsigned char fillerE8[16384];
+EXTERN const volatile unsigned char fillerE9[16384];
+EXTERN const volatile unsigned char fillerEA[16384];
+EXTERN const volatile unsigned char fillerEB[16384];
+EXTERN const volatile unsigned char fillerEC[16384];
+EXTERN const volatile unsigned char fillerED[16384];
+EXTERN const volatile unsigned char fillerEE[16384];
+EXTERN const volatile unsigned char fillerEF[16384];
+EXTERN const volatile unsigned char fillerF0[16384];
+EXTERN const volatile unsigned char fillerF1[16384];
+EXTERN const volatile unsigned char fillerF2[16384];
+EXTERN const volatile unsigned char fillerF3[16384];
+EXTERN const volatile unsigned char fillerF4[16384];
+EXTERN const volatile unsigned char fillerF5[16384];
+EXTERN const volatile unsigned char fillerF6[16384];
+EXTERN const volatile unsigned char fillerF7[16384];
+
+
 EXTERN const unsigned char interfaceVersion[INTERFACE_VERSION_LENGTH];
 EXTERN const unsigned char firmwareVersion[FIRMWARE_VERSION_LENGTH];
 EXTERN const unsigned char buildTimeAndDate[FIRMWARE_BUILD_DATE_LENGTH];
