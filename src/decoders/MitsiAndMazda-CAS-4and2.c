@@ -74,44 +74,29 @@ void PrimaryRPMISR(){
 		thisInterEventPeriod = thisEventTimeStamp - lastEventTimeStamp;
 	}
 
+	// Always sample in this ISR
+	sampleEachADC(ADCBuffers);
+	Counters.syncedADCreadings++;
+
+	// Set flag to say calc required
+	coreStatusA |= CALC_FUEL_IGN;
+
+	// Reset the clock for reading timeout
+	Clocks.timeoutADCreadingClock = 0;
+
 	// Determine the correct event based on post transition state (and toggle debug pins)
 	unsigned char correctEvent = 0;
-//	if(PTITCurrentState & 0x01){
-		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
-		sampleEachADC(ADCBuffers);
-		Counters.syncedADCreadings++;
-
-		// Set flag to say calc required
-		coreStatusA |= CALC_FUEL_IGN;
-
-		// Reset the clock for reading timeout
-		Clocks.timeoutADCreadingClock = 0;
-//
-//		if(!(PTITCurrentState & 0x02)){
-//			correctEvent = 8;
-//		}
-//	}else{
-//		//temp
-//		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
-//		sampleEachADC(ADCBuffers);
-//		Counters.syncedADCreadings++;
-//
-//		// Set flag to say calc required
-//		coreStatusA |= CALC_FUEL_IGN;
-//
-//		// Reset the clock for reading timeout
-//		Clocks.timeoutADCreadingClock = 0;
-//
-//		if(PTITCurrentState & 0x02){
-//			unknownEdges++;
-//			if(unknownEdges == 3){
-//				correctEvent = 4;
-//			}
-//		}else{
-//			correctEvent = 7;
-//			unknownEdges = 0;
-//		}
-//	}
+	if(PTITCurrentState & 0x01){
+		if(!(PTITCurrentState & 0x02)){
+			correctEvent = 10;
+		}else{
+			unknownEdges++;
+		}
+	}else{
+		if(unknownEdges == 1){
+			correctEvent = 6;
+		}
+	}
 
 	unsigned char lastEvent = 0;
 	if(KeyUserDebugs.decoderFlags & CAM_SYNC){
@@ -130,6 +115,7 @@ void PrimaryRPMISR(){
 		KeyUserDebugs.currentEvent = correctEvent;
 		lastEvent = KeyUserDebugs.currentEvent - 1;
 		SET_SYNC_LEVEL_TO(CAM_SYNC);
+		KeyUserDebugs.decoderFlags &= NBIT4; // TODO remove HACK!!!
 	}
 
 	unsigned short thisTicksPerDegree = 0;
@@ -211,25 +197,21 @@ void SecondaryRPMISR(){
 		thisInterEventPeriod = thisEventTimeStamp - lastEventTimeStamp;
 	}
 
+	// Clear this count to allow correct sync maintenance on other track
+	unknownEdges = 0;
+
 	// Determine the correct event based on post transition state (and toggle debug pins)
 	unsigned char correctEvent = 0;
 	if(PTITCurrentState & 0x02){
-		sampleEachADC(ADCBuffers);
-		Counters.syncedADCreadings++;
-
-		// Set flag to say calc required
-		coreStatusA |= CALC_FUEL_IGN;
-
-		// Reset the clock for reading timeout
-		Clocks.timeoutADCreadingClock = 0;
 		if(PTITCurrentState & 0x01){
 			correctEvent = 11;
 		}else{
 			correctEvent = 4;
 		}
-	}else{ // No good on 4/2
-//		//temp
-//		// Pins 0, 2, 4 and 7 - no need to check for numbers, just always do on rising edge and only in primary isr same for RPM above
+	}
+
+	// Only sample if not synced, cleans up readings.
+	if(!(KeyUserDebugs.decoderFlags & CAM_SYNC)){
 		sampleEachADC(ADCBuffers);
 		Counters.syncedADCreadings++;
 
@@ -238,8 +220,6 @@ void SecondaryRPMISR(){
 
 		// Reset the clock for reading timeout
 		Clocks.timeoutADCreadingClock = 0;
-//
-//		correctEvent = 0;
 	}
 
 	unsigned char lastEvent = 0;
