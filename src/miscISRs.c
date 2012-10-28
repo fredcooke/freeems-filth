@@ -204,6 +204,8 @@ void XIRQISR(void){
 void LowVoltageISR(void){
 	/* Clear the flag */
 	VREGCTRL |= 0x01;
+	COPCTL = 0x01; /* Arm with shortest time */
+	ARMCOP = 0xFF; /* Write bad value, should cause immediate reset */
 	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT6, PORTB);
 	FLAG_AND_INC_FLAGGABLE(FLAG_LOW_VOLTATE_CONDITION_OFFSET);
 	DEBUG_TURN_PIN_OFF(DECODER_BENCHMARKS, NBIT6, PORTB);
