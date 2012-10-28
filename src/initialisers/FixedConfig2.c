@@ -45,7 +45,7 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 	sensorSources:{
 		BRV: SOURCE_NORMAL,
 		CHT: SOURCE_NORMAL,
-		IAT: SOURCE_NORMAL,
+		IAT: 66, // Default to hard coded temp
 	},
 	sensorPresets:{
 		presetIAT:  DEGREES_C(20), // Room temperature

@@ -40,4 +40,6 @@ DEUCECOUPE:
 	cd src; CLIFLAGS="-D $@=1" make clean s19	
 PETERTRUCK:
 	cd src; CLIFLAGS="-D $@=1" make clean s19	
+SCAVENGER:
+	cd src; CLIFLAGS="-D $@=1" make clean s19	
 
