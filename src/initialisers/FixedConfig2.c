@@ -95,6 +95,9 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #if CONFIG == SEANKLT1_ID
 		EGOMinimum:    AFR1020LambdaMin,
 		EGORange:      AFR1020LambdaRange,
+#elif CONFIG == SCAVENGER_ID // http://www.schnitzracing.com/manuals/AEMWBK.pdf
+		EGOMinimum:    LAMBDA(0.683),
+		EGORange:      (LAMBDA(1.365) - LAMBDA(0.683)),
 #else
 		EGOMinimum:    LC1LambdaMin,
 		EGORange:      LC1LambdaRange,

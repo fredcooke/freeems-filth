@@ -178,7 +178,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		anglesOfTDC: {ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540), ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540)},
 		outputEventPinNumbers:       {0,1,0,1,2,3,2,3}, // Wasted spark, semi-sequential TODO migrate this to sequential
 		schedulingConfigurationBits: {0,0,0,0,1,1,1,1}, // First four ignition, last four injection
-		decoderEngineOffset:      ANGLE(60), // Stock silver-top using G? for RPM2 and NE for RPM1, CAS approximately centre, @todo TODO find values for extremes of dizzy placement
+		decoderEngineOffset:      ANGLE(128), // Hentai initial setup value, will change a bit
 		numberOfConfiguredOutputEvents:              8, // See two lines above
 		numberOfInjectionsPerEngineCycle:            2  // Semi-sequential, for now.
 
