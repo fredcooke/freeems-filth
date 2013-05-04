@@ -130,7 +130,9 @@ void RTIISR(){
 				}
 
 				if(Clocks.secondsToMinutes % 30 == 0){
-					KeyUserDebugs.tempClock += 10;
+					KeyUserDebugs.tempClock = 0;
+					Clocks.realTimeClockMillis = 0;
+					Clocks.realTimeClockMain = 0;
 				}
 
 				/* Every 60 seconds is one minute, 65535 minutes is enough for us :-) */
