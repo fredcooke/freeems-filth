@@ -129,6 +129,10 @@ void RTIISR(){
 					PORTA &= NBIT7;
 				}
 
+				if(Clocks.secondsToMinutes % 30 == 0){
+					KeyUserDebugs.tempClock += 10;
+				}
+
 				/* Every 60 seconds is one minute, 65535 minutes is enough for us :-) */
 				if(Clocks.secondsToMinutes % 60 == 0){
 					/* Increment the minutes counter */
