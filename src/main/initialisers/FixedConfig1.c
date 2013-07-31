@@ -55,8 +55,8 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif SEANKR1 // No ID assigned yet!
 		perCylinderVolume:  CYLINDER_VOLUME(250),
 		injectorFlow:       CC_PER_MINUTE(230), // http://www.witchhunter.com/flowdatapix/bcdh210.jpg
-#elif CONFIG == SLATER_ID
-		perCylinderVolume:  CYLINDER_VOLUME(324),
+#elif CONFIG == VOLVERC_ID
+		perCylinderVolume:  CYLINDER_VOLUME(463),
 		injectorFlow:       CC_PER_MINUTE(320),
 #elif CONFIG == PETERJSERIES_ID
 		perCylinderVolume:  CYLINDER_VOLUME(585),
@@ -85,8 +85,8 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 	coarseBitBangSettings:{
 #if CONFIG == SNOTROCKET_ID // 24 events for a 24+1 CAS setup with 4 cylinder tacho
 		outputActions:      {1,0,0,2,0,0,1,0,0,2,0,0,1,0,0,2,0,0,1,0,0,2,0,0},
-#elif CONFIG == SLATER_ID // 11 events for 12-1 crank setup with 4 cylinder tacho
-		outputActions:      {1,0,0,2,0,0,1,0,0,2,0},
+#elif CONFIG == VOLVERC_ID // 40 events for 20+1 crank/cam setup with 4 cylinder tacho
+		outputActions:      {1,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0},
 #else
 		outputActions:      standardTachoArray,
 #endif
@@ -145,13 +145,13 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		numberOfConfiguredOutputEvents:          2, // Wasted spark
 		numberOfInjectionsPerEngineCycle:        1  // Ditto
 
-#elif CONFIG == SLATER_ID // http://forum.diyefi.org/viewtopic.php?f=62&t=1336  Citroen with t25 turbo on a flat 4 air cooled engine
-		anglesOfTDC: {ANGLE(0), ANGLE(180),(0), ANGLE(180)}, // 1 and 4, 2 and 3, repeat
-		outputEventPinNumbers:           {0,1,4,5}, // 2 and 3 are unused in this config, fuel are on 4/5 because he plans to use the same hardware on the V8 Supra with wasted spark and thus 2/3 are required for ignition on that
-		schedulingConfigurationBits:     {0,0,1,1}, // 2 ignition 2 injection
-		decoderEngineOffset:         ANGLE(120.00), // May need adjusting
-		numberOfConfiguredOutputEvents:          4, // Wasted spark, semi-sequential
-		numberOfInjectionsPerEngineCycle:        2  // Semi-sequential, crank sync only
+#elif CONFIG == VOLVERC_ID // http://forum.diyefi.org/viewtopic.php?f=54&t=2207   Volvo 850 2.3L B5234T bench test, to be fitted to Merc 190E       
+                anglesOfTDC: {ANGLE(0), ANGLE(144), ANGLE(288), ANGLE(432), ANGLE(576)}, // Firing order 1-2-4-5-3
+		outputEventPinNumbers:       {0,1,2,3,4,5}, // First 5 Ign. inj on whats left
+		schedulingConfigurationBits: {0,0,0,0,0,1}, // 5 ignition 1 injection
+		decoderEngineOffset:         ANGLE(618.00), // May still need adjusting
+		numberOfConfiguredOutputEvents:          6, // 5 COP,Batch fire injectors
+		numberOfInjectionsPerEngineCycle:        1  // Batch fire all 5 inj
 
 #elif CONFIG == PETERJSERIES_ID // Firing order 1-4-2-5-3-6 http://forum.diyefi.org/viewtopic.php?f=62&t=1533
 		anglesOfTDC: {ANGLE(0), ANGLE(120), ANGLE(240), ANGLE(360), ANGLE(480), ANGLE(600)},
@@ -204,9 +204,9 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 	},
 	cutAndLimiterSettings:{
 		InjectionRPM:{
-#if CONFIG == SLATER_ID
-			disableThreshold:  RPM(7000),
-			reenableThreshold: RPM(6900)
+#if CONFIG == VOLVERC_ID
+			disableThreshold:  RPM(6500),
+			reenableThreshold: RPM(6450)
 #elif CONFIG == DEUCES10_ID
 			disableThreshold:  RPM(5600),
 			reenableThreshold: RPM(5400)
@@ -225,9 +225,9 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif CONFIG == SNOTROCKET_ID
 			disableThreshold:  RPM(6300),
 			reenableThreshold: RPM(6200)
-#elif CONFIG == SLATER_ID
-			disableThreshold:  RPM(7000),
-			reenableThreshold: RPM(6850)
+#elif CONFIG == VOLVERC_ID
+			disableThreshold:  RPM(6500),
+			reenableThreshold: RPM(6400)
 #elif CONFIG == PETERJSERIES_ID
 			disableThreshold:  RPM(6000),
 			reenableThreshold: RPM(5950)
