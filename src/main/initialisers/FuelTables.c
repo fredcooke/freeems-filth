@@ -73,8 +73,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #include "../data/tables/axis/SeansLT1-RPM.h"
 #elif SEANKR1 // No ID assigned yet!
 #include "../data/tables/axis/FredsTruck-RPM.h"
-#elif CONFIG == SLATER_ID
-#include "../data/tables/axis/Slater-RPM.h"
+#elif CONFIG == VOLVERC_ID
+#include "../data/tables/axis/Volverc-RPM.h"
 #elif CONFIG == PETERJSERIES_ID
 #include "../data/tables/axis/PetersJSeries-RPM.h"
 #elif CONFIG == DEUCECOUPE_ID
@@ -98,8 +98,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #include "../data/tables/axis/FredsTruck-Load.h"
 #elif SEANKR1 // No ID assigned yet!
 #include "../data/tables/axis/FredsTruck-Load.h"
-#elif CONFIG == SLATER_ID
-#include "../data/tables/axis/Slater-Load.h"
+#elif CONFIG == VOLVERC_ID
+#include "../data/tables/axis/Volverc-Load.h"
 #elif CONFIG == PETERJSERIES_ID
 #include "../data/tables/axis/PetersJSeries-Load.h"
 #elif CONFIG == DEUCECOUPE_ID
@@ -123,8 +123,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #include "../data/tables/ve/SeansLT1VE.h"
 #elif SEANKR1 // No ID assigned yet!
 #include "../data/tables/ve/flat80Percent.h"
-#elif CONFIG == SLATER_ID
-#include "../data/tables/ve/SlaterVE.h"
+#elif CONFIG == VOLVERC_ID
+#include "../data/tables/ve/VolvercVE.h"
 #elif CONFIG == PETERJSERIES_ID
 #include "../data/tables/ve/PetersJSeriesVE.h"
 #elif CONFIG == DEUCECOUPE_ID
@@ -190,8 +190,8 @@ const volatile mainTable LambdaTableFlashV FUELTABLESD = {
 #include "../data/tables/axis/ScavengersMiata-RPM.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/axis/DefaultWith400Spacing-RPM.h"
-#elif CONFIG == SLATER_ID
-#include "../data/tables/axis/Slater-RPM.h"
+#elif CONFIG == VOLVERC_ID
+#include "../data/tables/axis/Volverc-RPM.h"
 #elif CONFIG == DEUCES10_ID
 #include "../data/tables/axis/Deuces3100-RPM.h"
 #else
@@ -203,8 +203,8 @@ const volatile mainTable LambdaTableFlashV FUELTABLESD = {
 #include "../data/tables/axis/ScavengersMiata-Load.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/axis/DefaultWith10and20SplitSpacing-Load.h"
-#elif CONFIG == SLATER_ID
-#include "../data/tables/axis/Slater-Load.h"
+#elif CONFIG == VOLVERC_ID
+#include "../data/tables/axis/Volverc-Load.h"
 #elif CONFIG == DEUCES10_ID
 #include "../data/tables/axis/Deuces3100-Load.h"
 #else
@@ -216,8 +216,8 @@ const volatile mainTable LambdaTableFlashV FUELTABLESD = {
 #include "../data/tables/lambda/ScavengerLambda24RPMx19Load.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/lambda/DefaultLambda24RPMx19Load.h"
-#elif CONFIG == SLATER_ID
-#include "../data/tables/lambda/SlaterLambda.h"
+#elif CONFIG == VOLVERC_ID
+#include "../data/tables/lambda/VolvercLambda.h"
 #elif CONFIG == DEUCES10_ID
 #include "../data/tables/lambda/DeucesS10Lambda.h"
 #else

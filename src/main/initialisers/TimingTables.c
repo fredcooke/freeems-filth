@@ -82,8 +82,8 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #include "../data/tables/axis/FredsTruck-RPM.h"
 #elif CONFIG == SNOTROCKET_ID
 #include "../data/tables/axis/SimsVolvo-RPM.h"
-#elif CONFIG == SLATER_ID
-#include "../data/tables/axis/Slater-RPM.h"
+#elif CONFIG == VOLVERC_ID
+#include "../data/tables/axis/Volverc-RPM.h"
 #elif CONFIG == DEUCECOUPE_ID
 #include "../data/tables/axis/HotelHyundai-RPM.h"
 #elif CONFIG == DEUCES10_ID
@@ -96,7 +96,7 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #include "../data/tables/axis/DefaultWith400Spacing-RPM.h"
 #else
 #include "../data/tables/axis/FredsTruck-RPM.h"
-#endif
+#endiC
 	},
 	Load: {
 #if CONFIG == TRUCK_ID
@@ -111,8 +111,8 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #include "../data/tables/axis/FredsTruck-Load.h"
 #elif CONFIG == SNOTROCKET_ID
 #include "../data/tables/axis/SimsVolvo-Load.h"
-#elif CONFIG == SLATER_ID
-#include "../data/tables/axis/Slater-Load.h"
+#elif CONFIG == VOLVERC_ID
+#include "../data/tables/axis/Volverc-Load.h"
 #elif CONFIG == DEUCECOUPE_ID
 #include "../data/tables/axis/HotelHyundai-Load.h"
 #elif CONFIG == DEUCES10_ID
@@ -141,8 +141,8 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #include "../data/tables/ign/flat0degrees.h"
 #elif CONFIG == SNOTROCKET_ID
 #include "../data/tables/ign/SimsVolvoIgnitionTiming.h"
-#elif CONFIG == SLATER_ID
-#include "../data/tables/ign/SlaterTiming.h"
+#elif CONFIG == VOLVERC_ID
+#include "../data/tables/ign/VolvercTiming.h"
 #elif CONFIG == DEUCECOUPE_ID
 //#include "../data/tables/ign/TestDIS.h" // Use for verifying your DIS timing
 #include "../data/tables/ign/Deuces3100Timing.h"

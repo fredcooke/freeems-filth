@@ -74,7 +74,7 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #elif CONFIG == SEANKLT1_ID
 		MAPMinimum:    GM2BarMin,
 		MAPRange:      GM2BarRange,
-#elif CONFIG == SLATER_ID
+#elif CONFIG == VOLVERC_ID
 		MAPMinimum:    HondaDenso183kPaMin,
 		MAPRange:      HondaDenso183kPaRange,
 #elif CONFIG == DEUCECOUPE_ID
