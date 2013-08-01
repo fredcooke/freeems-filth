@@ -96,7 +96,7 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #include "../data/tables/axis/DefaultWith400Spacing-RPM.h"
 #else
 #include "../data/tables/axis/FredsTruck-RPM.h"
-#endiC
+#endif
 	},
 	Load: {
 #if CONFIG == TRUCK_ID
