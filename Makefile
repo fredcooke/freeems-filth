@@ -39,8 +39,8 @@ SNOTROCKET:
 	cd src/main; CLIFLAGS="$@" make clean EvenTeeth-Cam-24and1
 SPUDMN:
 	cd src/main; CLIFLAGS="$@" make clean MissingTeeth-Crank-8minus1
-SLATER:
-	cd src/main; CLIFLAGS="$@" make clean MissingTeeth-Crank-12minus1
+VOLVERC:
+	cd src/main; CLIFLAGS="$@" make clean EvenTeeth-Cam-40and1
 PETERJSERIES:
 	cd src/main; CLIFLAGS="$@" make clean JSeries-12CrankWith6-2Cam
 DEUCECOUPE:
