@@ -52,7 +52,7 @@
 //efine MARCOS_ID        6 // Only idled for one minute, never since. No config available for this vehicle. http://forum.diyefi.org/viewtopic.php?f=55&t=1303
 #define SNOTROCKET_ID    7 // Another one that's too reliable
 #define SPUDMN_ID        8 // Occasionally comes out of the garage to race
-#define SLATER_ID        9 // Occasionally comes out of the garage to do burnouts
+#define VOLVERC_ID      22 // Volve T5. Was SLATER #9,R.I.P  written off in a accident with a van.
 #define PETERJSERIES_ID 10 // Winter thrasher, works so well he refuses to whinge
 #define DEUCECOUPE_ID   11 // Work in progress, ignition not setup yet
 #define PETERTRUCK_ID   12 // Work horse vehicle, about to get boosted
@@ -96,9 +96,9 @@
 #elif defined SPUDMN
 #define CONFIG SPUDMN_ID
 #define PRELIM_CONFIG "SPUDMN"
-#elif defined SLATER
-#define CONFIG SLATER_ID
-#define PRELIM_CONFIG "SLATER"
+#elif defined VOLVERC
+#define CONFIG VOLVERC_ID
+#define PRELIM_CONFIG "VOLVERC"
 #elif defined PETERJSERIES
 #define CONFIG PETERJSERIES_ID
 #define PRELIM_CONFIG "PETERJSERIES"
