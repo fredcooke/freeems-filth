@@ -101,6 +101,9 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #elif CONFIG == SCAVENGER_ID // http://www.schnitzracing.com/manuals/AEMWBK.pdf
 		EGOMinimum:    LAMBDA(0.683),
 		EGORange:      (LAMBDA(1.365) - LAMBDA(0.683)),
+#elif CONFIG == AITOR51_ID // TEMP, will change to LC1 range (when removing MS and reconfiguring LC1)
+		EGOMinimum:    AFR1020LambdaMin,
+		EGORange:      AFR1020LambdaRange,
 #else
 		EGOMinimum:    LC1LambdaMin,
 		EGORange:      LC1LambdaRange,

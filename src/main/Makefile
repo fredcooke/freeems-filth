@@ -272,6 +272,7 @@ EvenTeeth-Cam-6and1:  $(S19DIR)/$(LABEL)-EvenTeeth-Cam-6and1.s19
 EvenTeeth-Cam-4and1:  $(S19DIR)/$(LABEL)-EvenTeeth-Cam-4and1.s19
 MissingTeeth-Crank-8minus1:  $(S19DIR)/$(LABEL)-MissingTeeth-Crank-8minus1.s19
 MissingTeeth-Crank-12minus1: $(S19DIR)/$(LABEL)-MissingTeeth-Crank-12minus1.s19
+MissingTeeth-Crank-36minus1: $(S19DIR)/$(LABEL)-MissingTeeth-Crank-36minus1.s19
 MissingTeeth-Cam-12minus1:   $(S19DIR)/$(LABEL)-MissingTeeth-Cam-12minus1.s19
 HallOrOptical-Distributor-4of69: $(S19DIR)/$(LABEL)-HallOrOptical-Distributor-4of69.s19
 MitsiAndMazda-CAS-4and1: $(S19DIR)/$(LABEL)-MitsiAndMazda-CAS-4and1.s19
