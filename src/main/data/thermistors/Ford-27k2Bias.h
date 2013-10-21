@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008 - 2011 Fred Cooke
+ * Copyright 2013 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -39,6 +39,13 @@
  * Temp Units:
  * Input Temp Scale: Celcius
  * Output Temp Scale: Kelvin
+ *
+ * Sensor pics:
+ * http://i436.photobucket.com/albums/qq88/AiToR51/68010837-9a0e-46ae-b83e-a7d35aad75b2_zps1226f181.jpg
+ * http://i436.photobucket.com/albums/qq88/AiToR51/23b36d17-3241-4fdc-aca0-6aed14cfcc46_zps2e2634ad.jpg
+ *
+ * Data:
+ * http://i436.photobucket.com/albums/qq88/AiToR51/ford_sensor_zps57e193d6.png
  *
  */
 

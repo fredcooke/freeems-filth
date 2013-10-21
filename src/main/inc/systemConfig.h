@@ -58,7 +58,7 @@
 #define PETERTRUCK_ID   12 // Work horse vehicle, about to get boosted
 #define SCAVENGER_ID    15 // Hacked up Miata turbo from the south!
 #define DEUCES10_ID     16 // Work in progress
-#define AITOR51_ID		17 // 2.0 8v DOHC Turbo Sierra.
+#define AITOR51_ID		24 // 2.0 8v DOHC Turbo Sierra. http://forum.diyefi.org/viewtopic.php?f=55&t=2321
 // Looking forward to there being links to threads here soon! In no particular order:
 //#define LEV8N
 //#define SEANKR1
