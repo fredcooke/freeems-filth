@@ -65,6 +65,9 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #elif CONFIG == SCAVENGER_ID
 	RPMLength:  24,
 	LoadLength: 19,
+#elif CONFIG == AITOR51_ID
+	RPMLength:  16,
+	LoadLength: 16,
 #else
 	RPMLength:  16,
 	LoadLength: 16,
@@ -94,6 +97,8 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #include "../data/tables/axis/ScavengersMiata-RPM.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/axis/DefaultWith400Spacing-RPM.h"
+#elif CONFIG == AITOR51_ID
+#include "../data/tables/axis/Aitor51Sierra2T-RPM.h"
 #else
 #include "../data/tables/axis/FredsTruck-RPM.h"
 #endif
@@ -123,6 +128,8 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #include "../data/tables/axis/ScavengersMiata-Load.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/axis/DefaultWith10and20SplitSpacing-Load.h"
+#elif CONFIG == AITOR51_ID
+#include "../data/tables/axis/Aitor51Sierra2T-Load.h"
 #else
 #include "../data/tables/axis/FredsTruck-Load.h"
 #endif
@@ -154,6 +161,8 @@ const volatile mainTable IgnitionAdvanceTableMainFlashV TIMETABLESD = {
 #include "../data/tables/ign/ScavengerTiming24RPMx19Load.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/ign/DefaultTiming24RPMx19Load.h"
+#elif CONFIG == AITOR51_ID
+#include "../data/tables/ign/Aitor51Sierra2TIgnitionTiming.h"
 #else
 #include "../data/tables/ign/flat10degrees.h"
 #endif

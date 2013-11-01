@@ -76,7 +76,9 @@ const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 #elif CONFIG == SCAVENGER_ID
 			Axis:   ARRAY_OF_16_VOLTAGES,
 			Values: { T(7.90),  T(7.90),  T(7.90),  T(7.90),  T(7.90),  T(7.35),  T(6.95),  T(6.50),  T(6.15),  T(5.75),  T(5.48),  T(5.20),  T(4.95),  T(3.80),  T(2.85),  T(2.00)}
-
+#elif CONFIG == AITOR51_ID
+			Axis:   ARRAY_OF_16_VOLTAGES,
+			Values: {T(6.00), T(5.50),  T(5.30),  T(5.20),  T(5.00),  T(4.80),  T(4.50),  T(4.30),  T(4.10),  T(4.00),  T(4.00),  T(4.00),  T(3.90),  T(3.80),  T(2.85),  T(2.00)}
 #else
 			Axis:   ARRAY_OF_16_VOLTAGES,
 			Values: ARRAY_OF_16_DWELLS
@@ -116,8 +118,14 @@ const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 #endif
 		},
 		engineTempEnrichmentTablePercent: {
+#if CONFIG == AITOR51_ID
+			Axis:   ARRAY_OF_16_TEMPS,
+			Values: { W(215),  W(190),  W(175),  W(160),  W(150),  W(140),  W(130),  W(122),  W(116),  W(110),  W(105),  W(100),  W(100),  W(110),  W(120),  W(130)}
+
+#else
 			Axis:   ARRAY_OF_16_TEMPS,
 			Values: ARRAY_OF_16_PERCENTS
+#endif
 		},
 		dwellVersusRPMTable: {
 			Axis:   ARRAY_OF_16_RPMS,

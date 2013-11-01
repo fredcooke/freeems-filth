@@ -85,6 +85,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #include "../data/tables/axis/ScavengersMiata-RPM.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/axis/DefaultWith400Spacing-RPM.h"
+#elif CONFIG == AITOR51_ID
+#include "../data/tables/axis/Aitor51Sierra2T-RPM.h"
 #else
 #include "../data/tables/axis/FredsTruck-RPM.h"
 #endif
@@ -110,6 +112,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #include "../data/tables/axis/ScavengersMiata-Load.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/axis/DefaultWith10and20SplitSpacing-Load.h"
+#elif CONFIG == AITOR51_ID
+#include "../data/tables/axis/Aitor51Sierra2T-Load.h"
 #else
 #include "../data/tables/axis/FredsTruck-Load.h"
 #endif
@@ -135,6 +139,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #include "../data/tables/ve/ScavengerVE24RPMx19Load.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/ve/DefaultVE24RPMx19Load.h"
+#elif CONFIG == AITOR51_ID
+#include "../data/tables/ve/Aitor51Sierra2TVE.h"
 #else
 #include "../data/tables/ve/flat60Percent.h"
 #endif
