@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2013 Fred Cooke
+ * Copyright 2011-2012 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -28,30 +28,27 @@
  *
  * @ingroup dataInitialisers
  *
- * @brief AiToR51 Sierra 2T tune from M$
- *
+ * @brief A dead flat 60% VE curve to use as a default for typical engines.
  */
-
 
 // Low RPM                                                                                                             High RPM
 //  200     500     900    1200    1600    2000    2400    2800    3200    3700    4350    5000    5600    6200    6600    7000  // 
-VE(40), VE(41), VE(41), VE(42), VE(43), VE(45), VE(45), VE(45), VE(50), VE(50), VE(50), VE(50), VE(50), VE(50), VE(50), VE(50), //  20
-VE(45), VE(45), VE(45), VE(52), VE(48), VE(45), VE(45), VE(48), VE(50), VE(50), VE(50), VE(50), VE(50), VE(50), VE(50), VE(50), //  30
-VE(45), VE(50), VE(55), VE(50), VE(55), VE(50), VE(50), VE(52), VE(55), VE(55), VE(55), VE(52), VE(50), VE(50), VE(50), VE(50), //  40
-VE(45), VE(53), VE(60), VE(55), VE(58), VE(55), VE(55), VE(58), VE(60), VE(60), VE(60), VE(55), VE(52), VE(52), VE(52), VE(52),  //  50
-VE(50), VE(55), VE(65), VE(65), VE(62), VE(60), VE(65), VE(67), VE(67), VE(70), VE(70), VE(65), VE(62), VE(62), VE(62), VE(62),  //  60
-VE(55), VE(60), VE(76), VE(70), VE(70), VE(70), VE(70), VE(75), VE(75), VE(75), VE(75), VE(72), VE(70), VE(70), VE(70), VE(70), //  70
-VE(55), VE(60), VE(76), VE(75), VE(75), VE(75), VE(78), VE(80), VE(80), VE(80), VE(80), VE(78), VE(70), VE(70), VE(70), VE(70),  //  80
-VE(60), VE(70), VE(80), VE(80), VE(80), VE(78), VE(80), VE(80), VE(82), VE(83), VE(83), VE(80), VE(85), VE(85), VE(85), VE(85),  //  90
-VE(65), VE(75), VE(82), VE(81), VE(81), VE(85), VE(85), VE(85), VE(87), VE(88), VE(88), VE(86), VE(85), VE(85), VE(85), VE(85),  // 100
-VE(80), VE(80), VE(83), VE(83), VE(83), VE(85), VE(88), VE(88), VE(90), VE(91), VE(91), VE(90), VE(90), VE(90), VE(90), VE(90),  // 110
-VE(80), VE(80), VE(84), VE(84), VE(84), VE(86), VE(90), VE(90), VE(92), VE(93), VE(92), VE(90), VE(90), VE(90), VE(90), VE(90),  // 130
-VE(80), VE(80), VE(85), VE(85), VE(85), VE(87), VE(92), VE(92), VE(94), VE(95), VE(94), VE(92), VE(90), VE(90), VE(90), VE(90),// 150
-VE(80), VE(80), VE(85), VE(86), VE(86), VE(89), VE(94), VE(94), VE(94), VE(96), VE(96), VE(93), VE(90), VE(90), VE(90), VE(90), // 180
-VE(80), VE(80), VE(85), VE(87), VE(87), VE(91), VE(96), VE(96), VE(96), VE(97), VE(97), VE(95), VE(90), VE(90), VE(90), VE(90), // 190
-VE(80), VE(80), VE(85), VE(88), VE(88), VE(93), VE(98), VE(98), VE(98), VE(98), VE(98), VE(95), VE(90), VE(90), VE(90), VE(90), // 210
-VE(89), VE(80), VE(85), VE(90), VE(90), VE(95),VE(100),VE(100),VE(100),VE(100),VE(100), VE(95), VE(90), VE(90), VE(90), VE(90)  // 250
+VE(35), VE(40), VE(45), VE(50), VE(50), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), //20
+VE(35), VE(40), VE(45), VE(50), VE(50), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), //30
+VE(35), VE(40), VE(45), VE(50), VE(50), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), //40
+VE(35), VE(40), VE(45), VE(50), VE(50), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), //50
+VE(35), VE(40), VE(50), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), //60
+VE(35), VE(40), VE(50), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), //70
+VE(35), VE(40), VE(50), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), //80
+VE(35), VE(40), VE(50), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), //90
+VE(35), VE(40), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), //100
+VE(35), VE(40), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), //110
+VE(35), VE(40), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), //130
+VE(35), VE(40), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), //150
+VE(35), VE(40), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), //180
+VE(35), VE(40), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), //190
+VE(35), VE(40), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), //210
+VE(35), VE(40), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), VE(60), //250
 //  200     500     900    1200    1600    2000    2400    2800    3200    3700    4350    5000    5600    6200    6600    7000  //  WOT
-// Low RPM                                                                                                             High RPM
-
+// Low RPM 
 
