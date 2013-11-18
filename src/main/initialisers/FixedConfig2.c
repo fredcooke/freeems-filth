@@ -182,9 +182,9 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 
 		// Default to pins all low/off
 		PWMInitialDuty0: 0x00,
-		PWMInitialDuty1: 0x3c,//0x3c = 60  (30% fixed duty cycle)
+		PWMInitialDuty1: 0x00,
 		PWMInitialDuty2: 0x00,
-		PWMInitialDuty3: 0x00,
+		PWMInitialDuty3: 0x64,
 		PWMInitialDuty4: 0x00,
 		PWMInitialDuty5: 0x00,
 		PWMInitialDuty6: 0x00,

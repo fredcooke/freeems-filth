@@ -200,7 +200,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		anglesOfTDC: {ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540), ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540)},
 		outputEventPinNumbers:       {0,1,0,1,3,4,3,4}, // Wasted spark, semi-sequential
 		schedulingConfigurationBits: {0,0,0,0,1,1,1,1}, // First four ignition, last four injection
-		decoderEngineOffset:      		   ANGLE(90.00), 
+		decoderEngineOffset:      		   ANGLE(100.00), 
 		numberOfConfiguredOutputEvents:              8, // See two lines above
 		numberOfInjectionsPerEngineCycle:            2  // Semi-sequential, for now.
 #else // Nothing scheduled by default, no sensible default for all possible vehicle setups.
