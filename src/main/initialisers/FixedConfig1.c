@@ -73,6 +73,9 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif CONFIG == SCAVENGER_ID
 		perCylinderVolume:  CYLINDER_VOLUME(399.25),
 		injectorFlow:       CC_PER_MINUTE(540),
+#elif CONFIG == VIASUPRA_ID
+		perCylinderVolume:  CYLINDER_VOLUME(500),
+		injectorFlow:       CC_PER_MINUTE(550),
 #else
 		perCylinderVolume:  CYLINDER_VOLUME(500),
 		injectorFlow:       CC_PER_MINUTE(550),
@@ -196,6 +199,14 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		numberOfConfiguredOutputEvents:              8, // See two lines above
 		numberOfInjectionsPerEngineCycle:            2  // Semi-sequential, for now.
 
+#elif CONFIG == VIASUPRA_ID // Firing order 1-5-3-6-2-4
+		anglesOfTDC: {ANGLE(0), ANGLE(120), ANGLE(240), ANGLE(360), ANGLE(480), ANGLE(600), ANGLE(0), ANGLE(120), ANGLE(240), ANGLE(360), ANGLE(480), ANGLE(600)},
+		outputEventPinNumbers:       {2,1,0,2,1,0,4,3,5,4,3,5}, // Weird order because I kept messing up my wiring.
+		schedulingConfigurationBits: {0,0,0,0,0,0,1,1,1,1,1,1}, // Ones represent scheduling for injection, zeros represent scheduling for ignition
+		decoderEngineOffset:         ANGLE(280.00),
+		numberOfConfiguredOutputEvents:         12, // 6 coil events, 6 injection events
+		numberOfInjectionsPerEngineCycle:        2  // Semi-sequential
+
 #else // Nothing scheduled by default, no sensible default for all possible vehicle setups.
 		anglesOfTDC:                            {}, // Depends on cylinder count and other variables
 		outputEventPinNumbers:       {0,1,2,3,4,5}, // Default to a variety of pins for testing purposes. Note: Won't do anything without
@@ -219,6 +230,9 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif CONFIG == SCAVENGER_ID
 			disableThreshold:  RPM(7200),
 			reenableThreshold: RPM(7150)
+#elif CONFIG == VIASUPRA_ID
+			disableThreshold:  RPM(6400),
+			reenableThreshold: RPM(6300)
 #else
 			disableThreshold:  RPM(5000),
 			reenableThreshold: RPM(4900)  // Come back on before ignition does
@@ -246,6 +260,9 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif CONFIG == SCAVENGER_ID
 			disableThreshold:  RPM(7200),
 			reenableThreshold: RPM(7100)
+#elif CONFIG == VIASUPRA_ID
+			disableThreshold:  RPM(6400),
+			reenableThreshold: RPM(6200)
 #else
 			disableThreshold:  RPM(5000),
 			reenableThreshold: RPM(4800)  // Come back on after injection does

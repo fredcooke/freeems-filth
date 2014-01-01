@@ -76,7 +76,9 @@ const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 #elif CONFIG == SCAVENGER_ID
 			Axis:   ARRAY_OF_16_VOLTAGES,
 			Values: { T(7.90),  T(7.90),  T(7.90),  T(7.90),  T(7.90),  T(7.35),  T(6.95),  T(6.50),  T(6.15),  T(5.75),  T(5.48),  T(5.20),  T(4.95),  T(3.80),  T(2.85),  T(2.00)}
-
+#elif CONFIG == VIASUPRA_ID
+			Axis:   ARRAY_OF_16_VOLTAGES,
+			Values: { T(7.80),  T(6.50),  T(5.57),  T(5.20),  T(4.87),  T(4.58),  T(4.33),  T(4.10),  T(3.90),  T(3.70),  T(4.54),  T(3.39),  T(3.25),  T(2.63),  T(2.22),  T(1.90)}
 #else
 			Axis:   ARRAY_OF_16_VOLTAGES,
 			Values: ARRAY_OF_16_DWELLS
@@ -116,12 +118,22 @@ const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 #endif
 		},
 		engineTempEnrichmentTablePercent: {
+#if CONFIG == VIASUPRA_ID
+			Axis:   { C(-30),  C(-20),  C(-10),    C(0),   C(10),   C(20),   C(30),   C(40),   C(50),   C(60),   C(80),   C(87),   C(95),  C(100),  C(110),  C(120)},
+			Values: { W(350),  W(320),  W(300),  W(280),  W(240),  W(200),  W(180),  W(160),  W(140),  W(120),  W(100),  W(100),  W(100),  W(110),  W(120),  W(140)}
+#else
 			Axis:   ARRAY_OF_16_TEMPS,
 			Values: ARRAY_OF_16_PERCENTS
+#endif
 		},
 		dwellVersusRPMTable: {
+#if CONFIG == VIASUPRA_ID
+			Axis:   ARRAY_OF_16_RPMS,
+			Values: { T(5.75),   T(4.50),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.0),   T(3.0),   T(3.0)}
+#else
 			Axis:   ARRAY_OF_16_RPMS,
 			Values: ARRAY_OF_16_DIS6_DWELLS
+#endif
 		},
 		blendVersusRPMTable: {
 			Axis:   ARRAY_OF_16_RPMS,

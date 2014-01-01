@@ -54,3 +54,5 @@ SCAVENGER:
 	cd src/main; CLIFLAGS="$@" make clean MitsiAndMazda-CAS-4and2
 DEUCES10:
 	cd src/main; CLIFLAGS="$@" make clean EvenTeeth-Cam-4and1
+VIASUPRA:
+	cd src/main; CLIFLAGS="$@" make clean EvenTeeth-Cam-24and1

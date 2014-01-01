@@ -74,6 +74,9 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #elif CONFIG == SEANKLT1_ID
 		MAPMinimum:    GM2BarMin,
 		MAPRange:      GM2BarRange,
+#elif CONFIG == VIASUPRA_ID
+		MAPMinimum:    KPA(-35.00), // This config runs a 3.5bar AEM sensor, but does not use the raw AEM values
+		MAPRange:      (KPA(395.00) - KPA(-35.00)),
 #elif CONFIG == SLATER_ID
 		MAPMinimum:    HondaDenso183kPaMin,
 		MAPRange:      HondaDenso183kPaRange,
@@ -128,6 +131,9 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #elif CONFIG == SNOTROCKET_ID
 		TPSMinimumADC: 185,
 		TPSMaximumADC: 809
+#elif CONFIG == VIASUPRA_ID
+		TPSMinimumADC: 100,
+		TPSMaximumADC: 620
 #else
 		TPSMinimumADC: 0,
 		TPSMaximumADC: ADC_MAX_VALUE
@@ -219,8 +225,13 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		PortDirectionT: 0xFF  // Ignored! TODO: Overridden for precision timed outputs
 	},
 	decoderSettings:{
+#if CONFIG == VIASUPRA_ID
+		syncConfirmationsRunning: 0, // This number is arbitrary, add an if block and configure to taste.
+		syncConfirmationsStarting: 1, // Most users should leave this zero, however having it set to 1 or 2 could be beneficial
+#else
 		syncConfirmationsRunning: 10, // This number is arbitrary, add an if block and configure to taste.
 		syncConfirmationsStarting: 0, // Most users should leave this zero, however having it set to 1 or 2 could be beneficial
+#endif
 #if CONFIG == HOTEL_ID
 		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100), // once started this needs a lot less... fix
 		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100),
@@ -228,6 +239,9 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100),
 		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100),
 #elif CONFIG == SCAVENGER_ID
+		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100),
+		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100),
+#elif CONFIG == VIASUPRA_ID
 		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100),
 		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100),
 #else
