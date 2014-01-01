@@ -74,6 +74,9 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #elif CONFIG == SEANKLT1_ID
 		MAPMinimum:    GM2BarMin,
 		MAPRange:      GM2BarRange,
+#elif CONFIG == SUPRA_ID
+		MAPMinimum:    GM35BarMin,
+		MAPRange:      GM35BarRange,
 #elif CONFIG == SLATER_ID
 		MAPMinimum:    HondaDenso183kPaMin,
 		MAPRange:      HondaDenso183kPaRange,
@@ -144,6 +147,8 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		dwellType:     DWELL_RPM,
 #elif CONFIG == SEANKLT1_ID
 		dwellType:     DWELL_FIXED,
+#elif CONFIG == SUPRA_ID
+		dwellType:     DWELL_BRV,
 #else
 		dwellType:     DWELL_BRV,
 #endif

@@ -70,6 +70,9 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif CONFIG == SCAVENGER_ID
 		perCylinderVolume:  CYLINDER_VOLUME(399.25),
 		injectorFlow:       CC_PER_MINUTE(540),
+#elif CONFIG == SUPRA_ID
+		perCylinderVolume:  CYLINDER_VOLUME(500),
+		injectorFlow:       CC_PER_MINUTE(550),
 #else
 		perCylinderVolume:  CYLINDER_VOLUME(500),
 		injectorFlow:       CC_PER_MINUTE(550),
@@ -161,6 +164,14 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		numberOfConfiguredOutputEvents:          6, // THESE ARE NOT IGN, THEY ARE FUEL
 		numberOfInjectionsPerEngineCycle:        1  // Sequential, baby, yeah!
 
+#elif CONFIG == SUPRA_ID // Firing order 1-5-3-6-2-4 
+		anglesOfTDC: {ANGLE(0), ANGLE(120), ANGLE(240), ANGLE(360), ANGLE(480), ANGLE(600), ANGLE(0), ANGLE(120), ANGLE(240), ANGLE(360), ANGLE(480), ANGLE(600)},
+		outputEventPinNumbers:       {0,1,2,0,1,2,3,4,5,3,4,5}, // An example of wiring your engine with cylinder one on output one, harder to grok
+		schedulingConfigurationBits: {0,0,0,0,0,0,1,1,1,1,1,1}, // Ones represent scheduling for injection, zeros represent scheduling for ignition
+		decoderEngineOffset:           ANGLE(0.00), // Trim fuel injection END point with this value.
+		numberOfConfiguredOutputEvents:          12, // 6 coil events, 6 injection events
+		numberOfInjectionsPerEngineCycle:        2  // Semi-sequential
+
 #elif CONFIG == DEUCECOUPE_ID // DeuceEFI's GM 3100 V6, firing order 1-6-5-4-3-2, wasted spark DIS ignition http://forum.diyefi.org/viewtopic.php?f=3&t=1278
 		anglesOfTDC: {ANGLE(0), ANGLE(120), ANGLE(240), ANGLE(360), ANGLE(480), ANGLE(600), ANGLE(0), ANGLE(120), ANGLE(240), ANGLE(360), ANGLE(480), ANGLE(600)},
 		outputEventPinNumbers:       {0,0,0,0,0,0,2,3,4,2,3,4}, // DIS E-dizzy and semi-sequential, for now.
@@ -213,6 +224,9 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif CONFIG == SCAVENGER_ID
 			disableThreshold:  RPM(7200),
 			reenableThreshold: RPM(7150)
+#elif CONFIG == SUPRA_ID
+			disableThreshold:  RPM(6400),
+			reenableThreshold: RPM(6000)
 #else
 			disableThreshold:  RPM(5000),
 			reenableThreshold: RPM(4900)  // Come back on before ignition does
@@ -225,6 +239,9 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif CONFIG == SNOTROCKET_ID
 			disableThreshold:  RPM(6300),
 			reenableThreshold: RPM(6200)
+#elif CONFIG == SUPRA_ID
+			disableThreshold:  RPM(6400),
+			reenableThreshold: RPM(6000)
 #elif CONFIG == SLATER_ID
 			disableThreshold:  RPM(7000),
 			reenableThreshold: RPM(6850)

@@ -51,3 +51,5 @@ PETERTRUCK:
 	cd src/main; CLIFLAGS="$@" make clean MissingTeeth-Cam-12minus1
 SCAVENGER:
 	cd src/main; CLIFLAGS="$@" make clean MitsiAndMazda-CAS-4and2
+SUPRA:
+	cd src/main; CLIFLAGS="$@" make clean EvenTeeth-Cam-24and1
