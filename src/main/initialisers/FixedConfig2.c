@@ -75,8 +75,8 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		MAPMinimum:    GM2BarMin,
 		MAPRange:      GM2BarRange,
 #elif CONFIG == SUPRA_ID
-		MAPMinimum:    GM35BarMin,
-		MAPRange:      GM35BarRange,
+		MAPMinimum:    AEM35BarMin,
+		MAPRange:      AEM35BarRange,
 #elif CONFIG == SLATER_ID
 		MAPMinimum:    HondaDenso183kPaMin,
 		MAPRange:      HondaDenso183kPaRange,
@@ -128,6 +128,9 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #elif CONFIG == DEUCES10_ID   // This is an estimate for the S10 TPS.
 		TPSMinimumADC: 120,  // This is to correct for the TPS reading at closed throttle.
 		TPSMaximumADC: 560  // This is to correct for the TPS reading at wide open throttle.
+#elif CONFIG == SUPRA_ID   // This is an estimate for the S10 TPS.
+		TPSMinimumADC: 100,  // This is to correct for the TPS reading at closed throttle.
+		TPSMaximumADC: 620  // This is to correct for the TPS reading at wide open throttle.
 #else
 		TPSMinimumADC: 0,
 		TPSMaximumADC: ADC_MAX_VALUE
@@ -147,8 +150,6 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		dwellType:     DWELL_RPM,
 #elif CONFIG == SEANKLT1_ID
 		dwellType:     DWELL_FIXED,
-#elif CONFIG == SUPRA_ID
-		dwellType:     DWELL_BRV,
 #else
 		dwellType:     DWELL_BRV,
 #endif

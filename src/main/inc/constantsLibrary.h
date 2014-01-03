@@ -103,9 +103,9 @@
 #define GM2BarRange              (GM2BarMax - GM2BarMin)
 
 /* AEM 3.5 Bar */
-#define GM35BarMin                KPA(  -20)     /* Pressure read at lowest ADC reading */
-#define GM35BarMax                KPA(360)     /* Pressure read at highest ADC reading */
-#define GM35BarRange              (GM35BarMax - GM35BarMin)
+#define AEM35BarMin                KPA(  -35)     /* Pressure read at lowest ADC reading */
+#define AEM35BarMax                KPA(395)     /* Pressure read at highest ADC reading */
+#define AEM35BarRange              (AEM35BarMax - AEM35BarMin)
 
 /* www.freescale.com/files/sensors/doc/data_sheet/MPX4100A.pdf */
 #define MPX4100AMin              KPA( 14.0)     /* Pressure read at lowest ADC reading */
