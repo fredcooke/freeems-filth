@@ -79,7 +79,6 @@ const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 #elif CONFIG == SUPRA_ID
 			Axis:   ARRAY_OF_16_VOLTAGES,
 			Values: { T(7.8), T(6.5), T(5.57), T(5.2), T(4.87), T(4.58), T(4.33), T(4.1), T(3.9), T(3.7), T(4.54), T(3.39), T(3.25), T(2.63), T(2.22), T(1.9)}
-
 #else
 			Axis:   ARRAY_OF_16_VOLTAGES,
 			Values: ARRAY_OF_16_DWELLS
