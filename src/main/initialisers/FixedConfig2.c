@@ -74,7 +74,7 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #elif CONFIG == SEANKLT1_ID
 		MAPMinimum:    GM2BarMin,
 		MAPRange:      GM2BarRange,
-#elif CONFIG == SUPRA_ID
+#elif CONFIG == VIASUPRA_ID
 		MAPMinimum:    AEM35BarMin,
 		MAPRange:      AEM35BarRange,
 #elif CONFIG == SLATER_ID
@@ -128,7 +128,7 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #elif CONFIG == DEUCES10_ID   // This is an estimate for the S10 TPS.
 		TPSMinimumADC: 120,  // This is to correct for the TPS reading at closed throttle.
 		TPSMaximumADC: 560  // This is to correct for the TPS reading at wide open throttle.
-#elif CONFIG == SUPRA_ID   // This is an estimate for the S10 TPS.
+#elif CONFIG == VIASUPRA_ID   // This is an estimate for the S10 TPS.
 		TPSMinimumADC: 100,  // This is to correct for the TPS reading at closed throttle.
 		TPSMaximumADC: 620  // This is to correct for the TPS reading at wide open throttle.
 #else
@@ -222,7 +222,7 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		PortDirectionT: 0xFF  // Ignored! TODO: Overridden for precision timed outputs
 	},
 	decoderSettings:{
-#if CONFIG == SUPRA_ID
+#if CONFIG == VIASUPRA_ID
 		syncConfirmationsRunning: 0, // This number is arbitrary, add an if block and configure to taste.
 		syncConfirmationsStarting: 1, // Most users should leave this zero, however having it set to 1 or 2 could be beneficial
 #else

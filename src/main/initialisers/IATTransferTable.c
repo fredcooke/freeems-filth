@@ -66,7 +66,7 @@ const volatile unsigned short IATTransferTable[1024] LOOKUPD = {
 #include "../data/thermistors/GM-2k49Bias.h"
 #elif CONFIG == PETERTRUCK_ID
 #include "../data/thermistors/GM-2k4Bias.h"
-#elif CONFIG == SUPRA_ID
+#elif CONFIG == VIASUPRA_ID
 #include "../data/thermistors/Denso-2k4Bias.h"
 #else // Default to correctly biased Jap sensor.
 #include "../data/thermistors/Denso-2k7Bias.h"

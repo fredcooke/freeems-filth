@@ -70,7 +70,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif CONFIG == SCAVENGER_ID
 		perCylinderVolume:  CYLINDER_VOLUME(399.25),
 		injectorFlow:       CC_PER_MINUTE(540),
-#elif CONFIG == SUPRA_ID
+#elif CONFIG == VIASUPRA_ID
 		perCylinderVolume:  CYLINDER_VOLUME(500),
 		injectorFlow:       CC_PER_MINUTE(550),
 #else
@@ -164,7 +164,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		numberOfConfiguredOutputEvents:          6, // THESE ARE NOT IGN, THEY ARE FUEL
 		numberOfInjectionsPerEngineCycle:        1  // Sequential, baby, yeah!
 
-#elif CONFIG == SUPRA_ID // Firing order 1-5-3-6-2-4 
+#elif CONFIG == VIASUPRA_ID // Firing order 1-5-3-6-2-4 
 		anglesOfTDC: {ANGLE(0), ANGLE(120), ANGLE(240), ANGLE(360), ANGLE(480), ANGLE(600), ANGLE(0), ANGLE(120), ANGLE(240), ANGLE(360), ANGLE(480), ANGLE(600)},
 		outputEventPinNumbers:       {2,1,0,2,1,0,4,3,5,4,3,5}, // Weird order because I kept messing up my wiring.
 		schedulingConfigurationBits: {0,0,0,0,0,0,1,1,1,1,1,1}, // Ones represent scheduling for injection, zeros represent scheduling for ignition
@@ -224,7 +224,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif CONFIG == SCAVENGER_ID
 			disableThreshold:  RPM(7200),
 			reenableThreshold: RPM(7150)
-#elif CONFIG == SUPRA_ID
+#elif CONFIG == VIASUPRA_ID
 			disableThreshold:  RPM(6400),
 			reenableThreshold: RPM(6000)
 #else
@@ -239,7 +239,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #elif CONFIG == SNOTROCKET_ID
 			disableThreshold:  RPM(6300),
 			reenableThreshold: RPM(6200)
-#elif CONFIG == SUPRA_ID
+#elif CONFIG == VIASUPRA_ID
 			disableThreshold:  RPM(6400),
 			reenableThreshold: RPM(6000)
 #elif CONFIG == SLATER_ID
