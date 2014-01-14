@@ -19,8 +19,9 @@ TEST_AND_SAVE_ALL:
 BLANK:
 	cd src/main; make clean s19
 
-SPECIAL: # Can use a dependency here instead. 
-	cd src/main; make clean EvenTeeth-Distributor-4of6and1
+SPECIAL: SNOTROCKET # Can use a dependency here instead.
+ 
+#	cd src/main; make clean EvenTeeth-Distributor-4of6and1
 
 
 # Other special builds
