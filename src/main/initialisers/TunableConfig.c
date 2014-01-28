@@ -44,7 +44,6 @@
 
 #include "../inc/freeEMS.h"
 #include "../inc/commsCore.h"
-#include "../inc/decoderInterface.h"
 
 
 #ifndef TUNETABLESDV1
@@ -152,7 +151,7 @@ const volatile SmallTables2 SmallTablesBFlashV TUNETABLESDV2 = {
 			datalogStreamType:                    asyncDatalogBasic,
 			datalogPollingType:                   asyncDatalogBasic,
 			firstChunk: 0,
-			numberOfChunks: 6,
+			numberOfChunks: 3,
 			logChunks: {
 				[0] = {
 					address: &CoreVars0,
@@ -165,19 +164,7 @@ const volatile SmallTables2 SmallTablesBFlashV TUNETABLESDV2 = {
 				[2] = {
 					address: &KeyUserDebugs,
 					size: sizeof(KeyUserDebug)
-				},
-				[3] = {
-					address: &outputEventInputEventNumbers,
-					size: sizeof(outputEventInputEventNumbers)
-				},
-				[4] = {
-					address: &outputEventPulseWidthsMath,
-					size: sizeof(outputEventPulseWidthsMath)
-				},
-				[5] = {
-					address: &outputEventDelayFinalPeriod,
-					size: sizeof(outputEventDelayFinalPeriod)
-				},
+				}
 			},
 			datalogByteStreamSourceAddress:       (void*)&PTIT,     // Port T state for default
 			datalogWordStreamSourceAddress:       (void*)&ATD0DR4,  // MAP sensor for default
