@@ -85,6 +85,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #include "../data/tables/axis/ScavengersMiata-RPM.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/axis/DefaultWith400Spacing-RPM.h"
+#elif CONFIG == VIASUPRA_ID
+#include "../data/tables/axis/ViaSupra-RPM.h"
 #else
 #include "../data/tables/axis/FredsTruck-RPM.h"
 #endif
@@ -108,6 +110,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #include "../data/tables/axis/Deuces3100-Load.h"
 #elif CONFIG == SCAVENGER_ID
 #include "../data/tables/axis/ScavengersMiata-Load.h"
+#elif CONFIG == VIASUPRA_ID
+#include "../data/tables/axis/ViaSupra-Load.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/axis/DefaultWith10and20SplitSpacing-Load.h"
 #else
@@ -133,6 +137,8 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #include "../data/tables/ve/DeucesS10VE.h"
 #elif CONFIG == SCAVENGER_ID
 #include "../data/tables/ve/ScavengerVE24RPMx19Load.h"
+#elif CONFIG == VIASUPRA_ID
+#include "../data/tables/ve/ViaSupraVE.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/ve/DefaultVE24RPMx19Load.h"
 #else
@@ -220,6 +226,8 @@ const volatile mainTable LambdaTableFlashV FUELTABLESD = {
 #include "../data/tables/lambda/SlaterLambda.h"
 #elif CONFIG == DEUCES10_ID
 #include "../data/tables/lambda/DeucesS10Lambda.h"
+#elif CONFIG == VIASUPRA_ID
+#include "../data/tables/lambda/ViaSupraLambda.h"
 #else
 #include "../data/tables/lambda/GenericLambda.h" // Reasonable starting point
 #endif
