@@ -146,6 +146,8 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		algorithmType: ALGO_SPEED_DENSITY,
 #if CONFIG == DEUCECOUPE_ID
 		dwellType:     DWELL_RPM,
+#elif CONFIG == VIASUPRA_ID
+		dwellType:     DWELL_RPM,
 #elif CONFIG == DEUCES10_ID
 		dwellType:     DWELL_RPM,
 #elif CONFIG == SEANKLT1_ID
