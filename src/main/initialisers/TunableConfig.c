@@ -129,10 +129,10 @@ const volatile SmallTables1 SmallTablesAFlashV  TUNETABLESDV1 = {
 		dwellVersusRPMTable: {
 #if CONFIG == VIASUPRA_ID
 			Axis:   ARRAY_OF_16_RPMS,
-			Values: ARRAY_OF_16_DIS6_DWELLS
+			Values: { T(5.75),   T(4.50),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.0),   T(3.0),   T(3.0)} 
 #else
 			Axis:   ARRAY_OF_16_RPMS,
-			Values: { T(5.75),   T(4.50),   T(4.25),   T(4.00),   T(3.75),   T(3.50),   T(3.25),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.2),   T(3.2)} 
+			Values: ARRAY_OF_16_DIS6_DWELLS
 #endif
 		},
 		blendVersusRPMTable: {
