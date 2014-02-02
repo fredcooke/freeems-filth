@@ -39,22 +39,12 @@ SPECIAL: # Can use a dependency here instead.
 # Other special builds
 BENCHTEST: 
 	$(VAR_SET) CLIFLAGS="DEFAULT" && $(DESCEND) && make clean BenchTest 
-TRUCK: 
-	$(VAR_SET) CLIFLAGS="$@" && $(DESCEND) && make clean MitsiAndMazda-CAS-4and1
-HOTEL: 
-	$(VAR_SET) CLIFLAGS="$@" && $(DESCEND) && make clean HallOrOptical-Distributor-4of69
-PRESTO: 
-	$(VAR_SET) CLIFLAGS="$@" && $(DESCEND) && make clean EvenTeeth-Cam-24and1
 SEANKLT1: 
 	$(VAR_SET) CLIFLAGS="$@" && $(DESCEND) && make clean GM-LT1-CAS-360and8
 SEANKR1: 
 	$(VAR_SET) CLIFLAGS="$@" && $(DESCEND) && make clean SEANKR1
 SNOTROCKET: 
 	$(VAR_SET) CLIFLAGS="$@" && $(DESCEND) && make clean EvenTeeth-Cam-24and1
-SPUDMN: 
-	$(VAR_SET) CLIFLAGS="$@" && $(DESCEND) && make clean MissingTeeth-Crank-8minus1
-SLATER: 
-	$(VAR_SET) CLIFLAGS="$@" && $(DESCEND) && make clean MissingTeeth-Crank-12minus1
 PETERJSERIES: 
 	$(VAR_SET) CLIFLAGS="$@" && $(DESCEND) && make clean JSeries-12CrankWith6-2Cam
 DEUCECOUPE: 

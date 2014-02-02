@@ -43,19 +43,7 @@
 /// @copydoc fixedConfig1
 const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 	engineSettings:{
-#if CONFIG == TRUCK_ID
-		perCylinderVolume:  CYLINDER_VOLUME(500),
-	    cylinderCount:		4,
-	    strokesPerCycle:	4,
-		injectorFlow:       CC_PER_MINUTE(550), // RX7 "550" which em_knaps had tested at 650cc
-		secondaryInjectorFlow: CC_PER_MINUTE(0),
-#elif CONFIG == PRESTO_ID
-		perCylinderVolume:  CYLINDER_VOLUME(400),
-		cylinderCount:		4,
-		strokesPerCycle:	4,
-		injectorFlow:       CC_PER_MINUTE(213),
-		secondaryInjectorFlow: CC_PER_MINUTE(0),
-#elif CONFIG == SEANKLT1_ID
+#if CONFIG == SEANKLT1_ID
 		perCylinderVolume:  CYLINDER_VOLUME(727),
 		cylinderCount:		8,
 		strokesPerCycle:	4,
@@ -73,12 +61,6 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		injectionStrategy:  STAGED_EXTENSION,
 		maxPrimaryDC:		DUTYCYCLE(85.00),
 		maxSecondaryDC:		DUTYCYCLE(85.00),
-#elif CONFIG == SLATER_ID
-		perCylinderVolume:  CYLINDER_VOLUME(324),
-		cylinderCount:		4,
-		strokesPerCycle:	4,
-		injectorFlow:       CC_PER_MINUTE(320),
-		secondaryInjectorFlow: CC_PER_MINUTE(0),
 #elif CONFIG == PETERJSERIES_ID
 		perCylinderVolume:  CYLINDER_VOLUME(585),
 		cylinderCount:		6,
@@ -125,8 +107,6 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 	coarseBitBangSettings:{
 #if CONFIG == SNOTROCKET_ID // 24 events for a 24+1 CAS setup with 4 cylinder tacho
 		outputActions:      {1,0,0,2,0,0,1,0,0,2,0,0,1,0,0,2,0,0,1,0,0,2,0,0},
-#elif CONFIG == SLATER_ID // 11 events for 12-1 crank setup with 4 cylinder tacho
-		outputActions:      {1,0,0,2,0,0,1,0,0,2,0},
 #else
 		outputActions:      standardTachoArray,
 #endif
@@ -140,31 +120,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 * a few degrees of movement in a high RPM engine. However, worst case fuel accuracy is about 1.5% and that is with
 * a 1mS fuel pulse. If you use them for ignition control your engine may appear to run fine, but again this is a bad idea. */
 
-#if CONFIG == TRUCK_ID // Fred's Ford Courier http://forum.diyefi.org/viewtopic.php?f=55&t=1069
-		anglesOfTDC: {ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540), ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540)},
-		outputEventPinNumbers:       {0,1,2,3,4,5,4,5}, // COP and semi-sequential
-		schedulingConfigurationBits: {0,0,0,0,1,1,1,1}, // First four ignition, last four fuel
-		decoderEngineOffset:              ANGLE(90.00), // FE-DOHC, 4and1 CAS approximately centre
-		numberOfConfiguredOutputEvents:              8, // Migrated to new way
-		numberOfInjectionsPerEngineCycle:            2  // Used to be batch, dead time being wrong could have affected AFRs
-
-#elif CONFIG == HOTEL_ID // Fred's Hotel Hyundai (Stellar) http://forum.diyefi.org/viewtopic.php?f=55&t=1086
-		anglesOfTDC:             {ANGLE(0)}, // Simple dual edge dizzy
-		outputEventPinNumbers:          {0}, // First pin
-		schedulingConfigurationBits:    {0}, // Ignition only
-		decoderEngineOffset:    ANGLE(0.00), // Locked dizzy with timing of TDC on edge, used for static timing during cranking.
-		numberOfConfiguredOutputEvents:   1, // One per decoder cycle = 4
-		numberOfInjectionsPerEngineCycle: 1  // Ditto
-
-#elif CONFIG == PRESTO_ID // Preston's silver-top-on-a-stand http://forum.diyefi.org/viewtopic.php?f=55&t=1101
-		anglesOfTDC: {ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540), ANGLE(0), ANGLE(180), ANGLE(360), ANGLE(540)},
-		outputEventPinNumbers:       {0,1,0,1,4,5,4,5}, // Wasted spark, semi-sequential TODO migrate this to sequential
-		schedulingConfigurationBits: {0,0,0,0,1,1,1,1}, // First four ignition, last four injection
-		decoderEngineOffset:      ANGLE(128.52), // Stock silver-top using G? for RPM2 and NE for RPM1, CAS approximately centre, @todo TODO find values for extremes of dizzy placement
-		numberOfConfiguredOutputEvents:              8, // See two lines above
-		numberOfInjectionsPerEngineCycle:            2  // Semi-sequential, for now.
-
-#elif CONFIG == SEANKLT1_ID // http://forum.diyefi.org/viewtopic.php?f=55&t=1146
+#if CONFIG == SEANKLT1_ID // http://forum.diyefi.org/viewtopic.php?f=55&t=1146
 		anglesOfTDC: {ANGLE(0), ANGLE(90), ANGLE(180), ANGLE(270), ANGLE(360), ANGLE(450), ANGLE(540), ANGLE(630), ANGLE(0), ANGLE(90), ANGLE(180), ANGLE(270), ANGLE(360), ANGLE(450), ANGLE(540), ANGLE(630)},
 		outputEventPinNumbers:       {0,0,0,0,0,0,0,0,2,3,4,5,2,3,4,5}, // LTCC e-dizzy, semi-sequential injection 1/6, 8/5, 4/7, 3/2, and repeat
 		schedulingConfigurationBits: {0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1}, // See below two lines
@@ -180,22 +136,6 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		decoderEngineOffset:         ANGLE(566.00), // Volvo B21A with DSM/Miata CAS + 24and1 disk
 		numberOfConfiguredOutputEvents:          4, // COP setup
 		numberOfInjectionsPerEngineCycle:        1  // Ditto
-
-#elif CONFIG == SPUDMN_ID // http://forum.diyefi.org/viewtopic.php?f=55&t=1507 Spudmn's mk1 racing mini in NZ :-)
-		anglesOfTDC: {ANGLE(0), ANGLE(180)}, // 1 and 4, 2 and 3
-		outputEventPinNumbers:               {0,1}, // Ignition only
-		schedulingConfigurationBits:         {0,0}, // Ditto
-		decoderEngineOffset:           ANGLE(5.00), // To verify from source build!
-		numberOfConfiguredOutputEvents:          2, // Wasted spark
-		numberOfInjectionsPerEngineCycle:        1  // Ditto
-
-#elif CONFIG == SLATER_ID // http://forum.diyefi.org/viewtopic.php?f=62&t=1336  Citroen with t25 turbo on a flat 4 air cooled engine
-		anglesOfTDC: {ANGLE(0), ANGLE(180),(0), ANGLE(180)}, // 1 and 4, 2 and 3, repeat
-		outputEventPinNumbers:           {0,1,4,5}, // 2 and 3 are unused in this config, fuel are on 4/5 because he plans to use the same hardware on the V8 Supra with wasted spark and thus 2/3 are required for ignition on that
-		schedulingConfigurationBits:     {0,0,1,1}, // 2 ignition 2 injection
-		decoderEngineOffset:         ANGLE(120.00), // May need adjusting
-		numberOfConfiguredOutputEvents:          4, // Wasted spark, semi-sequential
-		numberOfInjectionsPerEngineCycle:        2  // Semi-sequential, crank sync only
 
 #elif CONFIG == PETERJSERIES_ID // Firing order 1-4-2-5-3-6 http://forum.diyefi.org/viewtopic.php?f=62&t=1533
 		anglesOfTDC: {ANGLE(0), ANGLE(120), ANGLE(240), ANGLE(360), ANGLE(480), ANGLE(600)},
@@ -260,10 +200,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 	},
 	cutAndLimiterSettings:{
 		InjectionRPM:{
-#if CONFIG == SLATER_ID
-			disableThreshold:  RPM(7000),
-			reenableThreshold: RPM(6900)
-#elif CONFIG == DEUCES10_ID
+#if CONFIG == DEUCES10_ID
 			disableThreshold:  RPM(5600),
 			reenableThreshold: RPM(5400)
 #elif CONFIG == SCAVENGER_ID
@@ -278,15 +215,9 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 #endif
 		},
 		IgnitionRPM:{
-#if CONFIG == HOTEL_ID
-			disableThreshold:  RPM(5800),
-			reenableThreshold: RPM(5700) // Nice and close to save the exhaust
-#elif CONFIG == SNOTROCKET_ID
+#if CONFIG == SNOTROCKET_ID
 			disableThreshold:  RPM(6300),
 			reenableThreshold: RPM(6200)
-#elif CONFIG == SLATER_ID
-			disableThreshold:  RPM(7000),
-			reenableThreshold: RPM(6850)
 #elif CONFIG == PETERJSERIES_ID
 			disableThreshold:  RPM(6000),
 			reenableThreshold: RPM(5950)

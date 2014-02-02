@@ -68,16 +68,10 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 	LoadLength: 16,
 #endif
 	RPM: {
-#if CONFIG == TRUCK_ID
-#include "../data/tables/axis/FredsTruck-RPM.h"
-#elif CONFIG == PRESTO_ID
-#include "../data/tables/axis/FredsTruck-RPM.h"
-#elif CONFIG == SEANKLT1_ID
+#if CONFIG == SEANKLT1_ID
 #include "../data/tables/axis/SeansLT1-RPM.h"
 #elif CONFIG == SEANKR1_ID
 #include "../data/tables/axis/SeansR1-RPM-24.h"
-#elif CONFIG == SLATER_ID
-#include "../data/tables/axis/Slater-RPM.h"
 #elif CONFIG == PETERJSERIES_ID
 #include "../data/tables/axis/PetersJSeries-RPM.h"
 #elif CONFIG == DEUCECOUPE_ID
@@ -93,16 +87,10 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #endif
 	},
 	Load: {
-#if CONFIG == TRUCK_ID
-#include "../data/tables/axis/FredsTruck-Load.h"
-#elif CONFIG == PRESTO_ID
-#include "../data/tables/axis/FredsTruck-Load.h"
-#elif CONFIG == SEANKLT1_ID
+#if CONFIG == SEANKLT1_ID
 #include "../data/tables/axis/FredsTruck-Load.h"
 #elif CONFIG == SEANKR1_ID
 #include "../data/tables/axis/SeansR1-Load.h"
-#elif CONFIG == SLATER_ID
-#include "../data/tables/axis/Slater-Load.h"
 #elif CONFIG == PETERJSERIES_ID
 #include "../data/tables/axis/PetersJSeries-Load.h"
 #elif CONFIG == DEUCECOUPE_ID
@@ -118,16 +106,10 @@ const volatile mainTable VETableMainFlashV FUELTABLESD = {
 #endif
 	},
 	Table: {
-#if CONFIG == TRUCK_ID
-#include "../data/tables/ve/FredsTruckVE.h"
-#elif CONFIG == PRESTO_ID
-#include "../data/tables/ve/flat60Percent.h"
-#elif CONFIG == SEANKLT1_ID
+#if CONFIG == SEANKLT1_ID
 #include "../data/tables/ve/SeansLT1VE.h"
 #elif CONFIG == SEANKR1_ID
 #include "../data/tables/ve/flat50Percent.h"
-#elif CONFIG == SLATER_ID
-#include "../data/tables/ve/SlaterVE.h"
 #elif CONFIG == PETERJSERIES_ID
 #include "../data/tables/ve/PetersJSeriesVE.h"
 #elif CONFIG == DEUCECOUPE_ID
@@ -196,8 +178,6 @@ const volatile mainTable LambdaTableFlashV FUELTABLESD = {
 #include "../data/tables/axis/ScavengersMiata-RPM.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/axis/DefaultWith400Spacing-RPM.h"
-#elif CONFIG == SLATER_ID
-#include "../data/tables/axis/Slater-RPM.h"
 #elif CONFIG == DEUCES10_ID
 #include "../data/tables/axis/Deuces3100-RPM.h"
 #elif CONFIG == SEANKR1_ID
@@ -211,8 +191,6 @@ const volatile mainTable LambdaTableFlashV FUELTABLESD = {
 #include "../data/tables/axis/ScavengersMiata-Load.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/axis/DefaultWith10and20SplitSpacing-Load.h"
-#elif CONFIG == SLATER_ID
-#include "../data/tables/axis/Slater-Load.h"
 #elif CONFIG == DEUCES10_ID
 #include "../data/tables/axis/Deuces3100-Load.h"
 #elif CONFIG == SEANKR1_ID
@@ -226,8 +204,6 @@ const volatile mainTable LambdaTableFlashV FUELTABLESD = {
 #include "../data/tables/lambda/ScavengerLambda24RPMx19Load.h"
 #elif CONFIG == DEFAULT_ID
 #include "../data/tables/lambda/DefaultLambda24RPMx19Load.h"
-#elif CONFIG == SLATER_ID
-#include "../data/tables/lambda/SlaterLambda.h"
 #elif CONFIG == DEUCES10_ID
 #include "../data/tables/lambda/DeucesS10Lambda.h"
 #elif CONFIG == DEUCES10_ID

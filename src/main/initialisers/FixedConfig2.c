@@ -62,13 +62,7 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 	},
 	sensorRanges:{
 // MAP Sensor Configuration
-#if CONFIG == HOTEL_ID
-		MAPMinimum:    HondaDenso183kPaMin,
-		MAPRange:      HondaDenso183kPaRange,
-#elif CONFIG == PRESTO_ID
-		MAPMinimum:    HondaDenso183kPaMin,
-		MAPRange:      HondaDenso183kPaRange,
-#elif CONFIG == SNOTROCKET_ID
+#if CONFIG == SNOTROCKET_ID
 		MAPMinimum:    HondaDenso183kPaMin,
 		MAPRange:      HondaDenso183kPaRange,
 #elif CONFIG == SEANKLT1_ID
@@ -111,10 +105,7 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 		EGOMinimum:    LC1LambdaMin,
 		EGORange:      LC1LambdaRange,
 #endif
-#if CONFIG == HOTEL_ID
-		BRVMinimum:    VOLTS(0),
-		BRVRange:      VOLTS(25.082),
-#elif CONFIG == SNOTROCKET_ID
+#if CONFIG == SNOTROCKET_ID
 		BRVMinimum:    VOLTS(0),
 		BRVRange:      VOLTS(24.777),
 #elif CONFIG == DEUCES10_ID
@@ -229,10 +220,7 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 	decoderSettings:{
 		syncConfirmationsRunning: 10, // This number is arbitrary, add an if block and configure to taste.
 		syncConfirmationsStarting: 0, // Most users should leave this zero, however having it set to 1 or 2 could be beneficial
-#if CONFIG == HOTEL_ID
-		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100), // once started this needs a lot less... fix
-		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100),
-#elif CONFIG == SNOTROCKET_ID
+#if CONFIG == SNOTROCKET_ID
 		accelerationInputEventTimeTolerance: ACCEL_TIME_TOL(100),
 		decelerationInputEventTimeTolerance: DECEL_TIME_TOL(100),
 #elif CONFIG == SCAVENGER_ID

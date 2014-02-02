@@ -46,18 +46,12 @@
  * @author FreeTherm
  */
 const volatile unsigned short IATTransferTable[1024] LOOKUPD = {
-#if CONFIG == TRUCK_ID
-#include "../data/thermistors/Bosch.h"
-#elif CONFIG == PRESTO_ID
-#include "../data/thermistors/Bosch.h"
-#elif CONFIG == SEANKLT1_ID
+#if CONFIG == SEANKLT1_ID
 #include "../data/thermistors/Bosch.h"
 #elif CONFIG == SEANKR1_ID
 #include "../data/thermistors/Denso-2k4Bias.h"
 #elif CONFIG == SNOTROCKET_ID
 #include "../data/thermistors/GM-2k4Bias.h"
-#elif CONFIG == SLATER_ID
-#include "../data/thermistors/GM-2k6Bias.h"
 #elif CONFIG == PETERJSERIES_ID
 #include "../data/thermistors/HondaJSeries-2k4Bias.h"
 #elif CONFIG == DEUCECOUPE_ID

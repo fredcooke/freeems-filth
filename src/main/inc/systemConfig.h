@@ -45,34 +45,15 @@
 
 // Vehicle IDs to avoid typos
 #define DEFAULT_ID       1 // RIP original Volvo! (should have been 1)
-#define TRUCK_ID         2 // Won't be in use for some time!
-#define HOTEL_ID         3 // So reliable, we've not heard from him in months
-#define PRESTO_ID        4 // Lost in service
 #define SEANKLT1_ID      5 // Driven yearly, maybe
 //efine MARCOS_ID        6 // Only idled for one minute, never since. No config available for this vehicle. http://forum.diyefi.org/viewtopic.php?f=55&t=1303
 #define SNOTROCKET_ID    7 // Another one that's too reliable
-#define SPUDMN_ID        8 // Occasionally comes out of the garage to race
-#define SLATER_ID        9 // Occasionally comes out of the garage to do burnouts
 #define PETERJSERIES_ID 10 // Winter thrasher, works so well he refuses to whinge
 #define DEUCECOUPE_ID   11 // Work in progress, ignition not setup yet
 #define PETERTRUCK_ID   12 // Work horse vehicle, about to get boosted
+#define SEANKR1_ID      14 // Desert/Sand Rail Turbo Yamaha R1
 #define SCAVENGER_ID    15 // Hacked up Miata turbo from the south!
 #define DEUCES10_ID     16 // Work in progress
-
-#define SEANKR1_ID      14 // Desert/Sand Rail Turbo Yamaha R1
-
-// Looking forward to there being links to threads here soon! In no particular order:
-//#define LEV8N
-//#define SEANKR1
-//#define TTV8SUPRA
-//#define SECRETSQUIRREL // Shhhhhh! :-p
-//#define HOTCAT
-//#define MICROTECHSUCKS // Yes, that's you, John "I love MicroTech" Tramp
-//#define QUAKE86 // Yep, this one too! :-)
-//#define CRAIGB2200
-//#define DAILYRAVAGE // No pun intended!
-//#define QUICKRAVAGE // No pun intended here either!
-// No pressure guys! <cough, cough> :-)
 
 
 // Convert labels into IDs for use in code and set the ID string
@@ -81,27 +62,12 @@
 #elif defined DEFAULT
 #define CONFIG DEFAULT_ID
 #define PRELIM_CONFIG "Default"
-#elif defined TRUCK
-#define CONFIG TRUCK_ID
-#define PRELIM_CONFIG "TRUCK"
-#elif defined HOTEL
-#define CONFIG HOTEL_ID
-#define PRELIM_CONFIG "HOTEL"
-#elif defined PRESTO
-#define CONFIG PRESTO_ID
-#define PRELIM_CONFIG "PRESTO"
 #elif defined SEANKLT1
 #define CONFIG SEANKLT1_ID
 #define PRELIM_CONFIG "SEANKLT1"
 #elif defined SNOTROCKET
 #define CONFIG SNOTROCKET_ID
 #define PRELIM_CONFIG "SNOTROCKET"
-#elif defined SPUDMN
-#define CONFIG SPUDMN_ID
-#define PRELIM_CONFIG "SPUDMN"
-#elif defined SLATER
-#define CONFIG SLATER_ID
-#define PRELIM_CONFIG "SLATER"
 #elif defined PETERJSERIES
 #define CONFIG PETERJSERIES_ID
 #define PRELIM_CONFIG "PETERJSERIES"
