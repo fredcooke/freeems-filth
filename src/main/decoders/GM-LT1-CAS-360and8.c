@@ -116,7 +116,15 @@ void PrimaryRPMISR(void){
 	extern Clock Clocks;
 	extern Counter Counters;
 	extern KeyUserDebug KeyUserDebugs;
-	extern const volatile fixedConfig1 fixedConfigs1;                                                                                                
+	extern const volatile fixedConfig1 fixedConfigs1;
+	extern unsigned char syncConfirmationsRunningCounter;
+	extern unsigned char syncConfirmationsStartingCounter;
+	extern unsigned short* ticksPerDegreeRecord;
+	extern unsigned char numberScheduled;
+	extern unsigned char outputEventInputEventNumbers[];
+	extern unsigned long skipEventFlags;
+	extern unsigned long lastPrimaryEventTimeStamp;
+	
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
 	// Grab this first as it is the most critical var in this decoder

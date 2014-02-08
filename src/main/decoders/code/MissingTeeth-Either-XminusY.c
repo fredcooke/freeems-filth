@@ -73,6 +73,14 @@ void PrimaryRPMISR(void) {
 	extern KeyUserDebug KeyUserDebugs;
 	extern const volatile fixedConfig1 fixedConfigs1;
 	extern const volatile fixedConfig2 fixedConfigs2;
+	extern unsigned long lastEventTimeStamp;
+	extern unsigned char syncConfirmationsRunningCounter;
+	extern unsigned char syncConfirmationsStartingCounter;
+	extern unsigned short lastTicksPerDegree;
+	extern unsigned char numberScheduled;
+	extern unsigned long skipEventFlags;
+	extern unsigned short* ticksPerDegreeRecord;
+	extern unsigned char outputEventInputEventNumbers[];
 
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;

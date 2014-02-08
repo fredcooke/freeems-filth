@@ -74,6 +74,23 @@ void InjectorXISR(){
 	extern const unsigned char injectorMainDisableMasks[];
 	extern const unsigned char injectorMainGoHighMasks[];
 	extern const unsigned char injectorMainOffMasks[];
+	extern volatile unsigned short * volatile injectorMainTimeRegisters[];
+	extern unsigned short outputEventPulseWidthsRealtime[];
+	extern unsigned short injectorCodeLatencies[];
+	extern unsigned long injectorMainEndTimes[];
+	extern volatile unsigned char * volatile injectorMainControlRegisters[];
+	extern unsigned short injectorCodeOpenRuntimes[];
+	extern unsigned char outputEventExtendNumberOfRepeatsRealtime[];
+	extern unsigned short outputEventExtendRepeatPeriodRealtime[];
+	extern unsigned short outputEventDelayFinalPeriodRealtime[];
+	extern unsigned char selfSetTimer;
+	extern unsigned char outputEventExtendNumberOfRepeatsHolding[];
+	extern unsigned short outputEventExtendRepeatPeriodHolding[];
+	extern unsigned short outputEventDelayFinalPeriodHolding[];
+	extern unsigned short injectorMainStartOffsetHolding[];
+	extern unsigned short outputEventPulseWidthsHolding[];
+	extern unsigned short injectorCodeCloseRuntimes[];
+
 
 	/* Clear the interrupt flag for this channel */
 	TFLG = INJECTOR_MAIN_ON_MASK;

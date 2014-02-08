@@ -52,8 +52,16 @@ void PrimaryRPMISR(){
 	extern Clock Clocks;
 	extern Counter Counters;
 	extern KeyUserDebug KeyUserDebugs;
-	extern const volatile fixedConfig1 fixedConfigs1;                                                                                                
+	extern const volatile fixedConfig1 fixedConfigs1;
 	extern const volatile fixedConfig2 fixedConfigs2;
+    extern unsigned long lastEventTimeStamp;
+    extern unsigned char syncConfirmationsRunningCounter;
+    extern unsigned char syncConfirmationsStartingCounter;
+    extern unsigned short lastTicksPerDegree;
+    extern unsigned char numberScheduled;
+    extern unsigned long skipEventFlags;
+    extern unsigned short* ticksPerDegreeRecord;                                
+    extern unsigned char outputEventInputEventNumbers[];
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
 	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT0, PORTB);
@@ -183,8 +191,16 @@ void SecondaryRPMISR(){
 	extern Clock Clocks;
 	extern Counter Counters;
 	extern KeyUserDebug KeyUserDebugs;
-	extern const volatile fixedConfig1 fixedConfigs1;                                                                                                
+	extern const volatile fixedConfig1 fixedConfigs1;
 	extern const volatile fixedConfig2 fixedConfigs2;
+	extern unsigned long lastEventTimeStamp;
+	extern unsigned char syncConfirmationsRunningCounter;
+	extern unsigned char syncConfirmationsStartingCounter;
+	extern unsigned short lastTicksPerDegree;
+	extern unsigned char numberScheduled;
+	extern unsigned long skipEventFlags;
+	extern unsigned short* ticksPerDegreeRecord;
+	extern unsigned char outputEventInputEventNumbers[];
 	// Reads the inner slot on the disk.
 
 	/* Clear the interrupt flag for this input compare channel */

@@ -59,6 +59,13 @@ void PrimaryRPMISR(){
 	extern KeyUserDebug KeyUserDebugs;
 	extern const volatile fixedConfig1 fixedConfigs1;
 	extern const volatile fixedConfig2 fixedConfigs2;
+	extern unsigned long lastPrimaryEventTimeStamp;
+	extern unsigned short lastPrimaryTicksPerDegree;
+	extern unsigned char numberScheduled;
+	extern unsigned long skipEventFlags;
+	extern unsigned short* ticksPerDegreeRecord;
+	extern unsigned char outputEventInputEventNumbers[];
+
 
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
@@ -158,6 +165,9 @@ void PrimaryRPMISR(){
 
 void SecondaryRPMISR(){
 	extern KeyUserDebug KeyUserDebugs;
+	extern unsigned long lastSecondaryEventTimeStamp;
+	extern unsigned char syncConfirmationsRunningCounter;
+	extern unsigned char syncConfirmationsStartingCounter;
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x02;
 	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT1, PORTB);

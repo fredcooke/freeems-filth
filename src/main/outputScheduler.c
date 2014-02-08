@@ -48,8 +48,22 @@
 void scheduleOutputs(){
 	extern Counter Counters;
 	extern KeyUserDebug KeyUserDebugs;
-	extern const volatile fixedConfig1 fixedConfigs1;                                                                                                
-	extern const unsigned short injectorSwitchOnCodeTime;                                                                                            
+	extern const volatile fixedConfig1 fixedConfigs1;
+	extern const unsigned short injectorSwitchOnCodeTime;
+	extern const unsigned short totalEventAngleRange;
+	extern unsigned char outputEventInputEventNumbers[];
+	extern const unsigned char numberOfVirtualEvents;
+	extern const unsigned short eventAngles[];
+	extern unsigned short* ticksPerDegree;
+	extern const unsigned short decoderMaxCodeTime;
+	extern const unsigned char numberOfRealEvents;
+	extern unsigned long  outputEventDelayTotalPeriod[];
+	extern unsigned long skipEventFlags;
+	extern unsigned short outputEventDelayFinalPeriod[];
+	extern unsigned short outputEventPulseWidthsMath[];
+	extern unsigned short outputEventPulseWidthsMathSecondary[];
+	extern unsigned char  outputEventExtendNumberOfRepeats[];
+	extern unsigned short outputEventExtendRepeatPeriod[];
 
 	
         /// TODO @todo FIXME part of to schedule or not to schedule should be : (masterPulseWidth > injectorMinimumPulseWidth)

@@ -80,8 +80,15 @@ void PrimaryRPMISR(){
 	extern Clock Clocks;
 	extern Counter Counters;
 	extern KeyUserDebug KeyUserDebugs;
-	extern const volatile fixedConfig1 fixedConfigs1;                                                                                                
+	extern const volatile fixedConfig1 fixedConfigs1;
 	extern const volatile fixedConfig2 fixedConfigs2;
+	extern unsigned long lastPrimaryEventTimeStamp;
+    extern unsigned char numberScheduled;
+    extern unsigned long skipEventFlags;
+    extern unsigned short* ticksPerDegreeRecord;
+    extern unsigned char outputEventInputEventNumbers[];
+	extern unsigned short lastPrimaryTicksPerDegree;
+
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x01;
 	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT0, PORTB);
@@ -172,6 +179,8 @@ void PrimaryRPMISR(){
 // CAM sensor doesn't use time stamps due to timing belt tension vibration, plus the crank has 6 times more events, so any discrepancy would be caught that way
 void SecondaryRPMISR(){
 	extern KeyUserDebug KeyUserDebugs;
+	extern unsigned char syncConfirmationsRunningCounter;
+	extern unsigned char syncConfirmationsStartingCounter;
 	/* Clear the interrupt flag for this input compare channel */
 	TFLG = 0x02;
 	DEBUG_TURN_PIN_ON(DECODER_BENCHMARKS, BIT0, PORTB);

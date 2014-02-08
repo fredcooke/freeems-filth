@@ -235,8 +235,12 @@ void decodePacketAndRespond(){
 	extern const unsigned char buildTimeAndDate[FIRMWARE_BUILD_DATE_LENGTH];
 	extern const unsigned char compilerVersion[COMPILER_VERSION_LENGTH];
 	extern const unsigned char operatingSystem[OPERATING_SYSTEM_LENGTH]; 
-	extern const unsigned short injectorSwitchOnCodeTime;                                                                                            
-
+	extern const unsigned short injectorSwitchOnCodeTime;
+	extern const unsigned char decoderName[sizeof(BASE_FILE_NAME)];
+	extern const unsigned short decoderMaxCodeTime;
+	extern unsigned short outputEventDelayFinalPeriod[];
+	extern unsigned short outputEventPulseWidthsMath[];
+	extern unsigned char outputEventInputEventNumbers[];
 
 	/* Extract and build up the header fields */
 	TXBufferCurrentPositionHandler = (unsigned char*)&TXBuffer;

@@ -52,6 +52,7 @@ void generateCoreVars(){
 	extern const volatile fixedConfig2 fixedConfigs2;
 	extern const volatile unsigned short CHTTransferTable[];
 	extern const volatile unsigned short IATTransferTable[];
+	extern unsigned short* ticksPerDegree;
 
 	// Battery Reference Voltage
 	unsigned short localBRV;

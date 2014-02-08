@@ -559,6 +559,14 @@ void initAllPagedRAM(){
 /* Initialise and set up all running variables that require a non-zero start value here */
 /* All other variables are initialised to zero by the premain built in code             */
 void initVariables(){
+	extern unsigned short ticksPerDegree0;
+	extern unsigned short ticksPerDegree1;                                      
+	extern unsigned short* ticksPerDegree;
+	extern unsigned short* ticksPerDegreeRecord;
+	extern volatile unsigned short * volatile injectorMainTimeRegisters[];
+	extern volatile unsigned char * volatile injectorMainControlRegisters[];
+	extern unsigned char outputEventInputEventNumbers[];
+
 	/* And the opposite for the other halves */
 	CoreVars = &CoreVars0;
 	DerivedVars = &DerivedVars0;

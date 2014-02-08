@@ -62,6 +62,14 @@ int  main(){ /// @todo TODO maybe move this to paged flash ?
 	extern unsigned char* TXBufferCurrentPositionCAN0;
 	extern unsigned char* TXBufferCurrentPositionSCI0;
 	extern const volatile fixedConfig1 fixedConfigs1;
+	extern unsigned short ticksPerDegree0;
+	extern unsigned short ticksPerDegree1;
+	extern unsigned short* ticksPerDegree;
+	extern unsigned short* ticksPerDegreeRecord;
+#ifndef XGATE
+	extern unsigned short outputEventPulseWidthsMath[];
+	extern unsigned short outputEventDelayFinalPeriod[];
+#endif
 	// Set everything up.
 	init();
 
