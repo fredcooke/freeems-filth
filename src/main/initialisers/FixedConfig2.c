@@ -147,7 +147,7 @@ const volatile fixedConfig2 fixedConfigs2 FIXEDCONF2 = {
 #if CONFIG == DEUCECOUPE_ID
 		dwellType:     DWELL_RPM,
 #elif CONFIG == VIASUPRA_ID
-		dwellType:     DWELL_RPM,
+		dwellType:     DWELL_BRV,
 #elif CONFIG == DEUCES10_ID
 		dwellType:     DWELL_RPM,
 #elif CONFIG == SEANKLT1_ID
