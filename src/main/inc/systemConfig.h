@@ -118,7 +118,6 @@
 #elif defined VIASUPRA
 #define CONFIG VIASUPRA_ID
 #define PRELIM_CONFIG "VIASUPRA"
-#elif defined DEUCES10
 #elif defined CLIFLAGS && !(defined XGATE)
 #error "CLIFLAGS defined, but no build matched! Not allowing config to fall back to default!"
 #define CONFIG -1
