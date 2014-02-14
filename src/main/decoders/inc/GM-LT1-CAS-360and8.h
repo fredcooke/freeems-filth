@@ -35,18 +35,6 @@
 #ifndef FILE_LT1_360_8_H_SEEN
 #define FILE_LT1_360_8_H_SEEN
 
-#ifdef EXTERN
-#warning "EXTERN already defined by another header, please sort it out!"
-#undef EXTERN /* If fail on warning is off, remove the definition such that we can redefine correctly. */
-#endif
-
-
-#ifdef LT1_360_8_C
-#define EXTERN
-#else
-#define EXTERN extern
-#endif
-
 #define DECODER_MAX_CODE_TIME    200 // To be optimised (shortened)!
 #define NUMBER_OF_REAL_EVENTS     16
 #define NUMBER_OF_VIRTUAL_EVENTS  16
@@ -59,10 +47,5 @@
 #define DECODER_IMPLEMENTATION_C
 #define LT1_360_8_C
 
-#undef EXTERN
-
-#else
-	/* let us know if we are being untidy with headers */
-	#warning "Header file GM_LT1_CAS_360AND8_H seen before, sort it out!"
 /* end of the wrapper ifdef from the very top */
 #endif
