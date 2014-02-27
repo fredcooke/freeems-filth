@@ -38,7 +38,7 @@
  */
 
 
-#define DECODER_MAX_CODE_TIME    100 // To be optimised (shortened)!
+#define DECODER_MAX_CODE_TIME    150 // To be optimised (shortened)!
 
 
 #include "../../inc/freeEMS.h"
