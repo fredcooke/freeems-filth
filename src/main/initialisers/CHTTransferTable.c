@@ -69,7 +69,7 @@ const volatile unsigned short CHTTransferTable[1024] LOOKUPD = {
 #elif CONFIG == SCAVENGER_ID
 #include "../data/thermistors/Denso-2k49Bias.h"
 #elif CONFIG == VIASUPRA_ID
-#include "../data/thermistors/Denso-2k4Bias.h"
+#include "../data/thermistors/BoschM12H-2k4Bias.h"
 #else // Default to correctly biased Jap sensor.
 #include "../data/thermistors/Denso-2k7Bias.h"
 #endif
