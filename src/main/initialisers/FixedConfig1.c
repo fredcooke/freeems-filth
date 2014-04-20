@@ -203,7 +203,7 @@ const volatile fixedConfig1 fixedConfigs1 FIXEDCONF1 = {
 		anglesOfTDC: {ANGLE(0), ANGLE(120), ANGLE(240), ANGLE(360), ANGLE(480), ANGLE(600), ANGLE(0), ANGLE(120), ANGLE(240), ANGLE(360), ANGLE(480), ANGLE(600)},
 		outputEventPinNumbers:       {2,1,0,2,1,0,4,3,5,4,3,5}, // Weird order because I kept messing up my wiring.
 		schedulingConfigurationBits: {0,0,0,0,0,0,1,1,1,1,1,1}, // Ones represent scheduling for injection, zeros represent scheduling for ignition
-		decoderEngineOffset:         ANGLE(280.00),
+		decoderEngineOffset:         ANGLE(90.00),
 		numberOfConfiguredOutputEvents:         12, // 6 coil events, 6 injection events
 		numberOfInjectionsPerEngineCycle:        2  // Semi-sequential
 
