@@ -1,6 +1,6 @@
 /* FreeEMS - the open source engine management system
  *
- * Copyright 2008-2013 Fred Cooke
+ * Copyright 2008-2014 Fred Cooke
  *
  * This file is part of the FreeEMS project.
  *
@@ -137,9 +137,6 @@ unsigned short populateBasicDatalog(){
  * process. It configures the pos/neg ack header bit, adds the code if neg,
  * runs a checksum over the packet data and tags it to the end before
  * configuring the various ISRs that need to send the data out.
- *
- * @bug http://issues.freeems.org/view.php?id=81
- * @todo TODO fix the double/none start byte bug and remove the hack!
  */
 void finaliseAndSend(unsigned short errorID){
 
@@ -427,6 +424,8 @@ void decodePacketAndRespond(){
 			}
 			break;
 		}
+		case requestBuiltByName:
+		case requestSupportEmail:
 		case requestDecoderName:
 		case requestFirmwareBuildDate:
 		case requestCompilerVersion:
@@ -439,6 +438,12 @@ void decodePacketAndRespond(){
 
 			unsigned char* stringToSend = 0;
 			switch (RXHeaderPayloadID) {
+				case requestBuiltByName:
+					stringToSend = (unsigned char*)builtByName;
+					break;
+				case requestSupportEmail:
+					stringToSend = (unsigned char*)supportEmail;
+					break;
 				case requestDecoderName:
 					stringToSend = (unsigned char*)decoderName;
 					break;
@@ -1152,11 +1157,16 @@ void decodePacketAndRespond(){
 
 					// Ensure we succeed at stopping it as quickly as possible.
 					ATOMIC_START();
+					// Stash mid-test details for return
+					*((unsigned short*)TXBufferCurrentPositionHandler) = testNumberOfCycles;        // Save and return the remaining cycle count
+					TXBufferCurrentPositionHandler +=2;
+					*((unsigned char*)TXBufferCurrentPositionHandler) = KeyUserDebugs.currentEvent; // Save the current event for the ultra-fussy
+					TXBufferCurrentPositionHandler++;
+					// Setup the test to stop ASAP
 					KeyUserDebugs.currentEvent = testEventsPerCycle - 1; // Gets incremented then compared with testEventsPerCycle
 					testNumberOfCycles = 1;                              // Gets decremented then compared with zero
 					ATOMIC_END();
 
-					// eventually save and return where it got to
 					break;
 				}else if((localTestMode == TEST_MODE_BUMP_UP_CYCLES) && (RXCalculatedPayloadLength == 2)){
 					if(!(coreStatusA & BENCH_TEST_ON)){
@@ -1177,6 +1187,10 @@ void decodePacketAndRespond(){
 					testNumberOfCycles += bumpCycles;
 					// Given that this function is only for situations when A it's getting near to
 					// zero and B the user is watching, not checking for overflow is reasonable.
+
+					*((unsigned char*)TXBufferCurrentPositionHandler) = bumpCycles; // Return the bump size for achaelogical purposes
+					TXBufferCurrentPositionHandler++;
+
 					break;
 				}else if((localTestMode == TEST_MODE_ITERATIONS) && (RXCalculatedPayloadLength == 24)){
 					testMode = localTestMode;
@@ -1191,8 +1205,12 @@ void decodePacketAndRespond(){
 					break;
 				}
 
+				// Parse the values and return all but the test packet type
+
 				testEventsPerCycle = *((unsigned char*)RXBufferCurrentPosition); //100;  // @ 10ms  =  1s
 				RXBufferCurrentPosition++;
+				*((unsigned char*)TXBufferCurrentPositionHandler) = testEventsPerCycle;
+				TXBufferCurrentPositionHandler++;
 				if(testEventsPerCycle == 0){
 					errorID = invalidEventsPerCycle;
 					break;
@@ -1200,6 +1218,8 @@ void decodePacketAndRespond(){
 
 				testNumberOfCycles = *((unsigned short*)RXBufferCurrentPosition); //20;   // @ 1s    = 20s
 				RXBufferCurrentPosition += 2;
+				*((unsigned short*)TXBufferCurrentPositionHandler) = testNumberOfCycles;
+				TXBufferCurrentPositionHandler +=2;
 				if(testNumberOfCycles == 0){
 					errorID = invalidNumberOfCycles;
 					break;
@@ -1207,6 +1227,8 @@ void decodePacketAndRespond(){
 
 				testTicksPerEvent = *((unsigned short*)RXBufferCurrentPosition); //12500; // @ 0.8us = 10ms
 				RXBufferCurrentPosition += 2;
+				*((unsigned short*)TXBufferCurrentPositionHandler) = testTicksPerEvent;
+				TXBufferCurrentPositionHandler +=2;
 				if(testTicksPerEvent < decoderMaxCodeTime){
 					errorID = tooShortOfAnEventPeriod;
 					break;
@@ -1217,6 +1239,8 @@ void decodePacketAndRespond(){
 				RXBufferCurrentPosition += 6;
 				unsigned short* testPulseWidths = (unsigned short*)RXBufferCurrentPosition;
 				RXBufferCurrentPosition += 12;
+				memcpy((void*)TXBufferCurrentPositionHandler, (void*)testEventNumbers, 18);
+				TXBufferCurrentPositionHandler += 18;
 
 				// Reset the clock for reading timeout
 				Clocks.timeoutADCreadingClock = 0; // make this optional, such that we can use real inputs to determine pw and/or dwell.
@@ -1225,7 +1249,7 @@ void decodePacketAndRespond(){
 				unsigned char channel;
 				unsigned char configuredChannels = 6;
 				for(channel = 0;channel < 6;channel++){
-					if(testPulseWidths[channel] > injectorSwitchOnCodeTime){ // See next block for warning.
+					if(testPulseWidths[channel] > ectSwitchOnCodeTime){ // See next block for warning.
 						// use as-is
 						outputEventDelayFinalPeriod[channel] = decoderMaxCodeTime;
 						outputEventPulseWidthsMath[channel] = testPulseWidths[channel];
