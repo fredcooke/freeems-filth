@@ -33,7 +33,7 @@
 
 
 # Indirect dependencies that can affect everything and cause a full rebuild
-MFILE = Makefile
+MFILE = Makefile make/*
 ASMH = 9S12XDP512asm.s
 LINKER = memory.x regions.x hc9s12xdp512elfb.x
 
