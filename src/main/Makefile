@@ -830,35 +830,4 @@ cleandoxy:
 	@echo $(Q)################################################################################$(Q)
 	$(RM) ../../docs/doxygen-html/
 
-
-################################################################################
-#                   Declare targets that aren't real files                     #
-################################################################################
-
-
-# Aggregators top level
-.PHONY: all slow slowgc single help dirs
-
-# Aggregators middle level
-.PHONY: dependencies preprocess compile assemble link gclink s19 gcs19 sizes gcsizes
-
-# Aggregators debug level
-.PHONY: alldebug maps rees objdmps elfdmps size
-
-# Release targets
-.PHONY: release relpack1 relpack2 package packagenodoxy publish publishnodoxy
-.PHONY: rebuildfull rebuildnodoxy relbuildfirmware deploy deploydoxy
-.PHONY: md5sums sha1sums s19zips sha1sumsgc s19zips s19zipsgc
-.PHONY: testgit tagname tagmessage tagrelease
-.PHONY: zipmain zipdocs zipsite zipsrc
-
-# Messages
-.PHONY: mapsmsg reesmsg elfdmpsmsg objdmpmsg linkmsg gclinkmsg
-.PHONY: s19msg gcs19msg preprocessmsg compilemsg assemblemsg
-.PHONY: md5sumsmsg sha1sumsmsg s19zipsmsg
-
-# Clean targets
-.PHONY: clean cleandep cleanasm cleanppc cleanobj cleanout cleans19 cleandebug cleandoxy
-
-# Lonely documentation target :-(
-.PHONY: gendoxy
+include make/phony.mk
