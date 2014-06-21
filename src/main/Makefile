@@ -701,79 +701,8 @@ deploydoxy: zipsite
 
 
 
-################################################################################
-#                     Create Directory Target Definitions                      #
-################################################################################
-
-# Assembly, release and inc directories don't get removed.
-
-dirs: $(BUGDIR) $(S19DIR) $(PPCDIR) $(OUTDIR) $(OBJDIR) $(XGOBJDIR) $(ASMDIR)
-
-$(BUGDIR):
-	@echo $(Q)################################################################################$(Q)
-	@echo $(Q)#                       Creating the debug directory....                       #$(Q)
-	@echo $(Q)################################################################################$(Q)
-	$(MKDIR) $(BUGDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
-	rmdir $(BUGDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
-	$(MKDIR) $(BUGDIR)$(PATHSEP)$(DATADIR)$(PATHSEP)hack
-	rmdir $(BUGDIR)$(PATHSEP)$(DATADIR)$(PATHSEP)hack
-
-$(S19DIR):
-	@echo $(Q)################################################################################$(Q)
-	@echo $(Q)#                      Creating the firmware directory...                      #$(Q)
-	@echo $(Q)################################################################################$(Q)
-	$(MKDIR) $(S19DIR)$(PATHSEP)hack
-	rmdir $(S19DIR)$(PATHSEP)hack
-
-$(PPCDIR):
-	@echo $(Q)################################################################################$(Q)
-	@echo $(Q)#                   Creating the preprocessedc directory....                   #$(Q)
-	@echo $(Q)################################################################################$(Q)
-	$(MKDIR) $(PPCDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
-	rmdir $(PPCDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
-	$(MKDIR) $(PPCDIR)$(PATHSEP)$(DATADIR)$(PATHSEP)hack
-	rmdir $(PPCDIR)$(PATHSEP)$(DATADIR)$(PATHSEP)hack
-
-$(ASMDIR):
-	@echo $(Q)################################################################################$(Q)
-	@echo $(Q)#                      Creating the assembly directory...                      #$(Q)
-	@echo $(Q)################################################################################$(Q)
-	$(MKDIR) $(ASMDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
-	rmdir $(ASMDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
-	$(MKDIR) $(ASMDIR)$(PATHSEP)$(DATADIR)$(PATHSEP)hack
-	rmdir $(ASMDIR)$(PATHSEP)$(DATADIR)$(PATHSEP)hack
-
-$(OUTDIR):
-	@echo $(Q)################################################################################$(Q)
-	@echo $(Q)#                       Creating the output directory...                       #$(Q)
-	@echo $(Q)################################################################################$(Q)
-	$(MKDIR) $(OUTDIR)$(PATHSEP)hack
-	rmdir $(OUTDIR)$(PATHSEP)hack
-
-$(OBJDIR):
-	@echo $(Q)################################################################################$(Q)
-	@echo $(Q)#                       Creating the object directory...                       #$(Q)
-	@echo $(Q)################################################################################$(Q)
-	$(MKDIR) $(OBJDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
-	rmdir $(OBJDIR)$(PATHSEP)$(DECDIR)$(PATHSEP)hack
-	$(MKDIR) $(OBJDIR)$(PATHSEP)$(DATADIR)$(PATHSEP)hack
-	rmdir $(OBJDIR)$(PATHSEP)$(DATADIR)$(PATHSEP)hack
-
-$(XGOBJDIR):
-	@echo $(Q)################################################################################$(Q)
-	@echo $(Q)#                    Creating the xgate object directory...                    #$(Q)
-	@echo $(Q)################################################################################$(Q)
-	$(MKDIR) $(XGOBJDIR)$(PATHSEP)hack
-	rmdir $(XGOBJDIR)$(PATHSEP)hack
-
-distributiondir:
-	@echo $(Q)################################################################################$(Q)
-	@echo $(Q)#                    Creating the distribution directory...                    #$(Q)
-	@echo $(Q)################################################################################$(Q)
-	$(MKDIR) $(FIRMWAREDISTRIBUTIONDIR)$(PATHSEP)hack
-	rmdir $(FIRMWAREDISTRIBUTIONDIR)$(PATHSEP)hack
-
-
+# All directory creating targets
+include make/dirs.mk
 
 
 ################################################################################
