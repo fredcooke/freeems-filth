@@ -1,6 +1,6 @@
 #	FreeEMS - the open source engine management system
 #
-#	Makefile
+#	release.mk
 #
 #	Copyright 2008-2014 Fred Cooke
 #
